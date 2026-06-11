@@ -291,7 +291,11 @@ document.getElementById('cSend').onclick = async ()=>{
       throw new Error(data.message || 'send failed');
     }
   } catch(e){
-    toast('전송에 실패했어요 — 잠시 후 다시 시도하거나 osmu_studio@naver.com 으로 보내주세요');
+    // 전송 실패 시 방문자의 메일 앱으로 대체 — 문의를 잃지 않게
+    const fbBody = [`이름/상호: ${name}`,`회신 이메일: ${email}`,`문의 유형: ${v('cType')}`,
+      `예상 예산: ${v('cBudget')||'-'}`,'',v('cMsg')||'(내용 없음)'].join('\n');
+    toast('바로 전송이 안 돼 메일 앱으로 대체합니다…');
+    location.href = `mailto:osmu_studio@naver.com?subject=${encodeURIComponent(`[프로젝트 문의] ${name} — ${v('cType')}`)}&body=${encodeURIComponent(fbBody)}`;
   } finally {
     btn.disabled = false; btn.textContent = orig;
   }
