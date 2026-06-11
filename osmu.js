@@ -5,6 +5,12 @@
    the home, sub-pages, project pages and admin alike.
 ================================================= */
 
+/* ============ always start at the top on (re)load ============
+   Stops the browser from restoring the previous scroll position,
+   so a refresh always lands on the hero / top of the page. */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.addEventListener('load', () => window.scrollTo(0, 0));
+
 /* ============ project data (single source) ============ */
 const PROJECT_TYPES = ['카페','주거','상업','음식점','술집','기타'];
 const PROJECTS = [
