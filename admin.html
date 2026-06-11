@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="osmu.css?v=2">
+<link rel="stylesheet" href="osmu.css?v=3">
 </head>
 <body class="admin-mode">
 
@@ -26,16 +26,16 @@
       <img src="logo.png" alt="OSMÜ STÜDIO">
       <h1>Admin — Sign in</h1>
       <div class="field">
-        <label for="loginId">ID</label>
-        <input id="loginId" type="text" autocomplete="off" placeholder="admin">
+        <label for="loginId">Email</label>
+        <input id="loginId" type="email" autocomplete="username" placeholder="you@email.com">
       </div>
       <div class="field">
         <label for="loginPw">Password</label>
-        <input id="loginPw" type="password" placeholder="••••••••">
+        <input id="loginPw" type="password" autocomplete="current-password" placeholder="••••••••">
       </div>
       <button class="btn" id="loginBtn" style="width:100%">Sign in</button>
-      <p class="login-err" id="loginErr">아이디 또는 비밀번호가 올바르지 않습니다.</p>
-      <p class="login-hint">데모 계정 — ID: <b>admin</b> / PW: <b>osmu2026</b><br><a href="index.html" style="border-bottom:1px solid var(--ink)">← 사이트로 돌아가기</a></p>
+      <p class="login-err" id="loginErr">로그인에 실패했습니다. 이메일/비밀번호를 확인해주세요.</p>
+      <p class="login-hint">Supabase에 등록한 관리자 계정으로 로그인하세요.<br><a href="index.html" style="border-bottom:1px solid var(--ink)">← 사이트로 돌아가기</a></p>
     </div>
   </div>
 
@@ -60,7 +60,7 @@
           <div class="kpi"><b id="kpiYear">0</b><span>This year</span></div>
           <div class="kpi"><b id="kpiCat">0</b><span>Categories</span></div>
         </div>
-        <p class="admin-note">여기서 등록·수정·삭제한 프로젝트와 업로드한 사진은 <b>이 브라우저에 저장</b>되어 WORK 목록과 상세 페이지에 반영됩니다. ⚠️ 단, 저장은 <b>이 브라우저 안에서만</b> 유지됩니다. 모든 방문자에게 보이도록 실제로 게시하려면 백엔드/CMS 연동이 필요합니다. <button class="btn ghost" id="resetBtn" style="margin-left:8px;padding:6px 14px;font-size:9px">초기 데이터로 되돌리기</button></p>
+        <p class="admin-note">여기서 등록·수정·삭제한 프로젝트와 업로드한 사진은 <b>데이터베이스에 저장되어 모든 방문자에게 즉시 반영</b>됩니다. (Supabase DB + Storage)</p>
         <table class="admin-table">
           <thead><tr><th>No</th><th>Cover</th><th>Project</th><th>업종</th><th>Category</th><th>Date</th><th>Photos</th><th></th></tr></thead>
           <tbody id="adminRows"></tbody>
@@ -119,6 +119,20 @@
               </select>
             </div>
           </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="fLoc">Location (지역)</label>
+              <input id="fLoc" type="text" placeholder="예: 천안 Cheonan">
+            </div>
+            <div class="field">
+              <label for="fSlug">Slug (주소용 영문 · 비우면 자동)</label>
+              <input id="fSlug" type="text" placeholder="예: cafe-mono">
+            </div>
+          </div>
+          <div class="field">
+            <label for="fSummary">한 줄 소개 (상세 페이지 상단 문구)</label>
+            <input id="fSummary" type="text" placeholder="예: 흑과 백, 두 가지 톤으로 본질만 남긴 미니멀 카페.">
+          </div>
           <div class="field">
             <label for="fImgs">프로젝트 사진 (여러 장 가능 · 첫 번째가 대표 이미지)</label>
             <label class="img-drop" for="fImgs">＋ 사진 선택 / 추가</label>
@@ -161,39 +175,40 @@
   </div>
 </div>
 
-<script src="osmu.js?v=2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="osmu.js?v=3"></script>
 <script>
-/* admin works on the persisted project store (text + uploaded images) */
-let rows = loadProjects().map(p => ({...p, images: p.images || []}));
-let draft = [];          // images for the project currently in the form
-let editIndex = -1, loggedIn = false;
-
-function persist(){
-  try{ saveProjects(rows); return true; }
-  catch(e){ toast('저장 용량 초과 — 사진 수를 줄이거나 해상도를 낮춰주세요'); return false; }
-}
+/* admin — Supabase auth + project CRUD + image upload to Storage */
+const SB = window.sb;
+let rows = [];           // projects from DB
+let draft = [];          // image public URLs for the project in the form
+let editId = null;       // id of project being edited (null = new)
 
 const adminLogin = document.getElementById('adminLogin');
 const adminShell = document.getElementById('adminShell');
-function showState(){
-  adminLogin.style.display = loggedIn ? 'none' : 'flex';
-  adminShell.classList.toggle('on', loggedIn);
-  if(loggedIn) renderAdmin();
+const $ = id => document.getElementById(id);
+
+async function refreshState(){
+  let on = false;
+  if(SB){ const { data } = await SB.auth.getSession(); on = !!(data && data.session); }
+  adminLogin.style.display = on ? 'none' : 'flex';
+  adminShell.classList.toggle('on', on);
+  if(on) renderAdmin();
 }
 
 /* login */
-document.getElementById('loginBtn').onclick = ()=>{
-  const id = document.getElementById('loginId').value.trim();
-  const pw = document.getElementById('loginPw').value;
-  if(id==='admin' && pw==='osmu2026'){
-    loggedIn = true; document.getElementById('loginErr').style.display='none'; showState();
-    toast('Signed in');
-  } else {
-    document.getElementById('loginErr').style.display='block';
-  }
+$('loginBtn').onclick = async ()=>{
+  if(!SB){ toast('DB 연결 오류 — 새로고침 후 다시 시도'); return; }
+  const email = $('loginId').value.trim();
+  const password = $('loginPw').value;
+  $('loginBtn').disabled = true;
+  const { error } = await SB.auth.signInWithPassword({ email, password });
+  $('loginBtn').disabled = false;
+  if(error){ $('loginErr').style.display='block'; return; }
+  $('loginErr').style.display='none'; toast('로그인 성공'); refreshState();
 };
-document.getElementById('loginPw').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('loginBtn').click(); });
-document.getElementById('logoutBtn').onclick = e=>{ e.preventDefault(); location.href='index.html'; };
+$('loginPw').addEventListener('keydown',e=>{ if(e.key==='Enter') $('loginBtn').click(); });
+$('logoutBtn').onclick = async e=>{ e.preventDefault(); if(SB) await SB.auth.signOut(); location.href='index.html'; };
 
 /* side tabs */
 document.querySelectorAll('.admin-side a[data-panel]').forEach(a=>{
@@ -202,13 +217,14 @@ document.querySelectorAll('.admin-side a[data-panel]').forEach(a=>{
     document.querySelectorAll('.admin-side a[data-panel]').forEach(x=>x.classList.remove('on'));
     a.classList.add('on');
     document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('on'));
-    document.getElementById('panel-'+a.dataset.panel).classList.add('on');
+    $('panel-'+a.dataset.panel).classList.add('on');
   };
 });
 
-/* CRUD */
-function renderAdmin(){
-  const tbody = document.getElementById('adminRows');
+/* ----- list ----- */
+async function renderAdmin(){
+  rows = await osmuFetchAll();
+  const tbody = $('adminRows');
   tbody.innerHTML = '';
   rows.forEach((p,i)=>{
     const tr = document.createElement('tr');
@@ -220,24 +236,36 @@ function renderAdmin(){
       <td class="t-name">${p.name}</td><td>${p.type||'—'}</td><td>${p.cat}</td><td>${dateStr(p)}</td>
       <td>${p.images && p.images.length ? p.images.length + '장' : '0'}</td>
       <td class="row-actions">
-        <button data-edit="${i}">Edit</button>
-        <button data-del="${i}">Delete</button>
+        <button data-edit="${p.id}">Edit</button>
+        <button data-del="${p.id}">Delete</button>
       </td>`;
     tbody.appendChild(tr);
   });
-  document.getElementById('kpiTotal').textContent = rows.length;
-  document.getElementById('kpiYear').textContent = rows.filter(p=>p.year===2026).length;
-  document.getElementById('kpiCat').textContent = new Set(rows.map(p=>p.cat)).size;
-  tbody.querySelectorAll('[data-edit]').forEach(b=>b.onclick = ()=>startEdit(+b.dataset.edit));
-  tbody.querySelectorAll('[data-del]').forEach(b=>b.onclick = ()=>{
-    if(!confirm('이 프로젝트를 삭제할까요?')) return;
-    rows.splice(+b.dataset.del,1); persist(); renderAdmin(); toast('Project deleted');
-  });
+  $('kpiTotal').textContent = rows.length;
+  $('kpiYear').textContent = rows.filter(p=>p.year===2026).length;
+  $('kpiCat').textContent = new Set(rows.map(p=>p.cat)).size;
+  tbody.querySelectorAll('[data-edit]').forEach(b=>b.onclick = ()=>startEdit(b.dataset.edit));
+  tbody.querySelectorAll('[data-del]').forEach(b=>b.onclick = ()=>delProject(b.dataset.del));
 }
 
-/* ----- image draft (thumbnails in the form) ----- */
+async function delProject(id){
+  if(!confirm('이 프로젝트를 삭제할까요?')) return;
+  const { error } = await SB.from('projects').delete().eq('id', id);
+  if(error){ toast('삭제 실패: ' + error.message); return; }
+  toast('삭제되었습니다'); renderAdmin();
+}
+
+/* ----- image upload (resize → Storage → public URL) ----- */
+async function uploadImage(file){
+  const dataUrl = await osmuResizeImage(file, 1600, 0.85);
+  const blob = await (await fetch(dataUrl)).blob();
+  const path = `proj/${Date.now()}-${Math.random().toString(36).slice(2,7)}.jpg`;
+  const { error } = await SB.storage.from('project-images').upload(path, blob, { contentType:'image/jpeg', upsert:false });
+  if(error) throw error;
+  return SB.storage.from('project-images').getPublicUrl(path).data.publicUrl;
+}
 function renderThumbs(){
-  const box = document.getElementById('thumbs');
+  const box = $('thumbs');
   box.innerHTML = draft.map((src,i)=>
     `<div class="thumb${i===0?' is-cover':''}" title="클릭하면 대표 이미지로 지정">
        <img src="${src}" data-cover="${i}">
@@ -250,66 +278,92 @@ function renderThumbs(){
     const i=+im.dataset.cover; if(i>0){ const [x]=draft.splice(i,1); draft.unshift(x); renderThumbs(); }
   });
 }
-document.getElementById('fImgs').onchange = async e=>{
+$('fImgs').onchange = async e=>{
   const files = [...e.target.files]; if(!files.length) return;
-  toast('사진 처리 중…');
+  toast('사진 업로드 중…');
   for(const f of files){
-    try{ draft.push(await osmuResizeImage(f, 1280, 0.82)); }catch(err){}
+    try{ draft.push(await uploadImage(f)); renderThumbs(); }
+    catch(err){ console.error(err); toast('업로드 실패: ' + (err.message||err)); }
   }
   e.target.value = '';
-  renderThumbs();
-  toast(`${files.length}장 추가됨 — 저장을 눌러 반영`);
+  toast(`${files.length}장 업로드 완료 — Save로 반영`);
 };
 
-function startEdit(i){
-  editIndex = i;
-  document.getElementById('formTitle').textContent = 'Edit project';
-  document.getElementById('fName').value = rows[i].name;
-  document.getElementById('fCat').value = rows[i].cat;
-  document.getElementById('fType').value = rows[i].type || '카페';
-  document.getElementById('fYear').value = rows[i].year;
-  document.getElementById('fMonth').value = rows[i].month || '';
-  draft = (rows[i].images || []).slice();
+/* ----- form ----- */
+function startEdit(id){
+  const p = rows.find(x=>String(x.id)===String(id)); if(!p) return;
+  editId = p.id;
+  $('formTitle').textContent = 'Edit project';
+  $('fName').value = p.name || '';
+  $('fCat').value = p.cat || 'Space + Branding';
+  $('fType').value = p.type || '카페';
+  $('fYear').value = p.year || 2026;
+  $('fMonth').value = p.month || '';
+  $('fLoc').value = p.loc || '';
+  $('fSlug').value = p.slug || '';
+  $('fSummary').value = p.summary || '';
+  draft = (p.images || []).slice();
   renderThumbs();
-  document.getElementById('cancelEdit').style.display = 'inline-block';
-  document.getElementById('fName').focus();
-  document.getElementById('projForm').scrollIntoView({behavior:'smooth', block:'start'});
+  $('cancelEdit').style.display = 'inline-block';
+  $('fName').focus();
+  $('projForm').scrollIntoView({behavior:'smooth', block:'start'});
 }
 function resetForm(){
-  editIndex = -1;
-  document.getElementById('formTitle').textContent = 'New project';
-  document.getElementById('fName').value = '';
-  document.getElementById('fType').value = '카페';
-  document.getElementById('fYear').value = 2026;
-  document.getElementById('fMonth').value = '';
-  draft = [];
-  renderThumbs();
-  document.getElementById('cancelEdit').style.display = 'none';
+  editId = null;
+  $('formTitle').textContent = 'New project';
+  $('fName').value = ''; $('fType').value = '카페'; $('fCat').value = 'Space + Branding';
+  $('fYear').value = 2026; $('fMonth').value = ''; $('fLoc').value = ''; $('fSlug').value = ''; $('fSummary').value = '';
+  draft = []; renderThumbs();
+  $('cancelEdit').style.display = 'none';
 }
-document.getElementById('cancelEdit').onclick = resetForm;
-document.getElementById('saveBtn').onclick = ()=>{
-  const name = document.getElementById('fName').value.trim().toUpperCase();
-  const cat = document.getElementById('fCat').value;
-  const type = document.getElementById('fType').value;
-  const year = +document.getElementById('fYear').value || 2026;
-  const month = +document.getElementById('fMonth').value || null;
-  if(!name){ toast('Project name is required'); return; }
-  const images = draft.slice();
-  if(editIndex >= 0){ rows[editIndex] = {...rows[editIndex], name, cat, type, year, month, images}; }
-  else { rows.unshift({slug:name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''), name, cat, type, year, month, images}); }
-  if(persist()){ toast(editIndex>=0 ? 'Project updated' : 'Project added'); }
-  resetForm(); renderAdmin();
-};
-document.getElementById('settingsSave').onclick = ()=>toast('Settings saved');
+$('cancelEdit').onclick = resetForm;
 
-document.getElementById('resetBtn').onclick = ()=>{
-  if(!confirm('업로드한 사진과 변경 내용을 모두 지우고 초기 데이터로 되돌릴까요?')) return;
-  osmuResetProjects();
-  rows = loadProjects().map(p=>({...p, images:p.images||[]}));
-  resetForm(); renderAdmin(); toast('초기 데이터로 되돌렸습니다');
-};
+function makeSlug(s){ return (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
 
-showState();
+$('saveBtn').onclick = async ()=>{
+  const name = $('fName').value.trim().toUpperCase();
+  if(!name){ toast('프로젝트 이름을 입력해주세요'); return; }
+  let slug = makeSlug($('fSlug').value.trim()) || makeSlug(name) || ('proj-' + Date.now());
+  const payload = {
+    slug,
+    name,
+    cat: $('fCat').value,
+    type: $('fType').value,
+    year: +$('fYear').value || 2026,
+    month: +$('fMonth').value || null,
+    loc: $('fLoc').value.trim() || null,
+    summary: $('fSummary').value.trim() || null,
+    images: draft.slice()
+  };
+  $('saveBtn').disabled = true;
+  try{
+    if(editId){
+      const { error } = await SB.from('projects').update(payload).eq('id', editId);
+      if(error) throw error;
+      toast('수정되었습니다');
+    } else {
+      const maxOrder = rows.reduce((m,p)=>Math.max(m, p.sort_order||0), 0);
+      payload.sort_order = maxOrder + 10;
+      let { error } = await SB.from('projects').insert(payload);
+      if(error && error.code === '23505'){ // slug 중복 → 뒤에 숫자 붙여 재시도
+        payload.slug = slug + '-' + Math.random().toString(36).slice(2,5);
+        ({ error } = await SB.from('projects').insert(payload));
+      }
+      if(error) throw error;
+      toast('프로젝트가 추가되었습니다');
+    }
+    resetForm(); renderAdmin();
+  } catch(err){
+    console.error(err); toast('저장 실패: ' + (err.message || err));
+  } finally {
+    $('saveBtn').disabled = false;
+  }
+};
+$('settingsSave').onclick = ()=>toast('Settings saved (데모)');
+
+/* 로그인 상태 변화 추적 */
+if(SB) SB.auth.onAuthStateChange(()=>refreshState());
+refreshState();
 </script>
 </body>
 </html>

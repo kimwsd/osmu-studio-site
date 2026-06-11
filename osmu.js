@@ -21,7 +21,11 @@ const PROJECTS = [
   {slug:'teahouse-dam',  name:'TEAHOUSE DAM',  cat:'Packaging',        type:'카페',   year:2024, month:9,  loc:'전주 Jeonju'},
   {slug:'gallery-hue',   name:'GALLERY HUE',   cat:'Space Design',     type:'상업',   year:2024, month:4,  loc:'서울 Seoul'}
 ];
-const projUrl = p => `project-${p.slug}.html`;
+/* 기존 6개는 전용 정적 페이지, 새 프로젝트는 동적 템플릿(project.html?slug=) */
+const STATIC_SLUGS = new Set(['cafe-mono','bakery-onhwa','salon-de-asan','butcher-no9','teahouse-dam','gallery-hue']);
+const projUrl = p => STATIC_SLUGS.has(p.slug)
+  ? `project-${p.slug}.html`
+  : `project.html?slug=${encodeURIComponent(p.slug)}`;
 /* "2026.06" (month optional) */
 const dateStr = p => p.year + (p.month ? '.' + String(p.month).padStart(2,'0') : '');
 window.PROJECT_TYPES = PROJECT_TYPES;
@@ -66,6 +70,32 @@ window.loadProjects = loadProjects;
 window.saveProjects = saveProjects;
 window.osmuResetProjects = osmuResetProjects;
 window.osmuResizeImage = osmuResizeImage;
+
+/* ============ Supabase — shared DB + image storage ============
+   Public anon key (safe in client). Writes are protected by RLS:
+   only a signed-in admin can insert/update/delete. */
+const SB_URL  = 'https://polzkalenzpfmrgzwmfv.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBvbHprYWxlbnpwZm1yZ3p3bWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNjkwNjEsImV4cCI6MjA5Njc0NTA2MX0.YbQ0Hg0h3ty0-HQYR5otsH5H6HaQUZhuRNSZ6S6wZOo';
+const sb = (window.supabase && window.supabase.createClient)
+  ? window.supabase.createClient(SB_URL, SB_ANON)
+  : null;
+window.sb = sb;
+const normProj = p => ({...p, images: Array.isArray(p.images) ? p.images : []});
+async function osmuFetchAll(){
+  if(!sb) return PROJECTS.map(p=>({...p, images:[]}));
+  const { data, error } = await sb.from('projects').select('*')
+    .order('sort_order',{ascending:false}).order('created_at',{ascending:false});
+  if(error){ console.error('[osmu] fetchAll', error); return PROJECTS.map(p=>({...p, images:[]})); }
+  return (data||[]).map(normProj);
+}
+async function osmuFetchOne(slug){
+  if(!sb){ const p = PROJECTS.find(x=>x.slug===slug); return p ? {...p, images:[]} : null; }
+  const { data, error } = await sb.from('projects').select('*').eq('slug', slug).maybeSingle();
+  if(error){ console.error('[osmu] fetchOne', error); return null; }
+  return data ? normProj(data) : null;
+}
+window.osmuFetchAll = osmuFetchAll;
+window.osmuFetchOne = osmuFetchOne;
 
 /* ============ custom cursor ============ */
 (function(){
@@ -179,10 +209,10 @@ function movePreview(e){
   preview.style.transform = `translate(${e.clientX+28}px,${Math.min(e.clientY-190, innerHeight-400)}px) scale(${preview.classList.contains('on')?1:.92})`;
   preview.style.top = 0; preview.style.left = 0;
 }
-(function(){
+(async function(){
   const workList = document.getElementById('workList');
   if(!workList) return;
-  const all = window.PROJECTS_OVERRIDE || loadProjects();
+  const all = window.PROJECTS_OVERRIDE || await osmuFetchAll();
   const count = document.getElementById('workCount');
   const filters = document.getElementById('workFilters');
 
@@ -251,15 +281,17 @@ document.querySelectorAll('.svc-head').forEach(btn=>{
 });
 
 /* ============ project detail: fill text + swap in uploaded images ============ */
-(function(){
+(async function(){
+  const qs = new URLSearchParams(location.search).get('slug');
   const m = location.pathname.match(/project-([a-z0-9-]+)\.html$/i);
-  if(!m) return;
-  const p = loadProjects().find(x => x.slug === m[1]);
-  if(!p) return;
+  const slug = qs || (m && m[1]);
+  if(!slug) return;
+  const p = await osmuFetchOne(slug);
+  if(!p){ const t = document.querySelector('[data-f="name"]'); if(t) t.textContent = '프로젝트를 찾을 수 없습니다'; return; }
 
   /* text fields (reflect admin edits) */
   const set = (f, v)=>document.querySelectorAll(`[data-f="${f}"]`).forEach(el=>{ if(v) el.textContent = v; });
-  set('name', p.name); set('cat', p.cat); set('type', p.type); set('loc', p.loc); set('date', dateStr(p));
+  set('name', p.name); set('cat', p.cat); set('type', p.type); set('loc', p.loc); set('date', dateStr(p)); set('summary', p.summary);
   if(document.title && p.name) document.title = p.name + ' — OSMÜ STÜDIO';
   /* hide the 업종 row / chip when a project has no type */
   if(!p.type) document.querySelectorAll('[data-fact="type"],[data-fd="type"]').forEach(el=>el.style.display='none');
