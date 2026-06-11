@@ -143,7 +143,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="osmu.css">
+<link rel="stylesheet" href="osmu.css?v=2">
 </head>
 <body class="subpage">
 
@@ -180,8 +180,13 @@
   </div>
 
   <section id="work" style="padding-top:50px">
+    <div class="work-filters reveal" id="workFilters">
+      <button class="wf on" data-cat="all">All</button>
+      <button class="wf" data-cat="주거">주거</button>
+      <button class="wf" data-cat="상업">상업</button>
+      <button class="wf" data-cat="브랜딩">브랜딩</button>
+    </div>
     <div class="sec-head reveal">
-      <h2 style="font-size:clamp(20px,3vw,30px)">All</h2>
       <span class="label" id="workCount"></span>
     </div>
     <ul class="work-list" id="workList"></ul>
@@ -204,6 +209,6 @@
 
 <div class="preview" id="preview"></div>
 
-<script src="osmu.js"></script>
+<script src="osmu.js?v=2"></script>
 </body>
 </html>

@@ -164,6 +164,10 @@ section{padding:120px 24px}
 }
 .work-row .cat,.work-row .year{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
 .work-empty{padding:60px 0;color:var(--grey);font-size:13px;letter-spacing:.06em}
+.work-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+.wf{background:none;border:1px solid var(--line);color:var(--grey);padding:9px 22px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;transition:background .2s,color .2s,border-color .2s}
+.wf:hover{color:var(--ink);border-color:var(--ink)}
+.wf.on{background:var(--ink);color:var(--white);border-color:var(--ink)}
 
 /* cursor-following preview */
 .preview{
@@ -281,6 +285,7 @@ body.admin-mode .cursor{display:none}
 .login-box h1{font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;margin-bottom:28px}
 .field{margin-bottom:18px}
 .field label{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-bottom:8px}
+.field label .req{color:#e02b2b;font-weight:700}
 .field input,.field select,.field textarea{
   width:100%;border:1px solid var(--ink);background:var(--white);
   padding:13px 14px;font-size:14px;font-family:inherit;border-radius:0;

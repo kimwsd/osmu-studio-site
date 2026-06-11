@@ -182,33 +182,63 @@ function movePreview(e){
 (function(){
   const workList = document.getElementById('workList');
   if(!workList) return;
-  const list = window.PROJECTS_OVERRIDE || loadProjects();
-  workList.innerHTML = '';
-  if(!list.length){
-    workList.innerHTML = '<li class="work-empty">등록된 프로젝트가 없습니다. 관리자 페이지에서 프로젝트를 추가하세요.</li>';
-  }
-  list.forEach((p,i)=>{
-    const a = document.createElement('a');
-    a.className = 'work-row';
-    a.href = projUrl(p);
-    a.innerHTML = `<span class="idx">${String(i+1).padStart(2,'0')}</span>
-      <span class="name">${p.name}</span>
-      <span class="cat">${p.type ? p.type + ' · ' + p.cat : p.cat}</span>
-      <span class="year">${dateStr(p)}</span>
-      <span class="go">↗</span>`;
-    if(preview){
-      const cover = p.images && p.images[0];
-      a.onmouseenter = ()=>{
-        preview.innerHTML = cover ? `<img src="${cover}" alt="${p.name}">` : previewSVG(i, p.name);
-        preview.classList.add('on');
-      };
-      a.onmouseleave = ()=>preview.classList.remove('on');
-    }
-    workList.appendChild(a);
-  });
+  const all = window.PROJECTS_OVERRIDE || loadProjects();
   const count = document.getElementById('workCount');
-  if(count) count.textContent = `Selected projects — ${String(list.length).padStart(2,'0')}`;
-  bindHoverCursor();
+  const filters = document.getElementById('workFilters');
+
+  /* 카테고리 매칭: 한 프로젝트가 여러 카테고리에 속할 수 있음
+     - 주거 : 업종이 '주거'
+     - 상업 : 업종이 상업 성격(상업·카페·음식점·술집)
+     - 브랜딩: 작업분류에 Brand/Branding 포함(Brand Identity, Space + Branding) */
+  function matches(p, cat){
+    if(cat === 'all') return true;
+    if(cat === '주거') return p.type === '주거';
+    if(cat === '상업') return ['상업','카페','음식점','술집'].includes(p.type);
+    if(cat === '브랜딩') return /brand/i.test(p.cat || '');
+    return true;
+  }
+
+  let activeCat = 'all';
+  function render(){
+    const list = all.filter(p => matches(p, activeCat));
+    workList.innerHTML = '';
+    if(!list.length){
+      workList.innerHTML = '<li class="work-empty">해당 카테고리의 프로젝트가 아직 없습니다.</li>';
+    }
+    list.forEach((p,i)=>{
+      const a = document.createElement('a');
+      a.className = 'work-row';
+      a.href = projUrl(p);
+      a.innerHTML = `<span class="idx">${String(i+1).padStart(2,'0')}</span>
+        <span class="name">${p.name}</span>
+        <span class="cat">${p.type ? p.type + ' · ' + p.cat : p.cat}</span>
+        <span class="year">${dateStr(p)}</span>
+        <span class="go">↗</span>`;
+      if(preview){
+        const cover = p.images && p.images[0];
+        a.onmouseenter = ()=>{
+          preview.innerHTML = cover ? `<img src="${cover}" alt="${p.name}">` : previewSVG(i, p.name);
+          preview.classList.add('on');
+        };
+        a.onmouseleave = ()=>preview.classList.remove('on');
+      }
+      workList.appendChild(a);
+    });
+    const label = activeCat === 'all' ? 'Selected projects' : activeCat;
+    if(count) count.textContent = `${label} — ${String(list.length).padStart(2,'0')}`;
+    bindHoverCursor();
+  }
+
+  if(filters){
+    filters.querySelectorAll('.wf').forEach(btn=>{
+      btn.onclick = ()=>{
+        activeCat = btn.dataset.cat;
+        filters.querySelectorAll('.wf').forEach(b=>b.classList.toggle('on', b === btn));
+        render();
+      };
+    });
+  }
+  render();
 })();
 
 /* ============ services accordion ============ */

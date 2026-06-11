@@ -154,7 +154,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="osmu.css">
+<link rel="stylesheet" href="osmu.css?v=2">
 </head>
 <body class="subpage">
 
@@ -196,15 +196,19 @@
       <form class="contact-form reveal" id="inquiryForm" onsubmit="return false">
         <div class="form-row">
           <div class="field">
-            <label for="cName">이름 / 상호</label>
+            <label for="cName">이름 / 상호 <span class="req">*</span></label>
             <input id="cName" type="text" placeholder="홍길동 / 카페 모노">
           </div>
           <div class="field">
-            <label for="cEmail">이메일</label>
+            <label for="cEmail">이메일 <span class="req">*</span></label>
             <input id="cEmail" type="email" placeholder="you@email.com">
           </div>
         </div>
         <div class="form-row">
+          <div class="field">
+            <label for="cPhone">전화번호 <span class="req">*</span></label>
+            <input id="cPhone" type="tel" inputmode="tel" placeholder="010-1234-5678">
+          </div>
           <div class="field">
             <label for="cType">문의 유형</label>
             <select id="cType">
@@ -216,10 +220,10 @@
               <option>기타</option>
             </select>
           </div>
-          <div class="field">
-            <label for="cBudget">예상 예산 (선택)</label>
-            <input id="cBudget" type="text" placeholder="예: 3,000만원~">
-          </div>
+        </div>
+        <div class="field">
+          <label for="cBudget">예상 예산 (선택)</label>
+          <input id="cBudget" type="text" placeholder="예: 3,000만원~">
         </div>
         <div class="field">
           <label for="cMsg">프로젝트 내용</label>
@@ -255,7 +259,7 @@
   </div>
 </footer>
 
-<script src="osmu.js"></script>
+<script src="osmu.js?v=2"></script>
 <script>
 /* contact form → sends a real email via FormSubmit (no server needed).
    Submissions are delivered to osmu_studio@naver.com.
@@ -263,8 +267,10 @@
    email from FormSubmit to that address — click it once to start delivery. */
 document.getElementById('cSend').onclick = async ()=>{
   const v = id => (document.getElementById(id).value || '').trim();
-  const name = v('cName'), email = v('cEmail');
-  if(!name || !email){ toast('이름과 이메일을 입력해주세요'); return; }
+  const name = v('cName'), email = v('cEmail'), phone = v('cPhone');
+  if(!name || !email || !phone){ toast('빈칸을 채워주세요'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ toast('이메일 형식을 확인해주세요'); return; }
+  if(!/^[0-9+\-\s().]{7,}$/.test(phone)){ toast('전화번호 형식을 확인해주세요'); return; }
   const btn = document.getElementById('cSend');
   const orig = btn.textContent;
   btn.disabled = true; btn.textContent = '보내는 중…';
@@ -278,6 +284,7 @@ document.getElementById('cSend').onclick = async ()=>{
         _captcha: 'false',
         '이름/상호': name,
         '회신 이메일': email,
+        '연락처': phone,
         '문의 유형': v('cType'),
         '예상 예산': v('cBudget') || '-',
         '프로젝트 내용': v('cMsg') || '(내용 없음)'
@@ -292,7 +299,7 @@ document.getElementById('cSend').onclick = async ()=>{
     }
   } catch(e){
     // 전송 실패 시 방문자의 메일 앱으로 대체 — 문의를 잃지 않게
-    const fbBody = [`이름/상호: ${name}`,`회신 이메일: ${email}`,`문의 유형: ${v('cType')}`,
+    const fbBody = [`이름/상호: ${name}`,`회신 이메일: ${email}`,`연락처: ${phone}`,`문의 유형: ${v('cType')}`,
       `예상 예산: ${v('cBudget')||'-'}`,'',v('cMsg')||'(내용 없음)'].join('\n');
     toast('바로 전송이 안 돼 메일 앱으로 대체합니다…');
     location.href = `mailto:osmu_studio@naver.com?subject=${encodeURIComponent(`[프로젝트 문의] ${name} — ${v('cType')}`)}&body=${encodeURIComponent(fbBody)}`;
