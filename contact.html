@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact — OSMÜ STÜDIO</title>
 <!-- SEO/GEO/AEO meta — generated, head only -->
-<meta name="description" content="OSMÜ STÜDIO 프로젝트 문의. 공간·브랜딩·패키징·마케팅 제안을 남겨주세요. 충청남도 아산 기반, 월–금 10:00–19:00. hello@osmustudio.com">
+<meta name="description" content="OSMÜ STÜDIO 프로젝트 문의. 공간·브랜딩·패키징·마케팅 제안을 남겨주세요. 충청남도 천안 기반, 월–금 10:00–19:00. osmu_studio@naver.com">
 <link rel="canonical" href="https://osmu-studio.com/contact.html">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
 <meta name="author" content="OSMÜ STÜDIO">
@@ -18,13 +18,13 @@
 <meta property="og:site_name" content="OSMÜ STÜDIO">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:title" content="Contact — OSMÜ STÜDIO">
-<meta property="og:description" content="OSMÜ STÜDIO 프로젝트 문의. 공간·브랜딩·패키징·마케팅 제안을 남겨주세요. 충청남도 아산 기반, 월–금 10:00–19:00. hello@osmustudio.com">
+<meta property="og:description" content="OSMÜ STÜDIO 프로젝트 문의. 공간·브랜딩·패키징·마케팅 제안을 남겨주세요. 충청남도 천안 기반, 월–금 10:00–19:00. osmu_studio@naver.com">
 <meta property="og:url" content="https://osmu-studio.com/contact.html">
 <meta property="og:image" content="https://osmu-studio.com/logo.png">
 <meta property="og:image:alt" content="OSMÜ STÜDIO">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Contact — OSMÜ STÜDIO">
-<meta name="twitter:description" content="OSMÜ STÜDIO 프로젝트 문의. 공간·브랜딩·패키징·마케팅 제안을 남겨주세요. 충청남도 아산 기반, 월–금 10:00–19:00. hello@osmustudio.com">
+<meta name="twitter:description" content="OSMÜ STÜDIO 프로젝트 문의. 공간·브랜딩·패키징·마케팅 제안을 남겨주세요. 충청남도 천안 기반, 월–금 10:00–19:00. osmu_studio@naver.com">
 <meta name="twitter:image" content="https://osmu-studio.com/logo.png">
 <script type="application/ld+json">
 {
@@ -37,12 +37,13 @@
   "url": "https://osmu-studio.com/",
   "logo": "https://osmu-studio.com/logo.png",
   "image": "https://osmu-studio.com/logo.png",
-  "email": "hello@osmustudio.com",
+  "email": "osmu_studio@naver.com",
   "foundingDate": "2017",
   "address": {
     "@type": "PostalAddress",
-    "addressLocality": "아산시",
-    "addressRegion": "충청남도",
+    "streetAddress": "8F, 23 Buldang 17-gil, Seobuk-gu",
+    "addressLocality": "Cheonan-si",
+    "addressRegion": "Chungcheongnam-do",
     "addressCountry": "KR"
   },
   "areaServed": [
@@ -225,13 +226,13 @@
           <textarea id="cMsg" placeholder="매장 위치, 규모, 오픈 예정일, 원하는 분위기 등을 적어주세요."></textarea>
         </div>
         <button class="btn" id="cSend" style="width:100%">문의 보내기</button>
-        <p class="login-hint" style="margin-top:16px">‘문의 보내기’를 누르면 작성하신 내용으로 메일 앱이 열립니다. 또는 직접 <a href="mailto:hello@osmustudio.com" style="border-bottom:1px solid var(--ink)">hello@osmustudio.com</a> 으로 보내주세요.</p>
+        <p class="login-hint" style="margin-top:16px">‘문의 보내기’를 누르면 작성하신 내용으로 메일 앱이 열립니다. 또는 직접 <a href="mailto:osmu_studio@naver.com" style="border-bottom:1px solid var(--ink)">osmu_studio@naver.com</a> 으로 보내주세요.</p>
       </form>
 
       <!-- detail -->
       <div class="contact-detail reveal">
-        <div class="block"><span>Email</span><a href="mailto:hello@osmustudio.com">hello@osmustudio.com</a></div>
-        <div class="block"><span>Studio</span><p>충청남도 아산시<br>Seoul · Asan, Korea</p></div>
+        <div class="block"><span>Email</span><a href="mailto:osmu_studio@naver.com">osmu_studio@naver.com</a></div>
+        <div class="block"><span>Studio</span><p>8F, 23 Buldang 17-gil, Seobuk-gu<br>Cheonan-si, Chungcheongnam-do, Korea</p></div>
         <div class="block"><span>Hours</span><p>월–금 10:00 – 19:00<br>주말·공휴일 휴무</p></div>
         <div class="block"><span>Social</span><a href="https://instagram.com/osmu.studio" target="_blank" rel="noopener">Instagram ↗</a></div>
         <div class="block"><span>More</span><a href="work.html">프로젝트 보기 ↗</a></div>
@@ -271,7 +272,7 @@ document.getElementById('cSend').onclick = ()=>{
     v('cMsg') || '(내용 없음)'
   ].join('\n');
   const subject = `[프로젝트 문의] ${name} — ${v('cType')}`;
-  location.href = `mailto:hello@osmustudio.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  location.href = `mailto:osmu_studio@naver.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   toast('메일 앱을 엽니다…');
 };
 </script>
