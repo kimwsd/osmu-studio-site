@@ -226,7 +226,7 @@
           <textarea id="cMsg" placeholder="매장 위치, 규모, 오픈 예정일, 원하는 분위기 등을 적어주세요."></textarea>
         </div>
         <button class="btn" id="cSend" style="width:100%">문의 보내기</button>
-        <p class="login-hint" style="margin-top:16px">‘문의 보내기’를 누르면 작성하신 내용으로 메일 앱이 열립니다. 또는 직접 <a href="mailto:osmu_studio@naver.com" style="border-bottom:1px solid var(--ink)">osmu_studio@naver.com</a> 으로 보내주세요.</p>
+        <p class="login-hint" style="margin-top:16px">‘문의 보내기’를 누르면 내용이 곧바로 스튜디오로 전송됩니다. 또는 직접 <a href="mailto:osmu_studio@naver.com" style="border-bottom:1px solid var(--ink)">osmu_studio@naver.com</a> 으로 보내주세요.</p>
       </form>
 
       <!-- detail -->
@@ -234,7 +234,7 @@
         <div class="block"><span>Email</span><a href="mailto:osmu_studio@naver.com">osmu_studio@naver.com</a></div>
         <div class="block"><span>Studio</span><p>8F, 23 Buldang 17-gil, Seobuk-gu<br>Cheonan-si, Chungcheongnam-do, Korea</p></div>
         <div class="block"><span>Hours</span><p>월–금 10:00 – 19:00<br>주말·공휴일 휴무</p></div>
-        <div class="block"><span>Social</span><a href="https://instagram.com/osmu.studio" target="_blank" rel="noopener">Instagram ↗</a></div>
+        <div class="block"><span>Social</span><a href="https://www.instagram.com/studio_osmu/" target="_blank" rel="noopener">Instagram ↗</a></div>
         <div class="block"><span>More</span><a href="work.html">프로젝트 보기 ↗</a></div>
       </div>
     </div>
@@ -257,23 +257,44 @@
 
 <script src="osmu.js"></script>
 <script>
-/* contact form → opens the visitor's mail app with a pre-filled message.
-   No server required; swap for a real endpoint (Formspree, etc.) when ready. */
-document.getElementById('cSend').onclick = ()=>{
+/* contact form → sends a real email via FormSubmit (no server needed).
+   Submissions are delivered to osmu_studio@naver.com.
+   NOTE: the very first submission triggers a one-time "Activate Form"
+   email from FormSubmit to that address — click it once to start delivery. */
+document.getElementById('cSend').onclick = async ()=>{
   const v = id => (document.getElementById(id).value || '').trim();
   const name = v('cName'), email = v('cEmail');
   if(!name || !email){ toast('이름과 이메일을 입력해주세요'); return; }
-  const body = [
-    `이름/상호: ${name}`,
-    `이메일: ${email}`,
-    `문의 유형: ${v('cType')}`,
-    `예상 예산: ${v('cBudget') || '-'}`,
-    '',
-    v('cMsg') || '(내용 없음)'
-  ].join('\n');
-  const subject = `[프로젝트 문의] ${name} — ${v('cType')}`;
-  location.href = `mailto:osmu_studio@naver.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  toast('메일 앱을 엽니다…');
+  const btn = document.getElementById('cSend');
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = '보내는 중…';
+  try{
+    const res = await fetch('https://formsubmit.co/ajax/osmu_studio@naver.com', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({
+        _subject: `[프로젝트 문의] ${name} — ${v('cType')}`,
+        _template: 'table',
+        _captcha: 'false',
+        '이름/상호': name,
+        '회신 이메일': email,
+        '문의 유형': v('cType'),
+        '예상 예산': v('cBudget') || '-',
+        '프로젝트 내용': v('cMsg') || '(내용 없음)'
+      })
+    });
+    const data = await res.json().catch(()=>({}));
+    if(res.ok && String(data.success) === 'true'){
+      toast('문의가 전송되었습니다. 감사합니다!');
+      document.getElementById('inquiryForm').reset();
+    } else {
+      throw new Error(data.message || 'send failed');
+    }
+  } catch(e){
+    toast('전송에 실패했어요 — 잠시 후 다시 시도하거나 osmu_studio@naver.com 으로 보내주세요');
+  } finally {
+    btn.disabled = false; btn.textContent = orig;
+  }
 };
 </script>
 </body>
