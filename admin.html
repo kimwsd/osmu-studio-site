@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="osmu.css?v=4">
+<link rel="stylesheet" href="osmu.css?v=5">
 </head>
 <body class="admin-mode">
 
@@ -154,7 +154,7 @@
         <h2>Inquiries</h2>
         <p class="admin-note">홈페이지 Contact 폼으로 들어온 문의가 <b>실시간으로 이곳에 쌓입니다</b>. (이메일 알림도 함께 발송) 상태를 바꾸거나 삭제할 수 있습니다.</p>
         <table class="admin-table">
-          <thead><tr><th>받은 시각</th><th>이름/상호</th><th>연락처</th><th>유형</th><th>예산</th><th>내용</th><th>상태</th><th></th></tr></thead>
+          <thead><tr><th>받은 시각</th><th>이름/상호</th><th>연락처</th><th>유형</th><th>업종</th><th>예산</th><th>내용</th><th>상태</th><th></th></tr></thead>
           <tbody id="inqRows"></tbody>
         </table>
       </div>
@@ -176,7 +176,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="osmu.js?v=4"></script>
+<script src="osmu.js?v=5"></script>
 <script>
 /* admin — Supabase auth + project CRUD + image upload to Storage */
 const SB = window.sb;
@@ -261,8 +261,8 @@ async function delProject(id){
 async function renderInquiries(){
   const tbody = $('inqRows'); if(!tbody || !SB) return;
   const { data, error } = await SB.from('inquiries').select('*').order('created_at',{ascending:false});
-  if(error){ tbody.innerHTML = `<tr><td colspan="8" style="color:#e02b2b">불러오기 실패 — 'inquiries' 표를 만들었는지 확인하세요. (${esc(error.message)})</td></tr>`; return; }
-  if(!data.length){ tbody.innerHTML = `<tr><td colspan="8" style="color:var(--grey)">아직 들어온 문의가 없습니다.</td></tr>`; return; }
+  if(error){ tbody.innerHTML = `<tr><td colspan="9" style="color:#e02b2b">불러오기 실패 — 'inquiries' 표를 만들었는지 확인하세요. (${esc(error.message)})</td></tr>`; return; }
+  if(!data.length){ tbody.innerHTML = `<tr><td colspan="9" style="color:var(--grey)">아직 들어온 문의가 없습니다.</td></tr>`; return; }
   const STATUS = ['신규','회신완료','보류'];
   tbody.innerHTML = data.map(q=>{
     const d = (q.created_at||'').replace('T',' ').slice(0,16);
@@ -271,6 +271,7 @@ async function renderInquiries(){
       <td class="t-name">${esc(q.name)}</td>
       <td><a href="mailto:${esc(q.email)}">${esc(q.email)}</a><br><span style="color:var(--grey)">${esc(q.phone)}</span></td>
       <td>${esc(q.type)}</td>
+      <td>${esc(q.biz_type)||'-'}</td>
       <td>${esc(q.budget)||'-'}</td>
       <td style="max-width:300px;white-space:pre-wrap;word-break:break-word">${esc(q.message)||'-'}</td>
       <td><select data-status="${q.id}">${STATUS.map(s=>`<option ${s===q.status?'selected':''}>${s}</option>`).join('')}</select></td>
