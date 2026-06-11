@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="osmu.css?v=5">
+<link rel="stylesheet" href="osmu.css?v=6">
 </head>
 <body class="admin-mode">
 
@@ -86,12 +86,8 @@
             <div class="field">
               <label for="fType">업종 (공간 유형)</label>
               <select id="fType">
-                <option>카페</option>
-                <option>주거</option>
-                <option>상업</option>
-                <option>음식점</option>
-                <option>술집</option>
-                <option>기타</option>
+                <option>상업공간</option>
+                <option>주거공간</option>
               </select>
             </div>
           </div>
@@ -162,11 +158,15 @@
       <!-- settings -->
       <div class="admin-panel" id="panel-settings">
         <h2>Settings</h2>
-        <p class="admin-note">사이트 기본 정보를 관리합니다. (데모)</p>
+        <p class="admin-note">여기서 바꾼 정보는 <b>사이트의 연락처 페이지와 푸터에 바로 반영</b>됩니다. (이메일·전화·인스타·주소·영업시간)</p>
         <div class="admin-form" style="margin-top:0">
-          <div class="field"><label>Site title</label><input type="text" value="OSMÜ STÜDIO — Space & Branding"></div>
-          <div class="field"><label>Contact email</label><input type="text" value="osmu_studio@naver.com"></div>
-          <div class="field"><label>Instagram</label><input type="text" value="@osmu.studio"></div>
+          <div class="form-row">
+            <div class="field"><label for="sEmail">Contact email</label><input id="sEmail" type="email" placeholder="osmu_studio@naver.com"></div>
+            <div class="field"><label for="sPhone">전화번호 (비우면 사이트에 숨김)</label><input id="sPhone" type="text" placeholder="010-0000-0000"></div>
+          </div>
+          <div class="field"><label for="sInsta">Instagram URL</label><input id="sInsta" type="text" placeholder="https://www.instagram.com/studio_osmu/"></div>
+          <div class="field"><label for="sAddr">주소</label><input id="sAddr" type="text" placeholder="8F, 23 Buldang 17-gil, Seobuk-gu, Cheonan-si, ..."></div>
+          <div class="field"><label for="sHours">영업시간</label><input id="sHours" type="text" placeholder="월–금 10:00–19:00 · 주말·공휴일 휴무"></div>
           <button class="btn" id="settingsSave">Save settings</button>
         </div>
       </div>
@@ -176,7 +176,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="osmu.js?v=5"></script>
+<script src="osmu.js?v=6"></script>
 <script>
 /* admin — Supabase auth + project CRUD + image upload to Storage */
 const SB = window.sb;
@@ -194,7 +194,7 @@ async function refreshState(){
   if(SB){ const { data } = await SB.auth.getSession(); on = !!(data && data.session); }
   adminLogin.style.display = on ? 'none' : 'flex';
   adminShell.classList.toggle('on', on);
-  if(on){ renderAdmin(); renderInquiries(); }
+  if(on){ renderAdmin(); renderInquiries(); loadSettings(); }
 }
 
 /* login */
@@ -334,7 +334,7 @@ function startEdit(id){
   $('formTitle').textContent = 'Edit project';
   $('fName').value = p.name || '';
   $('fCat').value = p.cat || 'Space + Branding';
-  $('fType').value = p.type || '카페';
+  $('fType').value = p.type || '상업공간';
   $('fYear').value = p.year || 2026;
   $('fMonth').value = p.month || '';
   $('fLoc').value = p.loc || '';
@@ -350,7 +350,7 @@ function startEdit(id){
 function resetForm(){
   editId = null;
   $('formTitle').textContent = 'New project';
-  $('fName').value = ''; $('fType').value = '카페'; $('fCat').value = 'Space + Branding';
+  $('fName').value = ''; $('fType').value = '상업공간'; $('fCat').value = 'Space + Branding';
   $('fYear').value = 2026; $('fMonth').value = ''; $('fLoc').value = ''; $('fSlug').value = ''; $('fSummary').value = ''; $('fBody').value = '';
   draft = []; renderThumbs();
   $('cancelEdit').style.display = 'none';
@@ -399,7 +399,29 @@ $('saveBtn').onclick = async ()=>{
     $('saveBtn').disabled = false;
   }
 };
-$('settingsSave').onclick = ()=>toast('Settings saved (데모)');
+/* ----- settings (사이트 연락처/SNS/주소/시간) ----- */
+async function loadSettings(){
+  if(!SB) return;
+  const { data } = await SB.from('settings').select('*').eq('id',1).maybeSingle();
+  if(!data) return;
+  $('sEmail').value = data.email || '';
+  $('sPhone').value = data.phone || '';
+  $('sInsta').value = data.instagram || '';
+  $('sAddr').value  = data.address || '';
+  $('sHours').value = data.hours || '';
+}
+$('settingsSave').onclick = async ()=>{
+  const payload = { id:1,
+    email: $('sEmail').value.trim() || null,
+    phone: $('sPhone').value.trim() || null,
+    instagram: $('sInsta').value.trim() || null,
+    address: $('sAddr').value.trim() || null,
+    hours: $('sHours').value.trim() || null };
+  $('settingsSave').disabled = true;
+  const { error } = await SB.from('settings').upsert(payload);
+  $('settingsSave').disabled = false;
+  toast(error ? '저장 실패: ' + error.message : '설정이 저장되었습니다 — 사이트에 반영됩니다');
+};
 
 /* 로그인 상태 변화 추적 */
 if(SB) SB.auth.onAuthStateChange(()=>refreshState());

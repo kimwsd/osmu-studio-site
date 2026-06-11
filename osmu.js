@@ -97,6 +97,26 @@ async function osmuFetchOne(slug){
 window.osmuFetchAll = osmuFetchAll;
 window.osmuFetchOne = osmuFetchOne;
 
+/* ============ site settings (admin Settings → 사이트 반영) ============
+   Fills any element with data-s="email|instagram|address|hours|phone". */
+async function osmuApplySettings(){
+  if(!sb) return;
+  const { data, error } = await sb.from('settings').select('*').eq('id',1).maybeSingle();
+  if(error || !data) return;
+  const q = sel => document.querySelectorAll(sel);
+  if(data.email) q('[data-s="email"]').forEach(el=>{ el.textContent = data.email; if(el.tagName==='A') el.href = 'mailto:'+data.email; });
+  if(data.instagram) q('[data-s="instagram"]').forEach(el=>{ if(el.tagName==='A') el.href = data.instagram; });
+  if(data.address) q('[data-s="address"]').forEach(el=> el.textContent = data.address);
+  if(data.hours)   q('[data-s="hours"]').forEach(el=> el.textContent = data.hours);
+  q('[data-s="phone"]').forEach(el=>{
+    const row = el.closest('[data-s-row]');
+    if(data.phone){ el.textContent = data.phone; if(el.tagName==='A') el.href = 'tel:'+data.phone.replace(/[^0-9+]/g,''); if(row) row.style.display=''; }
+    else if(row){ row.style.display='none'; }
+  });
+}
+window.osmuApplySettings = osmuApplySettings;
+osmuApplySettings();
+
 /* ============ custom cursor ============ */
 (function(){
   const cursor = document.getElementById('cursor');
@@ -222,8 +242,8 @@ function movePreview(e){
      - 브랜딩: 작업분류에 Brand/Branding 포함(Brand Identity, Space + Branding) */
   function matches(p, cat){
     if(cat === 'all') return true;
-    if(cat === '주거') return p.type === '주거';
-    if(cat === '상업') return ['상업','카페','음식점','술집'].includes(p.type);
+    if(cat === '주거공간') return ['주거공간','주거'].includes(p.type);
+    if(cat === '상업공간') return ['상업공간','상업','카페','음식점','술집','기타'].includes(p.type);
     if(cat === '브랜딩') return /brand/i.test(p.cat || '');
     return true;
   }
