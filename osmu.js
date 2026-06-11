@@ -291,14 +291,82 @@ function movePreview(e){
   render();
 })();
 
-/* ============ services accordion ============ */
-document.querySelectorAll('.svc-head').forEach(btn=>{
-  btn.onclick = ()=>{
-    const li = btn.parentElement, body = li.querySelector('.svc-body');
-    const open = li.classList.toggle('open');
-    body.style.maxHeight = open ? body.scrollHeight + 'px' : 0;
-  };
-});
+/* ============ services (each opens service.html?slug=) ============ */
+const SERVICES = {
+  'space-design': {
+    name:'Space Design', kr:'공간 디자인',
+    tagline:'브랜드 경험이 일어나는 순간을 공간 안에 설계합니다.',
+    intro:[
+      '현장 실측과 도면 분석에서 시작합니다. 조닝, 고객 동선, 서비스 동선, 시각적 포컬 포인트를 설계하고, 브랜드 경험이 일어나는 순간을 공간 안에 배치합니다.',
+      '가구·조명·마감재 선정과 시공 감리까지 함께 진행합니다. 도면 위의 디테일이 현장에서 그대로 살아남도록 끝까지 확인합니다.'
+    ],
+    deliverables:['평면도 · 입면도 · 천장도','3D 투시 이미지','가구·조명·마감재 스펙','시공 감리'],
+    steps:[
+      {t:'실측 & 분석', d:'현장을 직접 재고 동선·채광·구조의 제약과 기회를 분석합니다.'},
+      {t:'공간 설계', d:'조닝과 동선, 시선이 머무는 포컬 포인트를 도면으로 그립니다.'},
+      {t:'마감 & 시공', d:'재료와 디테일을 정하고 시공 현장을 끝까지 감리합니다.'}
+    ]
+  },
+  'brand-identity': {
+    name:'Brand Identity', kr:'브랜드 아이덴티티',
+    tagline:'공간과 분리되지 않는 하나의 목소리를 만듭니다.',
+    intro:[
+      '상호명, 로고, 브랜드 컬러, 서체 시스템까지 — 공간과 분리되지 않는 아이덴티티를 만듭니다.',
+      '간판에서 메뉴판, 명함, 사인까지 같은 목소리로 말하게 하고, 누구나 일관되게 쓸 수 있도록 브랜드 가이드라인으로 정리해 드립니다.'
+    ],
+    deliverables:['네이밍 · 로고','컬러 · 서체 시스템','사인 · 메뉴판 · 명함','브랜드 가이드라인'],
+    steps:[
+      {t:'브랜드 정의', d:'무엇을 파는지가 아니라 왜 다시 와야 하는지를 한 문장으로 정리합니다.'},
+      {t:'비주얼 시스템', d:'로고·컬러·서체를 공간과 이어지도록 설계합니다.'},
+      {t:'가이드라인', d:'어디에 적용해도 흔들리지 않도록 규칙으로 정리합니다.'}
+    ]
+  },
+  'packaging': {
+    name:'Packaging', kr:'패키징',
+    tagline:'가장 멀리 가는 광고, 손에 들리는 브랜드.',
+    intro:[
+      '컵, 박스, 쇼핑백, 스티커 — 고객의 손에 들려 매장 밖으로 나가는 모든 접점을 디자인합니다.',
+      '패키지는 가장 멀리 가는 광고입니다. 소재와 단가, 제작처 연결까지 실무를 고려해 설계합니다.'
+    ],
+    deliverables:['컵 · 홀더 · 캐리어','박스 · 쇼핑백 · 스티커','소재 · 단가 설계','제작처 연결'],
+    steps:[
+      {t:'접점 정리', d:'고객이 들고 나가는 모든 물건을 정의합니다.'},
+      {t:'패키지 디자인', d:'브랜드와 이어지는 패키지를 설계합니다.'},
+      {t:'제작', d:'소재와 단가를 맞추고 신뢰할 제작처를 연결합니다.'}
+    ]
+  },
+  'marketing': {
+    name:'Marketing', kr:'마케팅',
+    tagline:'오픈 전 티징부터 오픈 이후 운영까지.',
+    intro:[
+      '오픈 전 티징부터 오픈 이후 운영 콘텐츠까지 — 공간과 브랜드가 만들어낸 이야기를 채널에 맞게 확산시키는 론칭 전략을 함께 설계합니다.',
+      'SNS 콘텐츠 톤앤매너, 촬영 디렉션, 오픈 이벤트 기획을 포함합니다. 보기 좋은 게시물이 아니라, 손님이 다시 찾는 매장을 만듭니다.'
+    ],
+    deliverables:['론칭 전략','SNS 톤앤매너 · 콘텐츠','촬영 디렉션','오픈 이벤트 기획'],
+    steps:[
+      {t:'전략', d:'채널과 타깃, 핵심 메시지를 정합니다.'},
+      {t:'콘텐츠', d:'촬영과 게시물을 제작해 이야기를 확산합니다.'},
+      {t:'운영', d:'오픈 후 첫 6개월의 운영을 함께 봅니다.'}
+    ]
+  }
+};
+window.SERVICES = SERVICES;
+(function(){
+  const nameEl = document.getElementById('svName');
+  if(!nameEl) return;                                  // service.html에서만 실행
+  const slug = new URLSearchParams(location.search).get('slug');
+  const s = SERVICES[slug];
+  if(!s){ nameEl.textContent = '서비스를 찾을 수 없습니다'; return; }
+  document.title = s.name + ' — OSMÜ STÜDIO';
+  nameEl.textContent = s.name;
+  document.getElementById('svKr').textContent = s.kr;
+  document.getElementById('svTagline').textContent = s.tagline;
+  document.getElementById('svIntro').innerHTML = s.intro.map(p=>`<p>${p}</p>`).join('');
+  document.getElementById('svDeliver').innerHTML = s.deliverables.map(d=>`<li>${d}</li>`).join('');
+  document.getElementById('svSteps').innerHTML = s.steps.map((st,i)=>
+    `<div class="step reveal"><div class="n">${String(i+1).padStart(2,'0')}</div><div><h3>${st.t}</h3><p>${st.d}</p></div></div>`).join('');
+  observeReveals();
+})();
 
 /* ============ project detail: fill text + swap in uploaded images ============ */
 (async function(){
