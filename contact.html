@@ -154,7 +154,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="osmu.css?v=3">
+<link rel="stylesheet" href="osmu.css?v=4">
 </head>
 <body class="subpage">
 
@@ -259,7 +259,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="osmu.js?v=3"></script>
+<script src="osmu.js?v=4"></script>
 <script>
 /* contact form → sends a real email via FormSubmit (no server needed).
    Submissions are delivered to osmu_studio@naver.com.
@@ -274,29 +274,21 @@ document.getElementById('cSend').onclick = async ()=>{
   const btn = document.getElementById('cSend');
   const orig = btn.textContent;
   btn.disabled = true; btn.textContent = '보내는 중…';
+  const rec = { name, email, phone, type: v('cType'), budget: v('cBudget') || null, message: v('cMsg') || null };
   try{
-    const res = await fetch('https://formsubmit.co/ajax/osmu_studio@naver.com', {
-      method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body: JSON.stringify({
-        _subject: `[프로젝트 문의] ${name} — ${v('cType')}`,
-        _template: 'table',
-        _captcha: 'false',
-        '이름/상호': name,
-        '회신 이메일': email,
-        '연락처': phone,
-        '문의 유형': v('cType'),
-        '예상 예산': v('cBudget') || '-',
-        '프로젝트 내용': v('cMsg') || '(내용 없음)'
-      })
-    });
-    const data = await res.json().catch(()=>({}));
-    if(res.ok && String(data.success) === 'true'){
-      toast('문의가 전송되었습니다. 감사합니다!');
-      document.getElementById('inquiryForm').reset();
-    } else {
-      throw new Error(data.message || 'send failed');
-    }
+    /* 1) DB에 저장 → 관리자 Inquiries 페이지에 쌓임 */
+    if(!window.sb) throw new Error('no-db');
+    const { error } = await window.sb.from('inquiries').insert(rec);
+    if(error) throw error;
+    /* 2) 알림 메일도 발송(best effort — 실패해도 문의는 이미 저장됨) */
+    fetch('https://formsubmit.co/ajax/osmu_studio@naver.com', {
+      method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({ _subject:`[프로젝트 문의] ${name} — ${rec.type}`, _template:'table', _captcha:'false',
+        '이름/상호':name, '회신 이메일':email, '연락처':phone, '문의 유형':rec.type,
+        '예상 예산':rec.budget||'-', '프로젝트 내용':rec.message||'(내용 없음)' })
+    }).catch(()=>{});
+    toast('문의가 접수되었습니다. 감사합니다!');
+    document.getElementById('inquiryForm').reset();
   } catch(e){
     // 전송 실패 시 방문자의 메일 앱으로 대체 — 문의를 잃지 않게
     const fbBody = [`이름/상호: ${name}`,`회신 이메일: ${email}`,`연락처: ${phone}`,`문의 유형: ${v('cType')}`,

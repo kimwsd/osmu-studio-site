@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="osmu.css?v=3">
+<link rel="stylesheet" href="osmu.css?v=4">
 </head>
 <body class="admin-mode">
 
@@ -130,15 +130,19 @@
             </div>
           </div>
           <div class="field">
-            <label for="fSummary">한 줄 소개 (상세 페이지 상단 문구)</label>
+            <label for="fSummary">한 줄 소개 (상세 페이지 상단 큰 문구)</label>
             <input id="fSummary" type="text" placeholder="예: 흑과 백, 두 가지 톤으로 본질만 남긴 미니멀 카페.">
+          </div>
+          <div class="field">
+            <label for="fBody">상세 설명 (긴 글 · 줄바꿈하면 문단으로 나뉩니다)</label>
+            <textarea id="fBody" placeholder="프로젝트 배경, 컨셉, 작업 과정, 결과 등을 자유롭게 적어주세요.&#10;&#10;빈 줄로 문단을 나눌 수 있습니다."></textarea>
           </div>
           <div class="field">
             <label for="fImgs">프로젝트 사진 (여러 장 가능 · 첫 번째가 대표 이미지)</label>
             <label class="img-drop" for="fImgs">＋ 사진 선택 / 추가</label>
             <input id="fImgs" type="file" accept="image/*" multiple hidden>
             <div class="thumbs" id="thumbs"></div>
-            <p class="login-hint" style="margin-top:10px">사진을 클릭하면 대표 이미지(COVER)로 지정됩니다. 우측 상단 × 로 삭제. 업로드 시 자동으로 적당한 크기로 축소되어 저장됩니다.</p>
+            <p class="login-hint" style="margin-top:10px">각 사진에 순서 번호가 붙습니다. <b>1번이 대표 이미지(★)</b>예요. 다른 사진의 <b>‘대표로’</b> 버튼을 누르면 그 사진이 1번 대표가 됩니다. 우측 상단 × 로 삭제. 업로드 시 자동으로 축소되어 저장됩니다.</p>
           </div>
           <button class="btn" id="saveBtn">Save project</button>
           <button class="btn ghost" id="cancelEdit" style="display:none;margin-left:8px">Cancel</button>
@@ -148,14 +152,10 @@
       <!-- inquiries -->
       <div class="admin-panel" id="panel-inquiries">
         <h2>Inquiries</h2>
-        <p class="admin-note">홈페이지 Contact를 통해 들어온 문의가 이곳에 쌓입니다. (데모 데이터)</p>
+        <p class="admin-note">홈페이지 Contact 폼으로 들어온 문의가 <b>실시간으로 이곳에 쌓입니다</b>. (이메일 알림도 함께 발송) 상태를 바꾸거나 삭제할 수 있습니다.</p>
         <table class="admin-table">
-          <thead><tr><th>Date</th><th>From</th><th>Type</th><th>Status</th></tr></thead>
-          <tbody>
-            <tr><td>2026.06.08</td><td class="t-name">베이커리 온화</td><td>공간 + 브랜딩</td><td>신규</td></tr>
-            <tr><td>2026.06.05</td><td class="t-name">디저트 모노</td><td>패키징</td><td>회신 완료</td></tr>
-            <tr><td>2026.06.02</td><td class="t-name">살롱 드 아산</td><td>공간 디자인</td><td>미팅 예정</td></tr>
-          </tbody>
+          <thead><tr><th>받은 시각</th><th>이름/상호</th><th>연락처</th><th>유형</th><th>예산</th><th>내용</th><th>상태</th><th></th></tr></thead>
+          <tbody id="inqRows"></tbody>
         </table>
       </div>
 
@@ -176,7 +176,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="osmu.js?v=3"></script>
+<script src="osmu.js?v=4"></script>
 <script>
 /* admin — Supabase auth + project CRUD + image upload to Storage */
 const SB = window.sb;
@@ -187,13 +187,14 @@ let editId = null;       // id of project being edited (null = new)
 const adminLogin = document.getElementById('adminLogin');
 const adminShell = document.getElementById('adminShell');
 const $ = id => document.getElementById(id);
+const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 async function refreshState(){
   let on = false;
   if(SB){ const { data } = await SB.auth.getSession(); on = !!(data && data.session); }
   adminLogin.style.display = on ? 'none' : 'flex';
   adminShell.classList.toggle('on', on);
-  if(on) renderAdmin();
+  if(on){ renderAdmin(); renderInquiries(); }
 }
 
 /* login */
@@ -218,6 +219,7 @@ document.querySelectorAll('.admin-side a[data-panel]').forEach(a=>{
     a.classList.add('on');
     document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('on'));
     $('panel-'+a.dataset.panel).classList.add('on');
+    if(a.dataset.panel === 'inquiries') renderInquiries();
   };
 });
 
@@ -255,6 +257,38 @@ async function delProject(id){
   toast('삭제되었습니다'); renderAdmin();
 }
 
+/* ----- inquiries (Contact 폼 → DB) ----- */
+async function renderInquiries(){
+  const tbody = $('inqRows'); if(!tbody || !SB) return;
+  const { data, error } = await SB.from('inquiries').select('*').order('created_at',{ascending:false});
+  if(error){ tbody.innerHTML = `<tr><td colspan="8" style="color:#e02b2b">불러오기 실패 — 'inquiries' 표를 만들었는지 확인하세요. (${esc(error.message)})</td></tr>`; return; }
+  if(!data.length){ tbody.innerHTML = `<tr><td colspan="8" style="color:var(--grey)">아직 들어온 문의가 없습니다.</td></tr>`; return; }
+  const STATUS = ['신규','회신완료','보류'];
+  tbody.innerHTML = data.map(q=>{
+    const d = (q.created_at||'').replace('T',' ').slice(0,16);
+    return `<tr>
+      <td>${esc(d)}</td>
+      <td class="t-name">${esc(q.name)}</td>
+      <td><a href="mailto:${esc(q.email)}">${esc(q.email)}</a><br><span style="color:var(--grey)">${esc(q.phone)}</span></td>
+      <td>${esc(q.type)}</td>
+      <td>${esc(q.budget)||'-'}</td>
+      <td style="max-width:300px;white-space:pre-wrap;word-break:break-word">${esc(q.message)||'-'}</td>
+      <td><select data-status="${q.id}">${STATUS.map(s=>`<option ${s===q.status?'selected':''}>${s}</option>`).join('')}</select></td>
+      <td class="row-actions"><button data-delq="${q.id}">Delete</button></td>
+    </tr>`;
+  }).join('');
+  tbody.querySelectorAll('[data-status]').forEach(sel=>sel.onchange = async ()=>{
+    const { error } = await SB.from('inquiries').update({status:sel.value}).eq('id', sel.dataset.status);
+    toast(error ? '상태 변경 실패' : '상태 변경됨');
+  });
+  tbody.querySelectorAll('[data-delq]').forEach(b=>b.onclick = async ()=>{
+    if(!confirm('이 문의를 삭제할까요?')) return;
+    const { error } = await SB.from('inquiries').delete().eq('id', b.dataset.delq);
+    if(error){ toast('삭제 실패'); return; }
+    toast('삭제되었습니다'); renderInquiries();
+  });
+}
+
 /* ----- image upload (resize → Storage → public URL) ----- */
 async function uploadImage(file){
   const dataUrl = await osmuResizeImage(file, 1600, 0.85);
@@ -266,16 +300,19 @@ async function uploadImage(file){
 }
 function renderThumbs(){
   const box = $('thumbs');
+  if(!draft.length){ box.innerHTML = '<p class="login-hint" style="margin:10px 0 0">아직 추가된 사진이 없습니다. 위 ＋ 버튼으로 추가하세요.</p>'; return; }
   box.innerHTML = draft.map((src,i)=>
-    `<div class="thumb${i===0?' is-cover':''}" title="클릭하면 대표 이미지로 지정">
-       <img src="${src}" data-cover="${i}">
-       <button type="button" data-rm="${i}">×</button>
+    `<div class="thumb${i===0?' is-cover':''}">
+       <img src="${src}">
+       <span class="thumb-no">${i+1}</span>
+       ${i>0 ? `<button type="button" class="cover-set" data-cover="${i}">대표로</button>` : ''}
+       <button type="button" class="thumb-rm" data-rm="${i}" title="삭제">×</button>
      </div>`).join('');
   box.querySelectorAll('[data-rm]').forEach(b=>b.onclick=e=>{
     e.stopPropagation(); draft.splice(+b.dataset.rm,1); renderThumbs();
   });
-  box.querySelectorAll('[data-cover]').forEach(im=>im.onclick=()=>{
-    const i=+im.dataset.cover; if(i>0){ const [x]=draft.splice(i,1); draft.unshift(x); renderThumbs(); }
+  box.querySelectorAll('[data-cover]').forEach(b=>b.onclick=e=>{
+    e.stopPropagation(); const i=+b.dataset.cover; const [x]=draft.splice(i,1); draft.unshift(x); renderThumbs();
   });
 }
 $('fImgs').onchange = async e=>{
@@ -302,6 +339,7 @@ function startEdit(id){
   $('fLoc').value = p.loc || '';
   $('fSlug').value = p.slug || '';
   $('fSummary').value = p.summary || '';
+  $('fBody').value = p.body || '';
   draft = (p.images || []).slice();
   renderThumbs();
   $('cancelEdit').style.display = 'inline-block';
@@ -312,7 +350,7 @@ function resetForm(){
   editId = null;
   $('formTitle').textContent = 'New project';
   $('fName').value = ''; $('fType').value = '카페'; $('fCat').value = 'Space + Branding';
-  $('fYear').value = 2026; $('fMonth').value = ''; $('fLoc').value = ''; $('fSlug').value = ''; $('fSummary').value = '';
+  $('fYear').value = 2026; $('fMonth').value = ''; $('fLoc').value = ''; $('fSlug').value = ''; $('fSummary').value = ''; $('fBody').value = '';
   draft = []; renderThumbs();
   $('cancelEdit').style.display = 'none';
 }
@@ -333,6 +371,7 @@ $('saveBtn').onclick = async ()=>{
     month: +$('fMonth').value || null,
     loc: $('fLoc').value.trim() || null,
     summary: $('fSummary').value.trim() || null,
+    body: $('fBody').value.trim() || null,
     images: draft.slice()
   };
   $('saveBtn').disabled = true;

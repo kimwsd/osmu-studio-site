@@ -293,6 +293,12 @@ document.querySelectorAll('.svc-head').forEach(btn=>{
   const set = (f, v)=>document.querySelectorAll(`[data-f="${f}"]`).forEach(el=>{ if(v) el.textContent = v; });
   set('name', p.name); set('cat', p.cat); set('type', p.type); set('loc', p.loc); set('date', dateStr(p)); set('summary', p.summary);
   if(document.title && p.name) document.title = p.name + ' — OSMÜ STÜDIO';
+  /* long description → paragraphs (newline separated) */
+  const bodyEl = document.querySelector('[data-f-body]');
+  if(bodyEl && p.body){
+    const e = s => s.replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+    bodyEl.innerHTML = p.body.split(/\n+/).map(t=>t.trim()).filter(Boolean).map(t=>`<p>${e(t)}</p>`).join('');
+  }
   /* hide the 업종 row / chip when a project has no type */
   if(!p.type) document.querySelectorAll('[data-fact="type"],[data-fd="type"]').forEach(el=>el.style.display='none');
 
