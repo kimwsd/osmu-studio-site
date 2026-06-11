@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — OSMÜ STÜDIO</title>
+<!-- SEO/GEO/AEO meta — generated, head only -->
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="osmu.css">
+</head>
+<body class="admin-mode">
+
+<div class="toast" id="toast"></div>
+
+<div class="admin" id="admin" style="display:block">
+
+  <!-- login -->
+  <div class="admin-login" id="adminLogin">
+    <div class="login-box">
+      <img src="logo.png" alt="OSMÜ STÜDIO">
+      <h1>Admin — Sign in</h1>
+      <div class="field">
+        <label for="loginId">ID</label>
+        <input id="loginId" type="text" autocomplete="off" placeholder="admin">
+      </div>
+      <div class="field">
+        <label for="loginPw">Password</label>
+        <input id="loginPw" type="password" placeholder="••••••••">
+      </div>
+      <button class="btn" id="loginBtn" style="width:100%">Sign in</button>
+      <p class="login-err" id="loginErr">아이디 또는 비밀번호가 올바르지 않습니다.</p>
+      <p class="login-hint">데모 계정 — ID: <b>admin</b> / PW: <b>osmu2026</b><br><a href="index.html" style="border-bottom:1px solid var(--ink)">← 사이트로 돌아가기</a></p>
+    </div>
+  </div>
+
+  <!-- dashboard -->
+  <div class="admin-shell" id="adminShell">
+    <aside class="admin-side">
+      <img src="logo.png" alt="OSMÜ STÜDIO">
+      <a href="#" class="on" data-panel="projects">Projects</a>
+      <a href="#" data-panel="inquiries">Inquiries</a>
+      <a href="#" data-panel="settings">Settings</a>
+      <a href="index.html" style="color:var(--grey)">View site ↗</a>
+      <a href="#" class="logout" id="logoutBtn">Log out ←</a>
+    </aside>
+
+    <div class="admin-main">
+
+      <!-- projects -->
+      <div class="admin-panel on" id="panel-projects">
+        <h2>Projects</h2>
+        <div class="kpi-grid">
+          <div class="kpi"><b id="kpiTotal">0</b><span>Total projects</span></div>
+          <div class="kpi"><b id="kpiYear">0</b><span>This year</span></div>
+          <div class="kpi"><b id="kpiCat">0</b><span>Categories</span></div>
+        </div>
+        <p class="admin-note">여기서 등록·수정·삭제한 프로젝트와 업로드한 사진은 <b>이 브라우저에 저장</b>되어 WORK 목록과 상세 페이지에 반영됩니다. ⚠️ 단, 저장은 <b>이 브라우저 안에서만</b> 유지됩니다. 모든 방문자에게 보이도록 실제로 게시하려면 백엔드/CMS 연동이 필요합니다. <button class="btn ghost" id="resetBtn" style="margin-left:8px;padding:6px 14px;font-size:9px">초기 데이터로 되돌리기</button></p>
+        <table class="admin-table">
+          <thead><tr><th>No</th><th>Cover</th><th>Project</th><th>업종</th><th>Category</th><th>Date</th><th>Photos</th><th></th></tr></thead>
+          <tbody id="adminRows"></tbody>
+        </table>
+
+        <form class="admin-form" id="projForm" onsubmit="return false">
+          <h3 id="formTitle">New project</h3>
+          <div class="field">
+            <label for="fName">Project name</label>
+            <input id="fName" type="text" placeholder="e.g. CAFE MONO">
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="fCat">Category (작업 분류)</label>
+              <select id="fCat">
+                <option>Space + Branding</option>
+                <option>Space Design</option>
+                <option>Brand Identity</option>
+                <option>Packaging</option>
+                <option>Marketing</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="fType">업종 (공간 유형)</label>
+              <select id="fType">
+                <option>카페</option>
+                <option>주거</option>
+                <option>상업</option>
+                <option>음식점</option>
+                <option>술집</option>
+                <option>기타</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="fYear">Year (연도)</label>
+              <input id="fYear" type="number" min="2017" max="2030" value="2026">
+            </div>
+            <div class="field">
+              <label for="fMonth">Month (월)</label>
+              <select id="fMonth">
+                <option value="">월 선택 안 함</option>
+                <option value="1">1월</option>
+                <option value="2">2월</option>
+                <option value="3">3월</option>
+                <option value="4">4월</option>
+                <option value="5">5월</option>
+                <option value="6">6월</option>
+                <option value="7">7월</option>
+                <option value="8">8월</option>
+                <option value="9">9월</option>
+                <option value="10">10월</option>
+                <option value="11">11월</option>
+                <option value="12">12월</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="fImgs">프로젝트 사진 (여러 장 가능 · 첫 번째가 대표 이미지)</label>
+            <label class="img-drop" for="fImgs">＋ 사진 선택 / 추가</label>
+            <input id="fImgs" type="file" accept="image/*" multiple hidden>
+            <div class="thumbs" id="thumbs"></div>
+            <p class="login-hint" style="margin-top:10px">사진을 클릭하면 대표 이미지(COVER)로 지정됩니다. 우측 상단 × 로 삭제. 업로드 시 자동으로 적당한 크기로 축소되어 저장됩니다.</p>
+          </div>
+          <button class="btn" id="saveBtn">Save project</button>
+          <button class="btn ghost" id="cancelEdit" style="display:none;margin-left:8px">Cancel</button>
+        </form>
+      </div>
+
+      <!-- inquiries -->
+      <div class="admin-panel" id="panel-inquiries">
+        <h2>Inquiries</h2>
+        <p class="admin-note">홈페이지 Contact를 통해 들어온 문의가 이곳에 쌓입니다. (데모 데이터)</p>
+        <table class="admin-table">
+          <thead><tr><th>Date</th><th>From</th><th>Type</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>2026.06.08</td><td class="t-name">베이커리 온화</td><td>공간 + 브랜딩</td><td>신규</td></tr>
+            <tr><td>2026.06.05</td><td class="t-name">디저트 모노</td><td>패키징</td><td>회신 완료</td></tr>
+            <tr><td>2026.06.02</td><td class="t-name">살롱 드 아산</td><td>공간 디자인</td><td>미팅 예정</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- settings -->
+      <div class="admin-panel" id="panel-settings">
+        <h2>Settings</h2>
+        <p class="admin-note">사이트 기본 정보를 관리합니다. (데모)</p>
+        <div class="admin-form" style="margin-top:0">
+          <div class="field"><label>Site title</label><input type="text" value="OSMÜ STÜDIO — Space & Branding"></div>
+          <div class="field"><label>Contact email</label><input type="text" value="hello@osmustudio.com"></div>
+          <div class="field"><label>Instagram</label><input type="text" value="@osmu.studio"></div>
+          <button class="btn" id="settingsSave">Save settings</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="osmu.js"></script>
+<script>
+/* admin works on the persisted project store (text + uploaded images) */
+let rows = loadProjects().map(p => ({...p, images: p.images || []}));
+let draft = [];          // images for the project currently in the form
+let editIndex = -1, loggedIn = false;
+
+function persist(){
+  try{ saveProjects(rows); return true; }
+  catch(e){ toast('저장 용량 초과 — 사진 수를 줄이거나 해상도를 낮춰주세요'); return false; }
+}
+
+const adminLogin = document.getElementById('adminLogin');
+const adminShell = document.getElementById('adminShell');
+function showState(){
+  adminLogin.style.display = loggedIn ? 'none' : 'flex';
+  adminShell.classList.toggle('on', loggedIn);
+  if(loggedIn) renderAdmin();
+}
+
+/* login */
+document.getElementById('loginBtn').onclick = ()=>{
+  const id = document.getElementById('loginId').value.trim();
+  const pw = document.getElementById('loginPw').value;
+  if(id==='admin' && pw==='osmu2026'){
+    loggedIn = true; document.getElementById('loginErr').style.display='none'; showState();
+    toast('Signed in');
+  } else {
+    document.getElementById('loginErr').style.display='block';
+  }
+};
+document.getElementById('loginPw').addEventListener('keydown',e=>{ if(e.key==='Enter') document.getElementById('loginBtn').click(); });
+document.getElementById('logoutBtn').onclick = e=>{ e.preventDefault(); location.href='index.html'; };
+
+/* side tabs */
+document.querySelectorAll('.admin-side a[data-panel]').forEach(a=>{
+  a.onclick = e=>{
+    e.preventDefault();
+    document.querySelectorAll('.admin-side a[data-panel]').forEach(x=>x.classList.remove('on'));
+    a.classList.add('on');
+    document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('on'));
+    document.getElementById('panel-'+a.dataset.panel).classList.add('on');
+  };
+});
+
+/* CRUD */
+function renderAdmin(){
+  const tbody = document.getElementById('adminRows');
+  tbody.innerHTML = '';
+  rows.forEach((p,i)=>{
+    const tr = document.createElement('tr');
+    const cover = (p.images && p.images[0])
+      ? `<img class="row-thumb" src="${p.images[0]}" alt="">`
+      : `<span style="color:var(--grey);font-size:10px">—</span>`;
+    tr.innerHTML = `<td>${String(i+1).padStart(2,'0')}</td>
+      <td>${cover}</td>
+      <td class="t-name">${p.name}</td><td>${p.type||'—'}</td><td>${p.cat}</td><td>${dateStr(p)}</td>
+      <td>${p.images && p.images.length ? p.images.length + '장' : '0'}</td>
+      <td class="row-actions">
+        <button data-edit="${i}">Edit</button>
+        <button data-del="${i}">Delete</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('kpiTotal').textContent = rows.length;
+  document.getElementById('kpiYear').textContent = rows.filter(p=>p.year===2026).length;
+  document.getElementById('kpiCat').textContent = new Set(rows.map(p=>p.cat)).size;
+  tbody.querySelectorAll('[data-edit]').forEach(b=>b.onclick = ()=>startEdit(+b.dataset.edit));
+  tbody.querySelectorAll('[data-del]').forEach(b=>b.onclick = ()=>{
+    if(!confirm('이 프로젝트를 삭제할까요?')) return;
+    rows.splice(+b.dataset.del,1); persist(); renderAdmin(); toast('Project deleted');
+  });
+}
+
+/* ----- image draft (thumbnails in the form) ----- */
+function renderThumbs(){
+  const box = document.getElementById('thumbs');
+  box.innerHTML = draft.map((src,i)=>
+    `<div class="thumb${i===0?' is-cover':''}" title="클릭하면 대표 이미지로 지정">
+       <img src="${src}" data-cover="${i}">
+       <button type="button" data-rm="${i}">×</button>
+     </div>`).join('');
+  box.querySelectorAll('[data-rm]').forEach(b=>b.onclick=e=>{
+    e.stopPropagation(); draft.splice(+b.dataset.rm,1); renderThumbs();
+  });
+  box.querySelectorAll('[data-cover]').forEach(im=>im.onclick=()=>{
+    const i=+im.dataset.cover; if(i>0){ const [x]=draft.splice(i,1); draft.unshift(x); renderThumbs(); }
+  });
+}
+document.getElementById('fImgs').onchange = async e=>{
+  const files = [...e.target.files]; if(!files.length) return;
+  toast('사진 처리 중…');
+  for(const f of files){
+    try{ draft.push(await osmuResizeImage(f, 1280, 0.82)); }catch(err){}
+  }
+  e.target.value = '';
+  renderThumbs();
+  toast(`${files.length}장 추가됨 — 저장을 눌러 반영`);
+};
+
+function startEdit(i){
+  editIndex = i;
+  document.getElementById('formTitle').textContent = 'Edit project';
+  document.getElementById('fName').value = rows[i].name;
+  document.getElementById('fCat').value = rows[i].cat;
+  document.getElementById('fType').value = rows[i].type || '카페';
+  document.getElementById('fYear').value = rows[i].year;
+  document.getElementById('fMonth').value = rows[i].month || '';
+  draft = (rows[i].images || []).slice();
+  renderThumbs();
+  document.getElementById('cancelEdit').style.display = 'inline-block';
+  document.getElementById('fName').focus();
+  document.getElementById('projForm').scrollIntoView({behavior:'smooth', block:'start'});
+}
+function resetForm(){
+  editIndex = -1;
+  document.getElementById('formTitle').textContent = 'New project';
+  document.getElementById('fName').value = '';
+  document.getElementById('fType').value = '카페';
+  document.getElementById('fYear').value = 2026;
+  document.getElementById('fMonth').value = '';
+  draft = [];
+  renderThumbs();
+  document.getElementById('cancelEdit').style.display = 'none';
+}
+document.getElementById('cancelEdit').onclick = resetForm;
+document.getElementById('saveBtn').onclick = ()=>{
+  const name = document.getElementById('fName').value.trim().toUpperCase();
+  const cat = document.getElementById('fCat').value;
+  const type = document.getElementById('fType').value;
+  const year = +document.getElementById('fYear').value || 2026;
+  const month = +document.getElementById('fMonth').value || null;
+  if(!name){ toast('Project name is required'); return; }
+  const images = draft.slice();
+  if(editIndex >= 0){ rows[editIndex] = {...rows[editIndex], name, cat, type, year, month, images}; }
+  else { rows.unshift({slug:name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''), name, cat, type, year, month, images}); }
+  if(persist()){ toast(editIndex>=0 ? 'Project updated' : 'Project added'); }
+  resetForm(); renderAdmin();
+};
+document.getElementById('settingsSave').onclick = ()=>toast('Settings saved');
+
+document.getElementById('resetBtn').onclick = ()=>{
+  if(!confirm('업로드한 사진과 변경 내용을 모두 지우고 초기 데이터로 되돌릴까요?')) return;
+  osmuResetProjects();
+  rows = loadProjects().map(p=>({...p, images:p.images||[]}));
+  resetForm(); renderAdmin(); toast('초기 데이터로 되돌렸습니다');
+};
+
+showState();
+</script>
+</body>
+</html>
