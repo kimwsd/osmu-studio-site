@@ -117,6 +117,34 @@ async function osmuApplySettings(){
 window.osmuApplySettings = osmuApplySettings;
 osmuApplySettings();
 
+/* ============ per-page SEO meta for dynamic pages (?slug=) ============ */
+function osmuSetMeta(o){
+  if(o.title) document.title = o.title;
+  const upd = (kind, key, val)=>{
+    if(val == null) return;
+    const sel = kind === 'link' ? `link[rel="${key}"]`
+              : key.indexOf('og:') === 0 ? `meta[property="${key}"]`
+              : `meta[name="${key}"]`;
+    let el = document.head.querySelector(sel);
+    if(!el){
+      el = document.createElement(kind === 'link' ? 'link' : 'meta');
+      if(kind === 'link') el.setAttribute('rel', key);
+      else if(key.indexOf('og:') === 0) el.setAttribute('property', key);
+      else el.setAttribute('name', key);
+      document.head.appendChild(el);
+    }
+    el.setAttribute(kind === 'link' ? 'href' : 'content', val);
+  };
+  upd('link','canonical', o.url);
+  upd('meta','description', o.description);
+  upd('meta','og:url', o.url);
+  upd('meta','og:title', o.title);
+  upd('meta','og:description', o.description);
+  upd('meta','twitter:title', o.title);
+  upd('meta','twitter:description', o.description);
+}
+window.osmuSetMeta = osmuSetMeta;
+
 /* ============ studio stats — manual (admin Settings) or auto from projects ============ */
 (async function(){
   const pEl = document.getElementById('statProjects');
@@ -388,7 +416,11 @@ window.SERVICES = SERVICES;
   const slug = new URLSearchParams(location.search).get('slug');
   const s = SERVICES[slug];
   if(!s){ nameEl.textContent = '서비스를 찾을 수 없습니다'; return; }
-  document.title = s.name + ' — OSMÜ STÜDIO';
+  osmuSetMeta({
+    url: location.origin + '/service.html?slug=' + slug,
+    title: s.name + ' (' + s.kr + ') — OSMÜ STÜDIO',
+    description: s.kr + ' 서비스 — ' + s.tagline + ' 천안·아산 기반 공간·브랜딩 스튜디오 OSMÜ STÜDIO.'
+  });
   nameEl.textContent = s.name;
   document.getElementById('svKr').textContent = s.kr;
   document.getElementById('svTagline').textContent = s.tagline;
@@ -411,7 +443,12 @@ window.SERVICES = SERVICES;
   /* text fields (reflect admin edits) */
   const set = (f, v)=>document.querySelectorAll(`[data-f="${f}"]`).forEach(el=>{ if(v) el.textContent = v; });
   set('name', p.name); set('cat', p.cat); set('type', p.type); set('loc', p.loc); set('date', dateStr(p)); set('summary', p.summary);
-  if(document.title && p.name) document.title = p.name + ' — OSMÜ STÜDIO';
+  if(qs) osmuSetMeta({                                 // 동적 project.html 일 때만 메타 갱신
+    url: location.origin + '/project.html?slug=' + p.slug,
+    title: p.name + ' — OSMÜ STÜDIO',
+    description: p.summary || (p.name + ' — ' + (p.cat||'') + ' ' + (p.loc||'') + ' OSMÜ STÜDIO 프로젝트.')
+  });
+  else if(p.name) document.title = p.name + ' — OSMÜ STÜDIO';   // 정적 프로젝트 페이지는 제목만
   /* long description → paragraphs (newline separated) */
   const bodyEl = document.querySelector('[data-f-body]');
   if(bodyEl && p.body){
