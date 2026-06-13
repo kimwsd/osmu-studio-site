@@ -117,6 +117,27 @@ async function osmuApplySettings(){
 window.osmuApplySettings = osmuApplySettings;
 osmuApplySettings();
 
+/* ============ studio stats — sync with real projects ============ */
+(async function(){
+  const pEl = document.getElementById('statProjects');
+  if(!pEl) return;                                   // studio.html에서만
+  const list = await osmuFetchAll();
+  const cities = new Set(list.map(p => (p.loc||'').trim().split(/[\s·,]+/)[0]).filter(Boolean));
+  const set = (el, n)=>{
+    if(!el) return;
+    el.dataset.count = n;                              // 카운트업 관찰자도 새 값을 읽도록
+    const t0 = performance.now();                      // 직접 애니메이션(관찰 타이밍과 무관하게 정확)
+    (function tick(t){
+      const p = Math.min((t - t0)/1000, 1);
+      el.textContent = Math.round(n * (1 - Math.pow(1-p, 3)));
+      if(p < 1) requestAnimationFrame(tick);
+    })(t0);
+  };
+  set(pEl, list.length);
+  set(document.getElementById('statCities'), cities.size);
+  set(document.getElementById('statYears'), new Date().getFullYear() - 2017);
+})();
+
 /* ============ custom cursor ============ */
 (function(){
   const cursor = document.getElementById('cursor');
