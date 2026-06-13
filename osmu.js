@@ -416,10 +416,10 @@ window.SERVICES = SERVICES;
   const slug = new URLSearchParams(location.search).get('slug');
   const s = SERVICES[slug];
   if(!s){ nameEl.textContent = '서비스를 찾을 수 없습니다'; return; }
-  osmuSetMeta({
-    url: location.origin + '/service.html?slug=' + slug,
+  osmuSetMeta({                                        // 정적 service-<slug>.html 로 정규화
+    url: location.origin + '/service-' + slug + '.html',
     title: s.name + ' (' + s.kr + ') — OSMÜ STÜDIO',
-    description: s.kr + ' 서비스 — ' + s.tagline + ' 천안·아산 기반 공간·브랜딩 스튜디오 OSMÜ STÜDIO.'
+    description: s.kr + ' 서비스 — ' + s.tagline
   });
   nameEl.textContent = s.name;
   document.getElementById('svKr').textContent = s.kr;

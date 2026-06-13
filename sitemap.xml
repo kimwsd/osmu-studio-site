@@ -56,22 +56,22 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://osmu-studio.com/service.html?slug=space-design</loc>
+    <loc>https://osmu-studio.com/service-space-design.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://osmu-studio.com/service.html?slug=brand-identity</loc>
+    <loc>https://osmu-studio.com/service-brand-identity.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://osmu-studio.com/service.html?slug=packaging</loc>
+    <loc>https://osmu-studio.com/service-packaging.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://osmu-studio.com/service.html?slug=marketing</loc>
+    <loc>https://osmu-studio.com/service-marketing.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
