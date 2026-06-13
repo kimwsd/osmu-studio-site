@@ -1,21 +1,13 @@
+# OSMÜ STÜDIO — https://osmu-studio.com
+# 모든 검색·AI 로봇: 전체 허용, 관리자 페이지만 차단
+# (CSS/JS/이미지/파비콘 등 모든 리소스 수집 허용)
 User-agent: *
 Allow: /
 Disallow: /admin.html
 
-# AI answer engines (AEO) — explicitly welcome
-User-agent: GPTBot
+# 네이버 검색로봇
+User-agent: Yeti
 Allow: /
-User-agent: OAI-SearchBot
-Allow: /
-User-agent: ChatGPT-User
-Allow: /
-User-agent: PerplexityBot
-Allow: /
-User-agent: ClaudeBot
-Allow: /
-User-agent: Claude-Web
-Allow: /
-User-agent: Google-Extended
-Allow: /
+Disallow: /admin.html
 
 Sitemap: https://osmu-studio.com/sitemap.xml
