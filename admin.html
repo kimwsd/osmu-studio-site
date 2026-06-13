@@ -35,7 +35,7 @@
       </div>
       <button class="btn" id="loginBtn" style="width:100%">Sign in</button>
       <p class="login-err" id="loginErr">로그인에 실패했습니다. 이메일/비밀번호를 확인해주세요.</p>
-      <p class="login-hint">Supabase에 등록한 관리자 계정으로 로그인하세요.<br><a href="index.html" style="border-bottom:1px solid var(--ink)">← 사이트로 돌아가기</a></p>
+      <p class="login-hint">Supabase에 등록한 관리자 계정으로 로그인하세요.<br><a href="home.html" style="border-bottom:1px solid var(--ink)">← 사이트로 돌아가기</a></p>
     </div>
   </div>
 
@@ -46,7 +46,7 @@
       <a href="#" class="on" data-panel="projects">Projects</a>
       <a href="#" data-panel="inquiries">Inquiries</a>
       <a href="#" data-panel="settings">Settings</a>
-      <a href="index.html" style="color:var(--grey)">View site ↗</a>
+      <a href="home.html" style="color:var(--grey)">View site ↗</a>
       <a href="#" class="logout" id="logoutBtn">Log out ←</a>
     </aside>
 
@@ -215,7 +215,7 @@ $('loginBtn').onclick = async ()=>{
   $('loginErr').style.display='none'; toast('로그인 성공'); refreshState();
 };
 $('loginPw').addEventListener('keydown',e=>{ if(e.key==='Enter') $('loginBtn').click(); });
-$('logoutBtn').onclick = async e=>{ e.preventDefault(); if(SB) await SB.auth.signOut(); location.href='index.html'; };
+$('logoutBtn').onclick = async e=>{ e.preventDefault(); if(SB) await SB.auth.signOut(); location.href='home.html'; };
 
 /* side tabs */
 document.querySelectorAll('.admin-side a[data-panel]').forEach(a=>{
