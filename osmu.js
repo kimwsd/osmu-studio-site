@@ -80,6 +80,7 @@ const sb = (window.supabase && window.supabase.createClient)
   ? window.supabase.createClient(SB_URL, SB_ANON)
   : null;
 window.sb = sb;
+window.SB_URL = SB_URL; window.SB_ANON = SB_ANON;   // admin이 비영구 세션 클라이언트를 만들 때 사용
 const normProj = p => ({...p, images: Array.isArray(p.images) ? p.images : []});
 async function osmuFetchAll(){
   if(!sb) return PROJECTS.map(p=>({...p, images:[]}));

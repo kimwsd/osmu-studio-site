@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="osmu.css?v=13">
+<link rel="stylesheet" href="osmu.css?v=14">
 </head>
 <body class="admin-mode">
 
@@ -182,10 +182,13 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="osmu.js?v=13"></script>
+<script src="osmu.js?v=14"></script>
 <script>
-/* admin — Supabase auth + project CRUD + image upload to Storage */
-const SB = window.sb;
+/* admin — Supabase auth + project CRUD + image upload to Storage
+   비영구 세션: 페이지를 떠나거나 새로고침하면 로그인이 풀립니다(보안). */
+const SB = (window.supabase && window.SB_URL)
+  ? window.supabase.createClient(window.SB_URL, window.SB_ANON, { auth: { persistSession: false, autoRefreshToken: false } })
+  : window.sb;
 let rows = [];           // projects from DB
 let draft = [];          // image public URLs for the project in the form
 let editId = null;       // id of project being edited (null = new)
