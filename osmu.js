@@ -117,12 +117,22 @@ async function osmuApplySettings(){
 window.osmuApplySettings = osmuApplySettings;
 osmuApplySettings();
 
-/* ============ studio stats — sync with real projects ============ */
+/* ============ studio stats — manual (admin Settings) or auto from projects ============ */
 (async function(){
   const pEl = document.getElementById('statProjects');
   if(!pEl) return;                                   // studio.html에서만
-  const list = await osmuFetchAll();
-  const cities = new Set(list.map(p => (p.loc||'').trim().split(/[\s·,]+/)[0]).filter(Boolean));
+  let nP, nC, nY;
+  if(sb){
+    const { data } = await sb.from('settings').select('stat_projects,stat_cities,stat_years').eq('id',1).maybeSingle();
+    if(data){ nP = data.stat_projects; nC = data.stat_cities; nY = data.stat_years; }
+  }
+  if(nP == null || nC == null || nY == null){        // 비어있는 항목만 Work 자동집계로 채움
+    const list = await osmuFetchAll();
+    const cities = new Set(list.map(p => (p.loc||'').trim().split(/[\s·,]+/)[0]).filter(Boolean));
+    if(nP == null) nP = list.length;
+    if(nC == null) nC = cities.size;
+    if(nY == null) nY = new Date().getFullYear() - 2017;
+  }
   const set = (el, n)=>{
     if(!el) return;
     el.dataset.count = n;                              // 카운트업 관찰자도 새 값을 읽도록
@@ -133,9 +143,9 @@ osmuApplySettings();
       if(p < 1) requestAnimationFrame(tick);
     })(t0);
   };
-  set(pEl, list.length);
-  set(document.getElementById('statCities'), cities.size);
-  set(document.getElementById('statYears'), new Date().getFullYear() - 2017);
+  set(pEl, nP);
+  set(document.getElementById('statCities'), nC);
+  set(document.getElementById('statYears'), nY);
 })();
 
 /* ============ custom cursor ============ */

@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="osmu.css?v=9">
+<link rel="stylesheet" href="osmu.css?v=10">
 </head>
 <body class="admin-mode">
 
@@ -167,6 +167,12 @@
           <div class="field"><label for="sInsta">Instagram URL</label><input id="sInsta" type="text" placeholder="https://www.instagram.com/studio_osmu/"></div>
           <div class="field"><label for="sAddr">주소</label><input id="sAddr" type="text" placeholder="8F, 23 Buldang 17-gil, Seobuk-gu, Cheonan-si, ..."></div>
           <div class="field"><label for="sHours">영업시간</label><input id="sHours" type="text" placeholder="월–금 10:00–19:00 · 주말·공휴일 휴무"></div>
+          <p class="admin-note" style="margin:22px 0 6px">스튜디오 페이지 통계 (비우면 Work 등록 수로 자동 집계)</p>
+          <div class="form-row">
+            <div class="field"><label for="sStatProjects">Projects 수</label><input id="sStatProjects" type="number" min="0" placeholder="예: 48"></div>
+            <div class="field"><label for="sStatCities">Cities 수</label><input id="sStatCities" type="number" min="0" placeholder="예: 12"></div>
+          </div>
+          <div class="field"><label for="sStatYears">Years (연차)</label><input id="sStatYears" type="number" min="0" placeholder="예: 9"></div>
           <button class="btn" id="settingsSave">Save settings</button>
         </div>
       </div>
@@ -176,7 +182,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="osmu.js?v=9"></script>
+<script src="osmu.js?v=10"></script>
 <script>
 /* admin — Supabase auth + project CRUD + image upload to Storage */
 const SB = window.sb;
@@ -409,14 +415,21 @@ async function loadSettings(){
   $('sInsta').value = data.instagram || '';
   $('sAddr').value  = data.address || '';
   $('sHours').value = data.hours || '';
+  $('sStatProjects').value = data.stat_projects == null ? '' : data.stat_projects;
+  $('sStatCities').value   = data.stat_cities   == null ? '' : data.stat_cities;
+  $('sStatYears').value    = data.stat_years    == null ? '' : data.stat_years;
 }
 $('settingsSave').onclick = async ()=>{
+  const num = id => $(id).value.trim() === '' ? null : parseInt($(id).value, 10);
   const payload = { id:1,
     email: $('sEmail').value.trim() || null,
     phone: $('sPhone').value.trim() || null,
     instagram: $('sInsta').value.trim() || null,
     address: $('sAddr').value.trim() || null,
-    hours: $('sHours').value.trim() || null };
+    hours: $('sHours').value.trim() || null,
+    stat_projects: num('sStatProjects'),
+    stat_cities: num('sStatCities'),
+    stat_years: num('sStatYears') };
   $('settingsSave').disabled = true;
   const { error } = await SB.from('settings').upsert(payload);
   $('settingsSave').disabled = false;
