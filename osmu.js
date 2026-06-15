@@ -440,6 +440,27 @@ window.SERVICES = SERVICES;
   observeReveals();
 })();
 
+/* ============ service detail: load admin-managed gallery (above How we work) ============
+   Static service-<slug>.html pages carry <section id="svcGallerySec" data-svc="…" hidden>.
+   Images live in the `service_images` table; show the section only when photos exist. */
+(async function(){
+  const sec = document.getElementById('svcGallerySec');
+  if(!sec) return;
+  const slug = sec.dataset.svc;
+  if(!sb || !slug) return;
+  const { data, error } = await sb.from('service_images').select('images').eq('slug', slug).maybeSingle();
+  if(error){ console.error('[osmu] service_images', error); return; }
+  const imgs = (data && Array.isArray(data.images)) ? data.images : [];
+  if(!imgs.length) return;
+  const grid = document.getElementById('svcGallery');
+  grid.innerHTML = imgs.map((src,i)=>{
+    const wide = (i === 0 && imgs.length % 2 === 1) ? ' wide' : '';
+    return `<div class="cell${wide}"><img src="${src}" alt="${slug} 작업 예시 ${i+1}" loading="lazy"></div>`;
+  }).join('');
+  sec.hidden = false;
+  observeReveals();
+})();
+
 /* ============ project detail: fill text + swap in uploaded images ============ */
 (async function(){
   const qs = new URLSearchParams(location.search).get('slug');

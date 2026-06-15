@@ -603,6 +603,14 @@ a.work-row:hover .go{transform:translateX(6px);color:var(--ink)}
 .proj-gallery .cell img{aspect-ratio:4/3}
 .proj-gallery .cell.wide img{aspect-ratio:16/7}
 
+/* ---------- service page gallery (admin-managed, above How we work) ---------- */
+.svc-gallery{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+.svc-gallery .cell{border:1px solid var(--line);overflow:hidden;background:var(--ink)}
+.svc-gallery .cell.wide{grid-column:1 / -1}
+.svc-gallery .cell img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:4/3}
+.svc-gallery .cell.wide img{aspect-ratio:16/7}
+@media(max-width:680px){.svc-gallery{grid-template-columns:1fr;gap:16px}.svc-gallery .cell.wide{grid-column:auto}.svc-gallery .cell.wide img{aspect-ratio:4/3}}
+
 /* ---------- admin image uploader ---------- */
 .img-drop{
   display:block;border:1px dashed var(--ink);padding:18px;text-align:center;

@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="osmu.css?v=18">
+<link rel="stylesheet" href="osmu.css?v=19">
 </head>
 <body class="admin-mode">
 
@@ -44,6 +44,7 @@
     <aside class="admin-side">
       <img src="logo.png" alt="OSMÜ STÜDIO">
       <a href="#" class="on" data-panel="projects">Projects</a>
+      <a href="#" data-panel="services">Service photos</a>
       <a href="#" data-panel="inquiries">Inquiries</a>
       <a href="#" data-panel="settings">Settings</a>
       <a href="home.html" style="color:var(--grey)">View site ↗</a>
@@ -145,6 +146,31 @@
         </form>
       </div>
 
+      <!-- service photos -->
+      <div class="admin-panel" id="panel-services">
+        <h2>Service photos</h2>
+        <p class="admin-note">각 서비스 상세 페이지의 <b>‘작업 예시(Examples)’ 사진</b>입니다. 서비스를 고르고 사진을 올린 뒤 <b>Save</b>를 누르면 해당 서비스 페이지의 <b>‘How we work’ 위</b>에 바로 반영됩니다. 사진이 없는 서비스는 그 영역이 표시되지 않습니다.</p>
+        <div class="admin-form" style="margin-top:0">
+          <div class="field">
+            <label for="svcSel">서비스 선택</label>
+            <select id="svcSel">
+              <option value="space-design">Space Design (공간 디자인)</option>
+              <option value="brand-identity">Brand Identity (브랜드 아이덴티티)</option>
+              <option value="packaging">Packaging (패키징)</option>
+              <option value="marketing">Marketing (마케팅)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="svcImgs">사진 (여러 장 가능 · 첫 번째가 대표)</label>
+            <label class="img-drop" for="svcImgs">＋ 사진 선택 / 추가</label>
+            <input id="svcImgs" type="file" accept="image/*" multiple hidden>
+            <div class="thumbs" id="svcThumbs"></div>
+            <p class="login-hint" style="margin-top:10px">홀수 장이면 1번 사진이 가로로 크게 표시됩니다. <b>‘대표로’</b>로 순서를 앞으로 보내고, 우측 상단 × 로 삭제합니다. 업로드 시 자동으로 축소되어 저장됩니다.</p>
+          </div>
+          <button class="btn" id="svcSave">Save photos</button>
+        </div>
+      </div>
+
       <!-- inquiries -->
       <div class="admin-panel" id="panel-inquiries">
         <h2>Inquiries</h2>
@@ -182,7 +208,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="osmu.js?v=18"></script>
+<script src="osmu.js?v=19"></script>
 <script>
 /* admin — Supabase auth + project CRUD + image upload to Storage
    세션을 sessionStorage에 저장: 새로고침·같은 탭 이동은 로그인 유지,
@@ -230,6 +256,7 @@ document.querySelectorAll('.admin-side a[data-panel]').forEach(a=>{
     document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('on'));
     $('panel-'+a.dataset.panel).classList.add('on');
     if(a.dataset.panel === 'inquiries') renderInquiries();
+    if(a.dataset.panel === 'services') loadServiceImages();
   };
 });
 
@@ -438,6 +465,56 @@ $('settingsSave').onclick = async ()=>{
   const { error } = await SB.from('settings').upsert(payload);
   $('settingsSave').disabled = false;
   toast(error ? '저장 실패: ' + error.message : '설정이 저장되었습니다 — 사이트에 반영됩니다');
+};
+
+/* ----- service photos (서비스 상세 페이지 ‘작업 예시’ 갤러리) ----- */
+let svcDraft = [];        // image URLs for the selected service
+let svcMap = {};          // slug -> images[]
+async function loadServiceImages(){
+  if(!SB) return;
+  const { data, error } = await SB.from('service_images').select('*');
+  if(error){ toast("불러오기 실패 — 'service_images' 표를 만들었는지 확인하세요"); return; }
+  svcMap = {};
+  (data||[]).forEach(r=>{ svcMap[r.slug] = Array.isArray(r.images) ? r.images : []; });
+  svcDraft = (svcMap[$('svcSel').value] || []).slice();
+  renderSvcThumbs();
+}
+function renderSvcThumbs(){
+  const box = $('svcThumbs');
+  if(!svcDraft.length){ box.innerHTML = '<p class="login-hint" style="margin:10px 0 0">아직 추가된 사진이 없습니다. 위 ＋ 버튼으로 추가하세요.</p>'; return; }
+  box.innerHTML = svcDraft.map((src,i)=>
+    `<div class="thumb${i===0?' is-cover':''}">
+       <img src="${src}" alt="사진 ${i+1}">
+       <span class="thumb-no">${i+1}</span>
+       ${i>0 ? `<button type="button" class="cover-set" data-scover="${i}">대표로</button>` : ''}
+       <button type="button" class="thumb-rm" data-srm="${i}" title="삭제">×</button>
+     </div>`).join('');
+  box.querySelectorAll('[data-srm]').forEach(b=>b.onclick=e=>{
+    e.stopPropagation(); svcDraft.splice(+b.dataset.srm,1); renderSvcThumbs();
+  });
+  box.querySelectorAll('[data-scover]').forEach(b=>b.onclick=e=>{
+    e.stopPropagation(); const i=+b.dataset.scover; const [x]=svcDraft.splice(i,1); svcDraft.unshift(x); renderSvcThumbs();
+  });
+}
+$('svcSel').onchange = ()=>{ svcDraft = (svcMap[$('svcSel').value] || []).slice(); renderSvcThumbs(); };
+$('svcImgs').onchange = async e=>{
+  const files = [...e.target.files]; if(!files.length) return;
+  toast('사진 업로드 중…');
+  for(const f of files){
+    try{ svcDraft.push(await uploadImage(f)); renderSvcThumbs(); }
+    catch(err){ console.error(err); toast('업로드 실패: ' + (err.message||err)); }
+  }
+  e.target.value = '';
+  toast(`${files.length}장 업로드 완료 — Save로 반영`);
+};
+$('svcSave').onclick = async ()=>{
+  const slug = $('svcSel').value;
+  $('svcSave').disabled = true;
+  const { error } = await SB.from('service_images').upsert({ slug, images: svcDraft.slice() });
+  $('svcSave').disabled = false;
+  if(error){ toast('저장 실패: ' + error.message); return; }
+  svcMap[slug] = svcDraft.slice();
+  toast('사진이 저장되었습니다 — 서비스 페이지에 반영됩니다');
 };
 
 /* 로그인 상태 변화 추적 */
