@@ -620,6 +620,12 @@ a.work-row:hover .go{transform:translateX(6px);color:var(--ink)}
 .svc-dot{width:7px;height:7px;border-radius:50%;background:var(--line);border:0;padding:0;cursor:pointer;transition:background .2s}
 .svc-dot.on{background:var(--ink)}
 @media(max-width:680px){.svc-track{gap:14px}.svc-slide{flex:0 0 100%}.svc-arrow{width:38px;height:38px;font-size:19px}.svc-arrow.prev{left:10px}.svc-arrow.next{right:10px}}
+/* service detail: tighten vertical gaps between 설명 ↔ Examples ↔ How we work */
+main:has(#svcGallerySec) section{padding-block:56px}
+main:has(#svcGallerySec) .proj-grid{padding-block:0}
+main:has(#svcGallerySec) .svc-gallery{margin-top:24px}
+main:has(#svcGallerySec) .process{margin-top:36px}
+@media(max-width:680px){main:has(#svcGallerySec) section{padding-block:44px}}
 
 /* ---------- admin image uploader ---------- */
 .img-drop{
