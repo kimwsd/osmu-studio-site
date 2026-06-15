@@ -11,6 +11,9 @@
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- warm up the auth/data + SDK connections before the user clicks Sign in -->
+<link rel="preconnect" href="https://polzkalenzpfmrgzwmfv.supabase.co" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="osmu.css?v=23">
 </head>
@@ -225,15 +228,22 @@ const adminShell = document.getElementById('adminShell');
 const $ = id => document.getElementById(id);
 const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
+let _loading = false;                       // dedupe dashboard data load (onclick + onAuthStateChange)
+function loadDashboard(){
+  if(_loading) return;
+  _loading = true;
+  renderAdmin(); renderInquiries(); loadSettings();
+  setTimeout(()=>{ _loading = false; }, 1500);
+}
+function showDashboard(){ adminLogin.style.display='none'; adminShell.classList.add('on'); loadDashboard(); }
+function showLogin(){ adminLogin.style.display='flex'; adminShell.classList.remove('on'); }
 async function refreshState(){
   let on = false;
   if(SB){ const { data } = await SB.auth.getSession(); on = !!(data && data.session); }
-  adminLogin.style.display = on ? 'none' : 'flex';
-  adminShell.classList.toggle('on', on);
-  if(on){ renderAdmin(); renderInquiries(); loadSettings(); }
+  if(on) showDashboard(); else showLogin();
 }
 
-/* login */
+/* login — reveal the dashboard immediately on success (no extra getSession round-trip) */
 $('loginBtn').onclick = async ()=>{
   if(!SB){ toast('DB 연결 오류 — 새로고침 후 다시 시도'); return; }
   const email = $('loginId').value.trim();
@@ -242,8 +252,11 @@ $('loginBtn').onclick = async ()=>{
   const { error } = await SB.auth.signInWithPassword({ email, password });
   $('loginBtn').disabled = false;
   if(error){ $('loginErr').style.display='block'; return; }
-  $('loginErr').style.display='none'; toast('로그인 성공'); refreshState();
+  $('loginErr').style.display='none';
+  showDashboard();
+  toast('로그인 성공');
 };
+$('loginId').addEventListener('keydown',e=>{ if(e.key==='Enter') $('loginPw').focus(); });
 $('loginPw').addEventListener('keydown',e=>{ if(e.key==='Enter') $('loginBtn').click(); });
 $('logoutBtn').onclick = async e=>{ e.preventDefault(); if(SB) await SB.auth.signOut(); location.href='home.html'; };
 
