@@ -442,7 +442,26 @@ window.SERVICES = SERVICES;
 
 /* ============ service detail: load admin-managed gallery (above How we work) ============
    Static service-<slug>.html pages carry <section id="svcGallerySec" data-svc="…" hidden>.
-   Images live in the `service_images` table; show the section only when photos exist. */
+   Images live in the `service_images` table; shown as a slider when photos exist. */
+function initSvcSlider(root, count){
+  const track = root.querySelector('.svc-track');
+  const dots = [...root.querySelectorAll('.svc-dot')];
+  const w = ()=> track.clientWidth || 1;
+  const cur = ()=> Math.round(track.scrollLeft / w());
+  const go = i => { i = (i % count + count) % count; track.scrollTo({left: i * w(), behavior:'smooth'}); };
+  const prev = root.querySelector('.svc-arrow.prev');
+  const next = root.querySelector('.svc-arrow.next');
+  if(prev) prev.onclick = ()=> go(cur() - 1);
+  if(next) next.onclick = ()=> go(cur() + 1);
+  dots.forEach((d,i)=> d.onclick = ()=> go(i));
+  track.addEventListener('scroll', ()=>{ const c = cur(); dots.forEach((d,i)=> d.classList.toggle('on', i === c)); }, {passive:true});
+  let timer = setInterval(()=> go(cur() + 1), 5000);
+  const stop  = ()=>{ if(timer){ clearInterval(timer); timer = null; } };
+  const start = ()=>{ if(!timer) timer = setInterval(()=> go(cur() + 1), 5000); };
+  root.addEventListener('mouseenter', stop);
+  root.addEventListener('mouseleave', start);
+  track.addEventListener('touchstart', stop, {passive:true});
+}
 (async function(){
   const sec = document.getElementById('svcGallerySec');
   if(!sec) return;
@@ -452,12 +471,14 @@ window.SERVICES = SERVICES;
   if(error){ console.error('[osmu] service_images', error); return; }
   const imgs = (data && Array.isArray(data.images)) ? data.images : [];
   if(!imgs.length) return;
-  const grid = document.getElementById('svcGallery');
-  grid.innerHTML = imgs.map((src,i)=>{
-    const wide = (i === 0 && imgs.length % 2 === 1) ? ' wide' : '';
-    return `<div class="cell${wide}"><img src="${src}" alt="${slug} 작업 예시 ${i+1}" loading="lazy"></div>`;
-  }).join('');
+  const mount = document.getElementById('svcGallery');
+  const multi = imgs.length > 1;
+  const slides = imgs.map((src,i)=>`<div class="svc-slide"><img src="${src}" alt="${slug} 작업 예시 ${i+1}" loading="lazy"></div>`).join('');
+  const arrows = multi ? '<button class="svc-arrow prev" aria-label="이전 사진">‹</button><button class="svc-arrow next" aria-label="다음 사진">›</button>' : '';
+  const dots   = multi ? `<div class="svc-dots">${imgs.map((_,i)=>`<button class="svc-dot${i===0?' on':''}" aria-label="${i+1}번 사진"></button>`).join('')}</div>` : '';
+  mount.innerHTML = `<div class="svc-slider">${arrows}<div class="svc-track">${slides}</div>${dots}</div>`;
   sec.hidden = false;
+  if(multi) initSvcSlider(mount.querySelector('.svc-slider'), imgs.length);
   observeReveals();
 })();
 
