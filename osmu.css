@@ -388,14 +388,14 @@ body.admin-mode .cursor{display:none}
 .kakao-chat{
   position:fixed;right:24px;bottom:24px;z-index:300;
   display:flex;align-items:center;gap:8px;
-  background:#FEE500;color:#3C1E1E;
+  background:var(--ink);color:var(--white);border:1px solid var(--ink);
   padding:13px 18px 13px 15px;border-radius:999px;
   box-shadow:0 6px 22px rgba(0,0,0,.18);
   font-size:12px;font-weight:700;letter-spacing:.01em;
-  transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,background .2s,color .2s;
 }
-.kakao-chat:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.24)}
-.kakao-chat svg{width:23px;height:23px;flex:none;fill:#3C1E1E}
+.kakao-chat:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.24);background:var(--white);color:var(--ink)}
+.kakao-chat svg{width:23px;height:23px;flex:none;fill:currentColor}
 .kakao-chat .kakao-label{white-space:nowrap}
 @media (max-width:560px){
   .kakao-chat{right:16px;bottom:16px;padding:13px}
