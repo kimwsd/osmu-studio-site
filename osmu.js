@@ -295,17 +295,16 @@ function movePreview(e){
   const all = window.PROJECTS_OVERRIDE || await osmuFetchAll();
   const count = document.getElementById('workCount');
   const filters = document.getElementById('workFilters');
+  const workCategories = window.OSMUWorkCategories;
+  const getWorkCategories = workCategories
+    ? workCategories.getWorkCategories
+    : category => [String(category || '').trim().toLowerCase()];
+  const filterLabels = workCategories
+    ? workCategories.CATEGORY_LABELS
+    : {all:'All', branding:'Branding', package:'Package', space:'Space', video:'Video'};
 
-  /* 카테고리 매칭: 한 프로젝트가 여러 카테고리에 속할 수 있음
-     - 주거 : 업종이 '주거'
-     - 상업 : 업종이 상업 성격(상업·카페·음식점·술집)
-     - 브랜딩: 작업분류에 Brand/Branding 포함(Brand Identity, Space + Branding) */
   function matches(p, cat){
-    if(cat === 'all') return true;
-    if(cat === '주거공간') return ['주거공간','주거'].includes(p.type);
-    if(cat === '상업공간') return ['상업공간','상업','카페','음식점','술집','기타'].includes(p.type);
-    if(cat === '브랜딩') return /brand/i.test(p.cat || '');
-    return true;
+    return cat === 'all' || getWorkCategories(p.cat).includes(cat);
   }
 
   let activeCat = 'all';
@@ -334,8 +333,17 @@ function movePreview(e){
       }
       workList.appendChild(a);
     });
-    const label = activeCat === 'all' ? 'Selected projects' : activeCat;
+    const label = activeCat === 'all' ? 'Selected projects' : filterLabels[activeCat];
     if(count) count.textContent = `${label} — ${String(list.length).padStart(2,'0')}`;
+    if(filters){
+      filters.querySelectorAll('.wf').forEach(btn=>{
+        const total = btn.dataset.cat === 'all'
+          ? all.length
+          : all.filter(p => matches(p, btn.dataset.cat)).length;
+        const num = btn.querySelector('.filter-count');
+        if(num) num.textContent = String(total).padStart(2,'0');
+      });
+    }
     bindHoverCursor();
   }
 
@@ -343,7 +351,11 @@ function movePreview(e){
     filters.querySelectorAll('.wf').forEach(btn=>{
       btn.onclick = ()=>{
         activeCat = btn.dataset.cat;
-        filters.querySelectorAll('.wf').forEach(b=>b.classList.toggle('on', b === btn));
+        filters.querySelectorAll('.wf').forEach(b=>{
+          const isActive = b === btn;
+          b.classList.toggle('on', isActive);
+          b.setAttribute('aria-pressed', String(isActive));
+        });
         render();
       };
     });

@@ -69,23 +69,23 @@ header{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;justify-content:space-between;align-items:center;
   padding:18px 24px;
-  background:rgba(255,255,255,.88);backdrop-filter:blur(10px);
+  background:transparent;color:#fff;mix-blend-mode:difference;isolation:isolate;
   border-bottom:1px solid transparent;
   transition:border-color .4s;
 }
-header.is-scrolled{border-color:var(--line)}
-.header-logo img{height:18px;width:auto;opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s}
+header.is-scrolled{border-color:transparent}
+.header-logo img{height:19.8px;width:auto;opacity:0;transform:translateY(6px);filter:invert(1);transition:opacity .5s,transform .5s}
 header.is-scrolled .header-logo img{opacity:1;transform:none}
 nav{display:flex;gap:28px}
 nav a{position:relative;padding:4px 0}
 nav a::after{
   content:'';position:absolute;left:0;bottom:0;width:100%;height:1px;
-  background:var(--ink);transform:scaleX(0);transform-origin:right;
+  background:currentColor;transform:scaleX(0);transform-origin:right;
   transition:transform .35s cubic-bezier(.7,0,.3,1);
 }
 nav a:hover::after{transform:scaleX(1);transform-origin:left}
 header nav.label{font-size:12px}
-.menu-btn{display:none;background:none;border:0;color:var(--ink);font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.menu-btn{display:none;background:none;border:0;color:inherit;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
 
 /* ---------- loader curtain ---------- */
 .loader{
@@ -192,10 +192,12 @@ section{padding:120px 24px}
 }
 .work-row .cat,.work-row .year{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
 .work-empty{padding:60px 0;color:var(--grey);font-size:13px;letter-spacing:.06em}
-.work-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
-.wf{background:none;border:1px solid var(--line);color:var(--grey);padding:9px 22px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;transition:background .2s,color .2s,border-color .2s}
-.wf:hover{color:var(--ink);border-color:var(--ink)}
+.work-filters{display:flex;gap:10px;flex-wrap:wrap;margin:30px 0 44px}
+.wf{background:none;border:1px solid #6d6d6d;border-radius:999px;color:var(--ink);padding:11px 18px;font-size:13px;letter-spacing:-.02em;font-weight:500;line-height:1;transition:background .2s,color .2s,border-color .2s}
+.wf .filter-count{font-size:10px;letter-spacing:.04em;vertical-align:top;margin-left:5px;color:var(--grey)}
+.wf:hover{border-color:var(--ink)}
 .wf.on{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.wf.on .filter-count{color:rgba(255,255,255,.72)}
 
 /* cursor-following preview */
 .preview{
