@@ -137,11 +137,18 @@
             <textarea id="fBody" placeholder="프로젝트 배경, 컨셉, 작업 과정, 결과 등을 자유롭게 적어주세요.&#10;&#10;빈 줄로 문단을 나눌 수 있습니다."></textarea>
           </div>
           <div class="field">
-            <label for="fImgs">프로젝트 사진 (여러 장 가능 · 첫 번째가 대표 이미지)</label>
+            <label for="fImgs">프로젝트 이미지 (여러 장 가능 · 첫 번째가 대표 이미지)</label>
             <label class="img-drop" for="fImgs">＋ 사진 선택 / 추가</label>
             <input id="fImgs" type="file" accept="image/*" multiple hidden>
             <div class="thumbs" id="thumbs"></div>
             <p class="login-hint" style="margin-top:10px">각 사진에 순서 번호가 붙습니다. <b>1번이 대표 이미지(★)</b>예요. 다른 사진의 <b>‘대표로’</b> 버튼을 누르면 그 사진이 1번 대표가 됩니다. 우측 상단 × 로 삭제. 업로드 시 자동으로 축소되어 저장됩니다.</p>
+          </div>
+          <div class="field">
+            <label for="fVideos">프로젝트 영상 (여러 개 가능)</label>
+            <label class="img-drop" for="fVideos">＋ 영상 선택 / 추가</label>
+            <input id="fVideos" type="file" accept="video/*" multiple hidden>
+            <div class="thumbs video-thumbs" id="videoThumbs"></div>
+            <p class="login-hint" style="margin-top:10px">MP4, WebM 등 브라우저 재생이 가능한 영상을 원본 포맷으로 업로드합니다. 상세 페이지에서 컨트롤을 제공하며 첫 번째 영상이 대표 영상으로 표시됩니다.</p>
           </div>
           <button class="btn" id="saveBtn">Save project</button>
           <button class="btn ghost" id="cancelEdit" style="display:none;margin-left:8px">Cancel</button>
@@ -212,7 +219,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="work-categories.js?v=1"></script>
-<script src="osmu.js?v=25"></script>
+<script src="osmu.js?v=25&rev=29"></script>
 <script>
 /* admin — Supabase auth + project CRUD + image upload to Storage
    세션을 sessionStorage에 저장: 새로고침·같은 탭 이동은 로그인 유지,
@@ -222,6 +229,7 @@ const SB = (window.supabase && window.SB_URL)
   : window.sb;
 let rows = [];           // projects from DB
 let draft = [];          // image public URLs for the project in the form
+let videoDraft = [];     // video public URLs for the project in the form
 let editId = null;       // id of project being edited (null = new)
 
 const adminLogin = document.getElementById('adminLogin');
@@ -287,7 +295,7 @@ async function renderAdmin(){
     tr.innerHTML = `<td>${String(i+1).padStart(2,'0')}</td>
       <td>${cover}</td>
       <td class="t-name">${p.name}</td><td>${p.type||'—'}</td><td>${p.cat}</td><td>${dateStr(p)}</td>
-      <td>${p.images && p.images.length ? p.images.length + '장' : '0'}</td>
+      <td>${(p.images?.length||0) + (p.videos?.length||0)}개</td>
       <td class="row-actions">
         <button data-edit="${p.id}">Edit</button>
         <button data-del="${p.id}">Delete</button>
@@ -350,6 +358,15 @@ async function uploadImage(file){
   if(error) throw error;
   return SB.storage.from('project-images').getPublicUrl(path).data.publicUrl;
 }
+async function uploadVideo(file){
+  if(!file.type || !file.type.startsWith('video/')) throw new Error('영상 파일만 업로드할 수 있습니다');
+  const rawExt = (file.name.split('.').pop() || 'mp4').toLowerCase().replace(/[^a-z0-9]/g,'');
+  const ext = rawExt || 'mp4';
+  const path = `proj/${Date.now()}-${Math.random().toString(36).slice(2,7)}.${ext}`;
+  const { error } = await SB.storage.from('project-images').upload(path, file, { contentType:file.type, cacheControl:'3600', upsert:false });
+  if(error) throw error;
+  return SB.storage.from('project-images').getPublicUrl(path).data.publicUrl;
+}
 function renderThumbs(){
   const box = $('thumbs');
   if(!draft.length){ box.innerHTML = '<p class="login-hint" style="margin:10px 0 0">아직 추가된 사진이 없습니다. 위 ＋ 버튼으로 추가하세요.</p>'; return; }
@@ -377,6 +394,30 @@ $('fImgs').onchange = async e=>{
   e.target.value = '';
   toast(`${files.length}장 업로드 완료 — Save로 반영`);
 };
+function renderVideoThumbs(){
+  const box = $('videoThumbs');
+  if(!videoDraft.length){ box.innerHTML = '<p class="login-hint" style="margin:10px 0 0">아직 추가된 영상이 없습니다. 위 ＋ 버튼으로 추가하세요.</p>'; return; }
+  box.innerHTML = videoDraft.map((src,i)=>
+    `<div class="thumb video-thumb">
+       <video src="${src}" preload="metadata" muted></video>
+       <span class="thumb-no">${i+1}</span>
+       ${i===0 ? '<span class="thumb-cover-label">대표</span>' : ''}
+       <button type="button" class="thumb-rm" data-vrm="${i}" title="삭제">×</button>
+     </div>`).join('');
+  box.querySelectorAll('[data-vrm]').forEach(b=>b.onclick=e=>{
+    e.stopPropagation(); videoDraft.splice(+b.dataset.vrm,1); renderVideoThumbs();
+  });
+}
+$('fVideos').onchange = async e=>{
+  const files = [...e.target.files]; if(!files.length) return;
+  toast('영상 업로드 중…');
+  for(const f of files){
+    try{ videoDraft.push(await uploadVideo(f)); renderVideoThumbs(); }
+    catch(err){ console.error(err); toast('업로드 실패: ' + (err.message||err)); }
+  }
+  e.target.value = '';
+  toast(`${files.length}개 영상 업로드 완료 — Save로 반영`);
+};
 
 /* ----- form ----- */
 function startEdit(id){
@@ -393,7 +434,9 @@ function startEdit(id){
   $('fSummary').value = p.summary || '';
   $('fBody').value = p.body || '';
   draft = (p.images || []).slice();
+  videoDraft = (p.videos || []).slice();
   renderThumbs();
+  renderVideoThumbs();
   $('cancelEdit').style.display = 'inline-block';
   $('fName').focus();
   $('projForm').scrollIntoView({behavior:'smooth', block:'start'});
@@ -403,7 +446,7 @@ function resetForm(){
   $('formTitle').textContent = 'New project';
   $('fName').value = ''; $('fType').value = '상업공간'; $('fCat').value = 'Branding';
   $('fYear').value = 2026; $('fMonth').value = ''; $('fLoc').value = ''; $('fSlug').value = ''; $('fSummary').value = ''; $('fBody').value = '';
-  draft = []; renderThumbs();
+  draft = []; videoDraft = []; renderThumbs(); renderVideoThumbs();
   $('cancelEdit').style.display = 'none';
 }
 $('cancelEdit').onclick = resetForm;
@@ -424,7 +467,8 @@ $('saveBtn').onclick = async ()=>{
     loc: $('fLoc').value.trim() || null,
     summary: $('fSummary').value.trim() || null,
     body: $('fBody').value.trim() || null,
-    images: draft.slice()
+    images: draft.slice(),
+    videos: videoDraft.slice()
   };
   $('saveBtn').disabled = true;
   try{

@@ -90,7 +90,7 @@ const sb = (window.supabase && window.supabase.createClient)
   : null;
 window.sb = sb;
 window.SB_URL = SB_URL; window.SB_ANON = SB_ANON;   // admin이 비영구 세션 클라이언트를 만들 때 사용
-const normProj = p => ({...p, images: Array.isArray(p.images) ? p.images : []});
+const normProj = p => ({...p, images: Array.isArray(p.images) ? p.images : [], videos: Array.isArray(p.videos) ? p.videos : []});
 async function osmuFetchAll(){
   if(!sb) return PROJECTS.map(p=>({...p, images:[]}));
   const { data, error } = await sb.from('projects').select('*')
@@ -402,9 +402,12 @@ function movePreview(e){
       a.className = cardMode ? 'work-card' : 'work-row';
       a.href = projUrl(p);
       const cover = p.images && p.images[0];
+      const video = p.videos && p.videos[0];
       if(cardMode){
         a.innerHTML = `<div class="work-card-media">${cover
           ? `<img src="${cover}" alt="${p.name}" loading="lazy">`
+          : video
+            ? `<video src="${video}" muted autoplay loop playsinline preload="metadata" aria-label="${p.name} 영상"></video>`
           : previewSVG(i, p.name)}</div>
           <div class="work-card-meta"><span class="idx">${String(i+1).padStart(2,'0')}</span>
           <span class="name">${p.name}</span>
@@ -648,15 +651,27 @@ function initSvcSlider(root){
   /* hide the 업종 row / chip when a project has no type */
   if(!p.type) document.querySelectorAll('[data-fact="type"],[data-fd="type"]').forEach(el=>el.style.display='none');
 
-  /* uploaded images */
-  if(p.images && p.images.length){
+  /* uploaded images and videos */
+  const images = Array.isArray(p.images) ? p.images : [];
+  const videos = Array.isArray(p.videos) ? p.videos : [];
+  if(images.length || videos.length){
     const visual = document.querySelector('.proj-visual');
-    if(visual) visual.innerHTML = `<img src="${p.images[0]}" alt="${p.name}">`;
+    if(visual){
+      visual.innerHTML = images.length
+        ? `<img src="${images[0]}" alt="${p.name}">`
+        : `<video src="${videos[0]}" controls playsinline preload="metadata"></video>`;
+    }
     const gallery = document.querySelector('.proj-gallery');
     if(gallery){
-      const imgs = p.images.length > 1 ? p.images.slice(1) : p.images;
-      gallery.innerHTML = imgs.map((src, i)=>
-        `<div class="cell${i === 0 && p.images.length > 2 ? ' wide' : ''}"><img src="${src}" alt="${p.name} ${i+1}"></div>`
+      const media = [
+        ...images.map((src, i)=>({kind:'image', src, index:i})),
+        ...videos.map((src, i)=>({kind:'video', src, index:i}))
+      ];
+      const galleryMedia = media.length > 1 ? media.slice(1) : media;
+      gallery.innerHTML = galleryMedia.map((item, i)=>
+        `<div class="cell${i === 0 && media.length > 2 ? ' wide' : ''}">${item.kind === 'video'
+          ? `<video src="${item.src}" controls playsinline preload="metadata"></video>`
+          : `<img src="${item.src}" alt="${p.name} ${i+1}">`}</div>`
       ).join('');
     }
   }
