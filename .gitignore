@@ -3,3 +3,6 @@ Thumbs.db
 *.log
 .claude/
 .superpowers/
+.worktrees/
+video/studio-hero/node_modules/
+video/studio-hero/output/
