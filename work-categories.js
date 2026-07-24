@@ -9,7 +9,7 @@
     { id:'branding', label:'Branding' },
     { id:'package', label:'Package' },
     { id:'space', label:'Space' },
-    { id:'video', label:'Video' }
+    { id:'video', label:'Brand Film' }
   ];
 
   const CATEGORY_LABELS = Object.fromEntries(WORK_FILTERS.map(({id,label}) => [id,label]));

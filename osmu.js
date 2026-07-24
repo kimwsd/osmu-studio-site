@@ -1,5 +1,5 @@
 /* =================================================
-   OSMÜ STÜDIO — shared interactions
+   OSMU STUDIO — shared interactions
    Loaded on every page. Each block runs only if the
    elements it needs are present, so one file serves
    the home, sub-pages, project pages and admin alike.
@@ -21,6 +21,15 @@ const PROJECTS = [
   {slug:'teahouse-dam',  name:'TEAHOUSE DAM',  cat:'Packaging',        type:'카페',   year:2024, month:9,  loc:'전주 Jeonju'},
   {slug:'gallery-hue',   name:'GALLERY HUE',   cat:'Space Design',     type:'상업',   year:2024, month:4,  loc:'서울 Seoul'}
 ];
+/* Home hero showcases use their own editorial detail pages until they are
+   replaced with approved client case studies in the admin. */
+const FEATURED_PROJECTS = [
+  {slug:'identity-system', name:'IDENTITY SYSTEM', cat:'Brand Identity', type:'Branding', year:2026, month:6, loc:'OSMU STUDIO', summary:'브랜드의 전략을 오래 쓰이는 시각 체계로 번역합니다.', body:'브랜드가 어떤 이유로 선택받아야 하는지 정의하고, 그 방향을 로고와 그래픽 시스템으로 확장했습니다.\n\n아이덴티티는 한 장의 결과물이 아니라 다양한 접점에서 같은 인상을 만드는 운영 언어입니다.', images:['assets-brand-guidelines.png']},
+  {slug:'package-system', name:'PACKAGE SYSTEM', cat:'Packaging', type:'Package', year:2026, month:6, loc:'OSMU STUDIO', summary:'제품의 첫 만남을 브랜드 경험으로 설계합니다.', body:'패키지는 제품을 감싸는 표면을 넘어 브랜드가 고객과 처음 만나는 장면입니다. 형태, 정보, 소재와 그래픽의 관계를 정리해 기억에 남는 시스템을 만듭니다.\n\n작은 단위의 적용에서도 브랜드의 태도가 흔들리지 않도록 확장 가능한 기준을 설계했습니다.', images:['assets-packaging-system.png']},
+  {slug:'campaign-graphic', name:'CAMPAIGN GRAPHIC', cat:'Brand Identity', type:'Branding', year:2026, month:6, loc:'OSMU STUDIO', summary:'캠페인의 메시지를 한눈에 읽히는 장면으로 만듭니다.', body:'캠페인의 핵심 메시지를 선명한 비주얼 언어로 압축하고, 매체와 포맷이 달라져도 같은 인상을 남기도록 그래픽 시스템을 구성했습니다.\n\n전략에서 출발한 한 문장이 포스터, 디지털 콘텐츠, 현장 장면으로 자연스럽게 이어지도록 설계합니다.', images:['assets-campaign-poster.png']},
+  {slug:'brand-film', name:'BRAND FILM', cat:'Brand Film', type:'Brand Film', year:2026, month:6, loc:'OSMU STUDIO', summary:'브랜드의 태도와 분위기를 한 장면의 기억으로 남깁니다.', body:'브랜드가 무엇을 말하는지보다 고객이 무엇을 느끼고 기억해야 하는지에서 출발합니다. 리듬, 이미지, 사운드와 모션을 하나의 흐름으로 엮어 브랜드의 성격을 영상으로 번역합니다.\n\n기획부터 편집과 모션 그래픽까지, 화면의 모든 요소가 같은 전략을 향하도록 완성합니다.', images:['assets-brand-film.png']}
+];
+const FEATURED_BY_SLUG = new Map(FEATURED_PROJECTS.map(p => [p.slug, p]));
 /* 기존 6개는 전용 정적 페이지, 새 프로젝트는 동적 템플릿(project.html?slug=) */
 const STATIC_SLUGS = new Set(['cafe-mono','bakery-onhwa','salon-de-asan','butcher-no9','teahouse-dam','gallery-hue']);
 const projUrl = p => STATIC_SLUGS.has(p.slug)
@@ -90,10 +99,11 @@ async function osmuFetchAll(){
   return (data||[]).map(normProj);
 }
 async function osmuFetchOne(slug){
-  if(!sb){ const p = PROJECTS.find(x=>x.slug===slug); return p ? {...p, images:[]} : null; }
+  const local = PROJECTS.find(x=>x.slug===slug) || FEATURED_BY_SLUG.get(slug);
+  if(!sb){ return local ? normProj(local) : null; }
   const { data, error } = await sb.from('projects').select('*').eq('slug', slug).maybeSingle();
   if(error){ console.error('[osmu] fetchOne', error); return null; }
-  return data ? normProj(data) : null;
+  return data ? normProj(data) : (local ? normProj(local) : null);
 }
 window.osmuFetchAll = osmuFetchAll;
 window.osmuFetchOne = osmuFetchOne;
@@ -217,6 +227,33 @@ if(typeof window.bindHoverCursor !== 'function') window.bindHoverCursor = functi
   overlay.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>overlay.classList.remove('open')));
 })();
 
+/* ============ home service accordion ============ */
+(function(){
+  const items = document.querySelectorAll('#services .svc');
+  if(!items.length) return;
+  items.forEach(item=>{
+    const head = item.querySelector('.svc-head');
+    const body = item.querySelector('.svc-body');
+    if(!head || !body) return;
+    head.setAttribute('aria-expanded','false');
+    head.addEventListener('click',()=>{
+      const willOpen = !item.classList.contains('open');
+      items.forEach(other=>{
+        other.classList.remove('open');
+        const otherHead = other.querySelector('.svc-head');
+        const otherBody = other.querySelector('.svc-body');
+        if(otherHead) otherHead.setAttribute('aria-expanded','false');
+        if(otherBody) otherBody.style.maxHeight = '';
+      });
+      if(willOpen){
+        item.classList.add('open');
+        head.setAttribute('aria-expanded','true');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  });
+})();
+
 /* ============ reveal on scroll ============ */
 const io = new IntersectionObserver(es=>{
   es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
@@ -249,7 +286,48 @@ observeReveals();
   const heroLogo = document.getElementById('heroLogo');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const loader = document.querySelector('.loader');
-  if(loader) setTimeout(()=>document.body.classList.add('loaded'), reduceMotion ? 0 : 2600);
+  const typeLines = [...document.querySelectorAll('.hero-statement .hero-line')];
+  const heroKorean = document.querySelector('.hero-korean');
+  if(typeLines.length){
+    const revealLine = (line, text, startAt, speed) => new Promise(resolve => {
+      line.textContent = '';
+      line.classList.add('is-typing');
+      const chars = Array.from(text);
+      chars.forEach((char, index) => setTimeout(() => {
+        line.append(document.createTextNode(char));
+        if(index === chars.length - 1){
+          line.classList.remove('is-typing');
+          resolve();
+        }
+      }, startAt + index * speed));
+    });
+    if(reduceMotion){
+      typeLines.forEach(line => line.textContent = line.dataset.text || line.textContent.trim());
+    }else{
+      typeLines.forEach(line => {
+        line.dataset.text = line.textContent.trim();
+        line.textContent = '';
+      });
+      if(heroKorean) heroKorean.classList.add('typewriter-pending');
+      (async()=>{
+        let startAt = 260;
+        for(const line of typeLines){
+          const text = line.dataset.text;
+          await revealLine(line, text, startAt, 34);
+          startAt = 190;
+        }
+        if(heroKorean){
+          heroKorean.classList.remove('typewriter-pending');
+          heroKorean.classList.add('typewriter-ready');
+        }
+      })();
+    }
+  }
+  if(loader && window.OSMU_SHOW_INTRO !== false){
+    setTimeout(()=>document.body.classList.add('loaded'), reduceMotion ? 0 : 2600);
+  }else if(loader){
+    document.body.classList.add('loaded');
+  }
   if(!heroInner || !heroLogo || reduceMotion) return;
 
   let px = 0, py = 0, ptx = 0, pty = 0;
@@ -295,19 +373,24 @@ function movePreview(e){
   const all = window.PROJECTS_OVERRIDE || await osmuFetchAll();
   const count = document.getElementById('workCount');
   const filters = document.getElementById('workFilters');
+  const cardMode = !document.body.classList.contains('subpage');
   const workCategories = window.OSMUWorkCategories;
   const getWorkCategories = workCategories
     ? workCategories.getWorkCategories
     : category => [String(category || '').trim().toLowerCase()];
   const filterLabels = workCategories
     ? workCategories.CATEGORY_LABELS
-    : {all:'All', branding:'Branding', package:'Package', space:'Space', video:'Video'};
+    : {all:'All', branding:'Branding', package:'Package', space:'Space', video:'Brand Film'};
 
   function matches(p, cat){
     return cat === 'all' || getWorkCategories(p.cat).includes(cat);
   }
 
-  let activeCat = 'all';
+  const requestedCat = new URLSearchParams(location.search).get('cat')
+    || new URLSearchParams(location.search).get('work');
+  const hasRequestedCat = filters && [...filters.querySelectorAll('.wf')]
+    .some(btn => btn.dataset.cat === requestedCat);
+  let activeCat = hasRequestedCat ? requestedCat : 'all';
   function render(){
     const list = all.filter(p => matches(p, activeCat));
     workList.innerHTML = '';
@@ -316,15 +399,25 @@ function movePreview(e){
     }
     list.forEach((p,i)=>{
       const a = document.createElement('a');
-      a.className = 'work-row';
+      a.className = cardMode ? 'work-card' : 'work-row';
       a.href = projUrl(p);
-      a.innerHTML = `<span class="idx">${String(i+1).padStart(2,'0')}</span>
-        <span class="name">${p.name}</span>
-        <span class="cat">${p.type ? p.type + ' · ' + p.cat : p.cat}</span>
-        <span class="year">${dateStr(p)}</span>
-        <span class="go">↗</span>`;
-      if(preview){
-        const cover = p.images && p.images[0];
+      const cover = p.images && p.images[0];
+      if(cardMode){
+        a.innerHTML = `<div class="work-card-media">${cover
+          ? `<img src="${cover}" alt="${p.name}" loading="lazy">`
+          : previewSVG(i, p.name)}</div>
+          <div class="work-card-meta"><span class="idx">${String(i+1).padStart(2,'0')}</span>
+          <span class="name">${p.name}</span>
+          <span class="cat">${p.type ? p.type + ' · ' + p.cat : p.cat}</span>
+          <span class="year">${dateStr(p)}</span><span class="go">↗</span></div>`;
+      }else{
+        a.innerHTML = `<span class="idx">${String(i+1).padStart(2,'0')}</span>
+          <span class="name">${p.name}</span>
+          <span class="cat">${p.type ? p.type + ' · ' + p.cat : p.cat}</span>
+          <span class="year">${dateStr(p)}</span>
+          <span class="go">↗</span>`;
+      }
+      if(preview && !cardMode){
         a.onmouseenter = ()=>{
           preview.innerHTML = cover ? `<img src="${cover}" alt="${p.name}">` : previewSVG(i, p.name);
           preview.classList.add('on');
@@ -337,6 +430,9 @@ function movePreview(e){
     if(count) count.textContent = `${label} — ${String(list.length).padStart(2,'0')}`;
     if(filters){
       filters.querySelectorAll('.wf').forEach(btn=>{
+        const isActive = btn.dataset.cat === activeCat;
+        btn.classList.toggle('on', isActive);
+        btn.setAttribute('aria-pressed', String(isActive));
         const total = btn.dataset.cat === 'all'
           ? all.length
           : all.filter(p => matches(p, btn.dataset.cat)).length;
@@ -430,7 +526,7 @@ const SERVICES = {
     ]
   },
   'video': {
-    name:'Video', kr:'영상',
+    name:'Brand Film', kr:'브랜드 필름',
     tagline:'한 장면으로 시선을 멈추게 하고, 한 이야기로 브랜드를 남깁니다.',
     intro:[
       '영상은 브랜드의 분위기와 태도를 가장 빠르게 전달하는 매체입니다. 우리는 무엇을 보여줄지보다, 고객이 무엇을 느끼고 기억해야 하는지부터 정합니다.',
@@ -455,7 +551,7 @@ window.SERVICES = SERVICES;
   if(!s){ nameEl.textContent = '서비스를 찾을 수 없습니다'; return; }
   osmuSetMeta({
     url: location.origin + '/service.html?slug=' + encodeURIComponent(slug),
-    title: s.name + ' (' + s.kr + ') — OSMÜ STÜDIO',
+    title: s.name + ' (' + s.kr + ') — OSMU STUDIO',
     description: s.kr + ' 서비스 — ' + s.tagline
   });
   nameEl.textContent = s.name;
@@ -539,10 +635,10 @@ function initSvcSlider(root){
   set('name', p.name); set('cat', p.cat); set('type', p.type); set('loc', p.loc); set('date', dateStr(p)); set('summary', p.summary);
   if(qs) osmuSetMeta({                                 // 동적 project.html 일 때만 메타 갱신
     url: location.origin + '/project.html?slug=' + p.slug,
-    title: p.name + ' — OSMÜ STÜDIO',
-    description: p.summary || (p.name + ' — ' + (p.cat||'') + ' ' + (p.loc||'') + ' OSMÜ STÜDIO 프로젝트.')
+    title: p.name + ' — OSMU STUDIO',
+    description: p.summary || (p.name + ' — ' + (p.cat||'') + ' ' + (p.loc||'') + ' OSMU STUDIO 프로젝트.')
   });
-  else if(p.name) document.title = p.name + ' — OSMÜ STÜDIO';   // 정적 프로젝트 페이지는 제목만
+  else if(p.name) document.title = p.name + ' — OSMU STUDIO';   // 정적 프로젝트 페이지는 제목만
   /* long description → paragraphs (newline separated) */
   const bodyEl = document.querySelector('[data-f-body]');
   if(bodyEl && p.body){
