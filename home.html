@@ -147,7 +147,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="osmu.css?v=28">
+<link rel="stylesheet" href="osmu.css?v=35">
 <script>
   /* Show the intro curtain only on the first home entry of this browser tab. */
   (function(){
@@ -187,7 +187,7 @@
   </a>
   <nav class="label">
     <a href="home.html">Home</a>
-    <a href="work.html">Work</a>
+    <a href="work.html">Portfolio</a>
     <a href="studio.html">Studio</a>
     <a href="services.html">Services</a>
     <a href="contact.html">Contact</a>
@@ -198,7 +198,7 @@
 <div class="menu-overlay" id="menuOverlay">
   <button class="menu-close" id="menuClose">Close</button>
   <a class="big" href="home.html">Home</a>
-  <a class="big" href="work.html">Work</a>
+  <a class="big" href="work.html">Portfolio</a>
   <a class="big" href="studio.html">Studio</a>
   <a class="big" href="services.html">Services</a>
   <a class="big" href="contact.html">Contact</a>
@@ -229,22 +229,59 @@
     </div>
   </div>
 
+  <div class="home-scroll-cue-wrap" aria-hidden="true">
+    <a class="home-scroll-cue" href="#value" tabindex="-1">
+      <span>Scroll to explore</span>
+      <span class="home-scroll-cue-icon">↓</span>
+    </a>
+  </div>
+
+  <!-- VALUE PROPOSITION -->
+  <section id="value" class="home-value">
+    <div class="sec-head reveal">
+      <h2>Value Proposition</h2>
+      <span class="label">Why brands work with us</span>
+    </div>
+    <div class="value-intro reveal">
+      <p class="home-display"><span class="home-en">A clear brand creates momentum.</span><span class="home-ko">브랜드의 본질이 선명해질수록, 고객의 경험과 비즈니스의 방향도 분명해집니다.</span></p>
+      <p class="home-support">OSMU STUDIO는 브랜드가 풀어야 할 문제를 먼저 정의하고, 그 답이 아이덴티티와 공간, 콘텐츠, 마케팅에서 일관되게 작동하도록 연결합니다.</p>
+    </div>
+    <div class="value-points">
+      <article class="value-point reveal">
+        <span class="value-index">01 / CLARIFY</span>
+        <h3>Make the reason clear.</h3>
+        <p>시장과 고객을 읽고, 브랜드가 존재해야 하는 이유와 고객이 반응해야 할 핵심을 선명하게 정의합니다.</p>
+      </article>
+      <article class="value-point reveal">
+        <span class="value-index">02 / CONNECT</span>
+        <h3>Make every touchpoint speak as one.</h3>
+        <p>CI/BI, 공간 브랜딩, 패키지, 콘텐츠와 마케팅이 서로 다른 결과물이 아니라 하나의 브랜드 언어가 되도록 연결합니다.</p>
+      </article>
+      <article class="value-point reveal">
+        <span class="value-index">03 / MOVE</span>
+        <h3>Turn identity into a working system.</h3>
+        <p>디자인에서 멈추지 않고 실제 운영과 고객의 다음 행동까지 고려해 브랜드가 시장에서 움직이는 구조를 만듭니다.</p>
+      </article>
+    </div>
+  </section>
+
   <!-- WORK -->
   <section id="work">
     <div class="sec-head reveal">
-      <h2>Selected Work</h2>
-      <span class="label" id="workCount">Index / 2026</span>
+      <h2>Selected Portfolio</h2>
+      <span class="label" id="workCount">Selected case studies</span>
     </div>
-    <div class="work-filters reveal" id="workFilters" role="group" aria-label="Work category filters">
+    <div class="work-filters reveal" id="workFilters" role="group" aria-label="Portfolio category filters">
       <button class="wf on" type="button" data-cat="all" aria-pressed="true">All <span class="filter-count">00</span></button>
-      <button class="wf" type="button" data-cat="branding" aria-pressed="false">Branding <span class="filter-count">00</span></button>
-      <button class="wf" type="button" data-cat="package" aria-pressed="false">Package <span class="filter-count">00</span></button>
-      <button class="wf" type="button" data-cat="space" aria-pressed="false">Space <span class="filter-count">00</span></button>
+      <button class="wf" type="button" data-cat="brand-strategy" aria-pressed="false">Brand Strategy <span class="filter-count">00</span></button>
+      <button class="wf" type="button" data-cat="identity-package" aria-pressed="false">Identity &amp; Package <span class="filter-count">00</span></button>
+      <button class="wf" type="button" data-cat="space-branding" aria-pressed="false">Space Branding <span class="filter-count">00</span></button>
+      <button class="wf" type="button" data-cat="campaign-marketing" aria-pressed="false">Campaign &amp; Marketing <span class="filter-count">00</span></button>
       <button class="wf" type="button" data-cat="video" aria-pressed="false">Brand Film <span class="filter-count">00</span></button>
     </div>
     <ul class="work-list" id="workList"></ul>
     <div class="reveal" style="padding-top:40px">
-      <a class="crumb" href="work.html">전체 프로젝트 보기 — View all work ↗</a>
+      <a class="crumb home-primary-link" href="work.html">포트폴리오 전체 보기 — View all portfolio ↗</a>
     </div>
   </section>
 
@@ -256,12 +293,12 @@
     </div>
     <div class="grid">
       <p class="big reveal">
-        OSMU STUDIO는 브랜드가 선택받아야 할 이유와 고객이 실제로 만나는 모든 장면을 하나의 전략으로 설계합니다.
-        Strategy into identity. Identity into experience.
+        <span class="home-en">We give brands a reason to be remembered.</span>
+        <span class="home-ko">브랜드가 선택받아야 할 이유와 고객이 실제로 만나는 모든 장면을 하나의 전략으로 설계합니다.</span>
       </p>
       <div class="col reveal">
-        <p>브랜드의 본질을 명확하게 정의하고, 그 생각이 선택과 경험으로 이어지도록 설계합니다.</p>
-        <p>브랜딩, CI/BI, 공간 브랜딩, 마케팅, 패키지, 영상까지 — 각 접점이 같은 방향을 말하도록 하나의 흐름으로 연결합니다.</p>
+        <p><span class="home-en">We define what a brand should stand for, then turn that point of view into a clear customer experience.</span><span class="home-ko">브랜드가 무엇을 위해 존재해야 하는지 정의하고, 그 생각이 고객의 선택과 경험으로 이어지도록 설계합니다.</span></p>
+        <p><span class="home-en">Branding, CI/BI, space branding, marketing, packaging, and brand film become one connected system.</span><span class="home-ko">브랜딩, CI/BI, 공간 브랜딩, 마케팅, 패키지, 브랜드 필름까지 각 접점이 같은 방향을 말하도록 하나의 흐름으로 연결합니다.</span></p>
         <p style="margin-top:26px"><a class="crumb" href="studio.html">스튜디오 더 알아보기 ↗</a></p>
       </div>
     </div>
@@ -270,6 +307,24 @@
       <div class="stat"><div class="stat-meta"><span class="stat-index">02</span><span class="stat-kicker">Cities worked in</span></div><div class="stat-value"><b id="statCities" data-count="0">0</b><span class="stat-unit">Cities</span></div></div>
       <div class="stat"><div class="stat-meta"><span class="stat-index">03</span><span class="stat-kicker">Projects delivered</span></div><div class="stat-value"><b id="statProjects" data-count="0">0</b><span class="stat-unit">Projects</span></div></div>
     </div>
+  </section>
+
+  <!-- CASE STUDY LOGIC -->
+  <section id="case-study" class="home-case">
+    <div class="sec-head reveal">
+      <h2>Case Study</h2>
+      <span class="label">From question to system</span>
+    </div>
+    <div class="case-intro reveal">
+      <p class="home-display"><span class="home-en">A project is more than a collection of outputs.</span><span class="home-ko">프로젝트는 여러 결과물을 모아놓은 것이 아니라, 하나의 명확한 결정이 고객의 모든 장면으로 움직이는 과정입니다.</span></p>
+      <p class="home-support">각 프로젝트는 다른 질문에서 시작하지만, 브랜드의 이유를 정의하고 실제 접점에 적용하며 다음 행동까지 설계한다는 원칙은 같습니다.</p>
+    </div>
+    <div class="case-grid">
+      <article class="case-step reveal"><span class="value-index">01 / QUESTION</span><h3>What should the brand be known for?</h3><p>사업의 목표와 고객의 기대 사이에서 브랜드가 반드시 소유해야 할 한 문장을 찾습니다.</p></article>
+      <article class="case-step reveal"><span class="value-index">02 / SYSTEM</span><h3>How can one idea stay consistent?</h3><p>전략을 아이덴티티, 공간, 콘텐츠와 마케팅으로 확장해 각 접점이 같은 인상을 만들게 합니다.</p></article>
+      <article class="case-step reveal"><span class="value-index">03 / EXPERIENCE</span><h3>What should customers remember?</h3><p>고객이 보고, 느끼고, 행동하는 흐름을 설계해 브랜드의 인상이 실제 관계로 이어지게 합니다.</p></article>
+    </div>
+    <div class="reveal case-link"><a class="crumb home-primary-link" href="work.html">프로젝트별 전략과 실행 보기 — Explore the portfolio ↗</a></div>
   </section>
 
   <!-- SERVICES -->
@@ -305,6 +360,50 @@
     </div>
   </section>
 
+  <!-- OSMU FRAMEWORK -->
+  <section id="framework" class="home-framework">
+    <div class="sec-head reveal">
+      <h2>OSMU Framework</h2>
+      <span class="label">How we build</span>
+    </div>
+    <div class="framework-intro reveal">
+      <p class="home-display"><span class="home-en">One source. Five movements.</span><span class="home-ko">하나의 브랜드 본질을 발견하고, 정의하고, 실제 경험으로 움직입니다.</span></p>
+    </div>
+    <div class="framework-steps">
+      <article class="framework-step reveal"><span class="framework-number">01</span><h3>Discover</h3><p>비즈니스와 시장, 고객의 맥락을 읽고 해결해야 할 문제를 발견합니다.</p></article>
+      <article class="framework-step reveal"><span class="framework-number">02</span><h3>Define</h3><p>브랜드의 이유와 포지셔닝, 핵심 메시지를 정의해 판단의 기준을 세웁니다.</p></article>
+      <article class="framework-step reveal"><span class="framework-number">03</span><h3>Design</h3><p>전략을 아이덴티티와 공간, 콘텐츠의 경험 시스템으로 설계합니다.</p></article>
+      <article class="framework-step reveal"><span class="framework-number">04</span><h3>Deploy</h3><p>정의된 시스템을 실제 채널과 접점에 적용해 고객과 만나는 장면을 만듭니다.</p></article>
+      <article class="framework-step reveal"><span class="framework-number">05</span><h3>Grow</h3><p>런칭 이후에도 브랜드가 시장과 고객 사이에서 계속 작동하도록 확장합니다.</p></article>
+    </div>
+  </section>
+
+  <!-- WHY OSMU + FAQ -->
+  <section id="why-osmu" class="home-why">
+    <div class="sec-head reveal">
+      <h2>Why OSMU</h2>
+      <span class="label">A partner for the whole brand</span>
+    </div>
+    <div class="why-grid">
+      <article class="why-point reveal"><span class="value-index">01</span><h3>Strategy in the room</h3><p>표현을 먼저 만들지 않고, 브랜드가 풀어야 할 문제와 선택의 기준부터 함께 정리합니다.</p></article>
+      <article class="why-point reveal"><span class="value-index">02</span><h3>One connected team</h3><p>브랜딩, CI/BI, 공간, 콘텐츠와 마케팅을 분리된 외주가 아니라 하나의 흐름으로 연결합니다.</p></article>
+      <article class="why-point reveal"><span class="value-index">03</span><h3>Built for real touchpoints</h3><p>전략이 발표 자료에 머무르지 않고 고객이 실제로 만나는 장면에서 작동하도록 설계합니다.</p></article>
+    </div>
+  </section>
+
+  <section id="faq" class="home-faq">
+    <div class="sec-head reveal">
+      <h2>FAQ</h2>
+      <span class="label">Before we begin</span>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item reveal"><summary>어떤 프로젝트를 함께할 수 있나요?</summary><p>브랜드 전략과 브랜딩, CI/BI, 공간 브랜딩, 패키지, 마케팅, 브랜드 필름 등 브랜드의 방향을 정의하고 고객 접점으로 확장하는 프로젝트를 함께합니다.</p></details>
+      <details class="faq-item reveal"><summary>기존 브랜드를 리뉴얼하는 것도 가능한가요?</summary><p>가능합니다. 현재 브랜드가 가진 자산과 고객의 인식을 먼저 살펴보고, 지켜야 할 것과 바꿔야 할 것을 구분해 리뉴얼의 범위를 설계합니다.</p></details>
+      <details class="faq-item reveal"><summary>프로젝트는 어떻게 시작하나요?</summary><p>문의 내용을 바탕으로 현재 상황과 목표를 간단히 확인한 뒤, 필요한 범위와 진행 방식을 정리해 첫 미팅을 제안드립니다.</p></details>
+      <details class="faq-item reveal"><summary>한 가지 서비스만 의뢰해도 되나요?</summary><p>가능합니다. 다만 개별 결과물이 전체 브랜드 방향과 연결될 수 있도록 현재 상황과 다음 단계까지 함께 고려해 제안드립니다.</p></details>
+    </div>
+  </section>
+
   <!-- CONTACT -->
   <section id="contact">
     <div class="sec-head reveal">
@@ -312,7 +411,7 @@
       <span class="label">Start a project</span>
     </div>
     <div class="contact-grid">
-      <h3 class="reveal">새 프로젝트가 있으신가요?<br><a data-s="email" href="mailto:osmu_studio@naver.com">osmu_studio@naver.com</a></h3>
+      <h3 class="reveal"><span class="home-en">Ready to make the next brand move?</span><span class="home-ko">브랜드의 다음 장면을 함께 설계하시겠습니까?</span><br><a data-s="email" href="mailto:osmu_studio@naver.com">osmu_studio@naver.com</a></h3>
       <div class="c-info reveal">
         <div><span class="label">Studio</span><span data-s="address">8F, 23 Buldang 17-gil, Seobuk-gu, Cheonan-si, Chungcheongnam-do, Korea</span></div>
             <div><span class="label">Inquiries</span>공간 브랜딩 · 브랜딩 · CI/BI · 마케팅 · 영상 제안 문의</div>
@@ -329,7 +428,7 @@
   <div class="foot-bar">
     <span>© 2026 OSMU STUDIO</span>
     <nav class="foot-nav">
-      <a href="work.html">Work</a>
+      <a href="work.html">Portfolio</a>
       <a href="studio.html">Studio</a>
       <a href="services.html">Services</a>
       <a href="contact.html">Contact</a>
@@ -350,7 +449,7 @@
 </a>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="work-categories.js?v=1"></script>
-<script src="osmu.js?v=25&rev=29"></script>
+<script src="work-categories.js?v=3"></script>
+<script src="osmu.js?v=25&rev=33"></script>
 </body>
 </html>

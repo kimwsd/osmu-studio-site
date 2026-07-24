@@ -216,6 +216,15 @@ if(typeof window.bindHoverCursor !== 'function') window.bindHoverCursor = functi
   addEventListener('scroll', ()=> header.classList.toggle('is-scrolled', isSub || scrollY > 80));
 })();
 
+/* ============ home scroll cue ============ */
+(function(){
+  const cue = document.querySelector('.home-scroll-cue');
+  if(!cue) return;
+  const updateCue = ()=>cue.classList.toggle('is-hidden', scrollY > 90);
+  updateCue();
+  addEventListener('scroll', updateCue, {passive:true});
+})();
+
 /* ============ mobile menu overlay ============ */
 (function(){
   const overlay = document.getElementById('menuOverlay');
@@ -370,25 +379,36 @@ function movePreview(e){
 (async function(){
   const workList = document.getElementById('workList');
   if(!workList) return;
-  const all = window.PROJECTS_OVERRIDE || await osmuFetchAll();
+  const fetched = window.PROJECTS_OVERRIDE || await osmuFetchAll();
   const count = document.getElementById('workCount');
   const filters = document.getElementById('workFilters');
-  const cardMode = !document.body.classList.contains('subpage')
+  const homeMode = !document.body.classList.contains('subpage');
+  const cardMode = homeMode
     || document.body.classList.contains('work-page');
+  const all = homeMode
+    ? (()=>{
+        const mediaProjects = fetched.filter(p => (p.images && p.images.length) || (p.videos && p.videos.length));
+        const seen = new Set(mediaProjects.map(p => p.slug));
+        return [...mediaProjects, ...FEATURED_PROJECTS.filter(p => !seen.has(p.slug))].slice(0, 6);
+      })()
+    : fetched;
   const workCategories = window.OSMUWorkCategories;
   const getWorkCategories = workCategories
     ? workCategories.getWorkCategories
     : category => [String(category || '').trim().toLowerCase()];
   const filterLabels = workCategories
     ? workCategories.CATEGORY_LABELS
-    : {all:'All', branding:'Branding', package:'Package', space:'Space', video:'Brand Film'};
+    : {all:'All', 'brand-strategy':'Brand Strategy', 'identity-package':'Identity & Package', 'space-branding':'Space Branding', 'campaign-marketing':'Campaign & Marketing', video:'Brand Film'};
 
   function matches(p, cat){
     return cat === 'all' || getWorkCategories(p.cat).includes(cat);
   }
 
-  const requestedCat = new URLSearchParams(location.search).get('cat')
+  const requestedCatRaw = new URLSearchParams(location.search).get('cat')
     || new URLSearchParams(location.search).get('work');
+  const requestedCat = workCategories && workCategories.normalizeWorkCategoryId
+    ? workCategories.normalizeWorkCategoryId(requestedCatRaw)
+    : requestedCatRaw;
   const hasRequestedCat = filters && [...filters.querySelectorAll('.wf')]
     .some(btn => btn.dataset.cat === requestedCat);
   let activeCat = hasRequestedCat ? requestedCat : 'all';
@@ -404,6 +424,10 @@ function movePreview(e){
       a.href = projUrl(p);
       const cover = p.images && p.images[0];
       const video = p.videos && p.videos[0];
+      const categoryDisplay = getWorkCategories(p.cat)
+        .map(id => filterLabels[id])
+        .filter(Boolean)
+        .join(' · ') || p.cat;
       if(cardMode){
         a.innerHTML = `<div class="work-card-media">${cover
           ? `<img src="${cover}" alt="${p.name}" loading="lazy">`
@@ -412,12 +436,12 @@ function movePreview(e){
           : previewSVG(i, p.name)}</div>
           <div class="work-card-meta"><span class="idx">${String(i+1).padStart(2,'0')}</span>
           <span class="name">${p.name}</span>
-          <span class="cat">${p.type ? p.type + ' · ' + p.cat : p.cat}</span>
+          <span class="cat">${p.type ? p.type + ' · ' + categoryDisplay : categoryDisplay}</span>
           <span class="year">${dateStr(p)}</span><span class="go">↗</span></div>`;
       }else{
         a.innerHTML = `<span class="idx">${String(i+1).padStart(2,'0')}</span>
           <span class="name">${p.name}</span>
-          <span class="cat">${p.type ? p.type + ' · ' + p.cat : p.cat}</span>
+          <span class="cat">${p.type ? p.type + ' · ' + categoryDisplay : categoryDisplay}</span>
           <span class="year">${dateStr(p)}</span>
           <span class="go">↗</span>`;
       }
@@ -430,7 +454,7 @@ function movePreview(e){
       }
       workList.appendChild(a);
     });
-    const label = activeCat === 'all' ? 'Selected projects' : filterLabels[activeCat];
+    const label = activeCat === 'all' ? 'Selected portfolio' : filterLabels[activeCat];
     if(count) count.textContent = `${label} — ${String(list.length).padStart(2,'0')}`;
     if(filters){
       filters.querySelectorAll('.wf').forEach(btn=>{
