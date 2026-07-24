@@ -373,7 +373,8 @@ function movePreview(e){
   const all = window.PROJECTS_OVERRIDE || await osmuFetchAll();
   const count = document.getElementById('workCount');
   const filters = document.getElementById('workFilters');
-  const cardMode = !document.body.classList.contains('subpage');
+  const cardMode = !document.body.classList.contains('subpage')
+    || document.body.classList.contains('work-page');
   const workCategories = window.OSMUWorkCategories;
   const getWorkCategories = workCategories
     ? workCategories.getWorkCategories
