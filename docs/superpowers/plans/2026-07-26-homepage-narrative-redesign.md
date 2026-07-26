@@ -542,7 +542,7 @@ Within the existing responsive blocks, add:
 Change only `home.html` and `index.html`:
 
 ```html
-<link rel="stylesheet" href="osmu.css?v=30">
+<link rel="stylesheet" href="osmu.css?v=36">
 ```
 
 - [ ] **Step 7: Run the narrative and existing focused tests**

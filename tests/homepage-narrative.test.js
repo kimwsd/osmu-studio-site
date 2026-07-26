@@ -7,6 +7,7 @@ const root = path.join(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const home = read('home.html');
 const index = read('index.html');
+const css = read('osmu.css');
 
 const sectionPosition = (source, id) => source.indexOf(`<section id="${id}"`);
 
@@ -72,4 +73,17 @@ test('keeps semantic and structured data foundations valid', () => {
   blocks.forEach(match => assert.doesNotThrow(() => JSON.parse(match[1])));
   assert.match(home, /"@type": "FAQPage"/);
   assert.equal((home.match(/class="faq-item reveal"/g) || []).length, 4);
+});
+
+test('provides responsive styles for the new narrative sections', () => {
+  assert.match(home, /osmu\.css\?v=36/);
+  assert.match(css, /\.hero-actions\{/);
+  assert.match(css, /\.point-principles\{/);
+  assert.match(css, /\.approach-steps\{/);
+  assert.match(css, /\.svc-detail-link\{/);
+  assert.match(css, /\.moment-grid\{/);
+  assert.match(
+    css,
+    /@media\(max-width:560px\)\{[\s\S]*?\.point-principles,[\s\S]*?\.approach-steps,[\s\S]*?\.moment-grid\{grid-template-columns:1fr\}/,
+  );
 });
