@@ -40,11 +40,16 @@ test('removes duplicated legacy arguments', () => {
   assert.doesNotMatch(home, /<h2>Value Proposition<\/h2>/);
 });
 
-test('adds clear hero actions and inquiry timing', () => {
+test('keeps the hero focused without duplicate navigation controls', () => {
+  const hero = home.match(/<section class="hero[\s\S]*?<\/section>/)?.[0] || '';
   assert.doesNotMatch(home, /Branding partner/i);
-  assert.match(home, /class="hero-actions"/);
-  assert.match(home, /href="work\.html"[^>]*>포트폴리오 보기/);
-  assert.match(home, /href="contact\.html"[^>]*>프로젝트 문의하기/);
+  assert.ok(hero, 'hero section is missing');
+  assert.doesNotMatch(hero, /<a\b/);
+  assert.doesNotMatch(home, /class="hero-actions"/);
+  assert.doesNotMatch(css, /\.hero-actions\{/);
+});
+
+test('shows when OSMU is the right partner', () => {
   assert.match(home, /The moment your brand needs to move as one\./);
   [
     '새로운 브랜드나 사업을 시작할 때',
@@ -76,8 +81,7 @@ test('keeps semantic and structured data foundations valid', () => {
 });
 
 test('provides responsive styles for the new narrative sections', () => {
-  assert.match(home, /osmu\.css\?v=36/);
-  assert.match(css, /\.hero-actions\{/);
+  assert.match(home, /osmu\.css\?v=37/);
   assert.match(css, /\.point-principles\{/);
   assert.match(css, /\.approach-steps\{/);
   assert.match(css, /\.svc-detail-link\{/);

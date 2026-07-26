@@ -710,16 +710,6 @@ body:not(.subpage) .hero-korean{
   margin-top:32px;font-size:clamp(15px,1.7vw,22px);line-height:1.5;
   letter-spacing:-.04em;word-break:keep-all;
 }
-body:not(.subpage) .hero-actions{
-  display:flex;align-items:center;gap:12px;margin-top:30px;flex-wrap:wrap;
-}
-body:not(.subpage) .hero-action{
-  display:inline-flex;align-items:center;justify-content:center;min-height:44px;
-  padding:0 18px;border:1px solid var(--ink);font-size:11px;font-weight:600;
-  letter-spacing:.12em;text-transform:uppercase;transition:background .25s,color .25s;
-}
-body:not(.subpage) .hero-action-primary,
-body:not(.subpage) .hero-action:hover{background:var(--ink);color:var(--white)}
 body:not(.subpage) .hero-artifact-strip{
   max-width:1500px;margin:38px auto 0;padding-left:62px;
   display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;
@@ -846,8 +836,6 @@ body:not(.subpage) footer{margin-top:32px}
   body:not(.subpage) .hero-type-led{padding-top:100px;padding-bottom:68px}
   body:not(.subpage) .hero-type-grid{min-height:390px}
   body:not(.subpage) .hero-statement{font-size:clamp(38px,11.7vw,60px)}
-  body:not(.subpage) .hero-actions{margin-top:24px;gap:8px}
-  body:not(.subpage) .hero-action{min-height:42px;padding:0 13px;font-size:9px}
   body:not(.subpage) .hero-artifact-strip{padding-left:0;margin-top:42px}
   body:not(.subpage) .hero-artifact-strip figcaption{font-size:8px;gap:7px}
   body:not(.subpage) .home-scroll-cue{font-size:8px;gap:9px}
