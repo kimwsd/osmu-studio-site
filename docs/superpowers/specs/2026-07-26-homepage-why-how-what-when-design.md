@@ -43,7 +43,8 @@ Purpose: Establish the studio's reason for existing and give visitors two clear 
 
 Eyebrow:
 
-> Branding Partner / Strategy · Identity · Experience
+- Remove the `Branding Partner / Strategy · Identity · Experience` eyebrow entirely.
+- The hero should begin with the main slogan below the fixed navigation.
 
 Headline:
 

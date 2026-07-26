@@ -82,6 +82,7 @@ test('removes duplicated legacy arguments', () => {
 });
 
 test('adds clear hero actions and inquiry timing', () => {
+  assert.doesNotMatch(home, /Branding partner/i);
   assert.match(home, /class="hero-actions"/);
   assert.match(home, /href="work\.html"[^>]*>포트폴리오 보기/);
   assert.match(home, /href="contact\.html"[^>]*>프로젝트 문의하기/);
@@ -150,7 +151,7 @@ Do not stage any pre-existing modified test or QA file.
 
 - [ ] **Step 1: Replace the hero supporting copy and add actions**
 
-In both `home.html` and `index.html`, keep the current hero eyebrow and headline, then use:
+In both `home.html` and `index.html`, remove the existing `.hero-eyebrow` element entirely, keep the headline, then use:
 
 ```html
 <p class="hero-korean">브랜드가 존재해야 할 이유를 정의하고, 그 생각이 아이덴티티·공간·콘텐츠·마케팅에서 하나의 경험으로 작동하게 합니다.</p>
