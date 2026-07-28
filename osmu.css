@@ -856,8 +856,8 @@ body:not(.subpage) #capabilities .sec-head{border-color:var(--ink)}
 body:not(.subpage) #capabilities .sec-head .label{color:var(--grey)}
 body:not(.subpage) #capabilities .home-service-intro{padding:34px 0 0;max-width:620px}
 body:not(.subpage) #capabilities .home-service-intro p{font-size:clamp(17px,2vw,24px);line-height:1.55;letter-spacing:-.04em;word-break:keep-all}
-body:not(.subpage) #capabilities .home-capability-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
-@media(max-width:1100px){body:not(.subpage) #capabilities .home-capability-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+body:not(.subpage) #capabilities .home-capability-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:1100px){body:not(.subpage) #capabilities .home-capability-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:860px){body:not(.subpage) #capabilities .home-capability-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){body:not(.subpage) #capabilities .home-capability-grid{grid-template-columns:1fr}}
 body:not(.subpage) #capabilities .svc{border-color:var(--line)}
