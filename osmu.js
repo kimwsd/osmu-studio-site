@@ -504,7 +504,7 @@ function movePreview(e){
       }
       workList.appendChild(a);
     });
-    const label = activeCat === 'all' ? 'Selected portfolio' : filterLabels[activeCat];
+    const label = activeCat === 'all' ? 'Services in practice' : filterLabels[activeCat];
     if(count) count.textContent = `${label} — ${String(list.length).padStart(2,'0')}`;
     if(filters){
       filters.querySelectorAll('.wf').forEach(btn=>{
