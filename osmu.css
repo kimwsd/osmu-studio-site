@@ -47,17 +47,6 @@ table.legal-tb th{background:#fafafa;font-weight:500}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer;color:inherit;-webkit-tap-highlight-color:transparent}
 
-/* ---------- custom cursor ---------- */
-.cursor{
-  position:fixed;top:0;left:0;width:8px;height:8px;border-radius:50%;
-  background:var(--ink);pointer-events:none;z-index:9999;
-  transform:translate(-50%,-50%);
-  transition:width .25s,height .25s,background .25s;
-  mix-blend-mode:difference;background:#fff;
-}
-.cursor.is-hover{width:40px;height:40px}
-@media (hover:none){.cursor{display:none}}
-
 /* ---------- micro label ---------- */
 .label{
   font-size:10px;letter-spacing:.18em;text-transform:uppercase;
@@ -315,8 +304,6 @@ footer{
 body.admin-mode .site{display:none}
 body.admin-mode .loader{display:none}
 body.admin-mode .admin{display:block}
-body.admin-mode .cursor{display:none}
-
 .admin-login{
   min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
 }
