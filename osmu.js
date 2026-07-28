@@ -256,6 +256,40 @@ if(typeof window.bindHoverCursor !== 'function') window.bindHoverCursor = functi
   overlay.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>overlay.classList.remove('open')));
 })();
 
+/* ============ home service ticker ============ */
+(function(){
+  const tracks = [...document.querySelectorAll('.marquee-track')];
+  if(!tracks.length) return;
+  const bases = new WeakMap();
+  const rebuild = track=>{
+    const viewport = track.parentElement;
+    const base = bases.get(track);
+    if(!viewport || !base || !base.length) return;
+    track.style.animation = 'none';
+    track.replaceChildren();
+    let copies = 0;
+    do{
+      base.forEach(node=>track.appendChild(node.cloneNode(true)));
+      copies++;
+    }while(copies < 2 || track.scrollWidth < viewport.clientWidth * 2);
+    if(copies % 2){
+      base.forEach(node=>track.appendChild(node.cloneNode(true)));
+      copies++;
+    }
+    track.dataset.marqueeCopies = copies;
+    track.style.animation = '';
+  };
+  tracks.forEach(track=>{
+    bases.set(track, [...track.children].map(node=>node.cloneNode(true)));
+    rebuild(track);
+  });
+  let resizeTimer;
+  addEventListener('resize',()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(()=>tracks.forEach(rebuild), 150);
+  });
+})();
+
 /* ============ home service accordion ============ */
 (function(){
   const items = document.querySelectorAll('#services .svc');
