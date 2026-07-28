@@ -210,6 +210,26 @@ if(typeof window.bindHoverCursor !== 'function') window.bindHoverCursor = functi
 
 /* ============ header scroll state ============ */
 (function(){
+  const links = document.querySelectorAll('header nav.label a');
+  if(!links.length) return;
+  const currentFile = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  let sectionFile = currentFile;
+  if(currentFile === 'index.html' || currentFile === 'home.html') sectionFile = 'home.html';
+  else if(currentFile === 'work.html' || currentFile === 'project.html' || currentFile.startsWith('project-')) sectionFile = 'work.html';
+  else if(currentFile === 'services.html' || currentFile === 'service.html' || currentFile.startsWith('service-')) sectionFile = 'services.html';
+  links.forEach(link=>{
+    const linkFile = (new URL(link.href, location.href).pathname.split('/').pop() || 'index.html').toLowerCase();
+    const isCurrent = (sectionFile === 'home.html' && (linkFile === 'home.html' || linkFile === 'index.html'))
+      || linkFile === sectionFile;
+    if(isCurrent){
+      link.setAttribute('aria-current','page');
+    }else{
+      link.removeAttribute('aria-current');
+    }
+  });
+})();
+
+(function(){
   const header = document.getElementById('header');
   if(!header) return;
   const isSub = document.body.classList.contains('subpage');
