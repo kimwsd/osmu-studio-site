@@ -854,6 +854,8 @@ body:not(.subpage) #studio .col p{font-size:clamp(16px,1.35vw,19px);line-height:
 body:not(.subpage) #capabilities{background:var(--white);color:var(--ink);border-top:1px solid var(--ink)}
 body:not(.subpage) #capabilities .sec-head{border-color:var(--ink)}
 body:not(.subpage) #capabilities .sec-head .label{color:var(--grey)}
+body:not(.subpage) #capabilities .home-service-intro{padding:34px 0 0;max-width:620px}
+body:not(.subpage) #capabilities .home-service-intro p{font-size:clamp(17px,2vw,24px);line-height:1.55;letter-spacing:-.04em;word-break:keep-all}
 body:not(.subpage) #capabilities .svc{border-color:var(--line)}
 body:not(.subpage) #capabilities .svc-head{padding:28px 0}
 body:not(.subpage) #capabilities .svc-head h3{font-size:clamp(26px,4.2vw,66px);letter-spacing:-.06em;text-transform:none;font-weight:500}
