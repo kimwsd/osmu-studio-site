@@ -406,11 +406,7 @@ function movePreview(e){
   const cardMode = homeMode
     || document.body.classList.contains('work-page');
   const all = homeMode
-    ? (()=>{
-        const mediaProjects = fetched.filter(p => (p.images && p.images.length) || (p.videos && p.videos.length));
-        const seen = new Set(mediaProjects.map(p => p.slug));
-        return [...mediaProjects, ...FEATURED_PROJECTS.filter(p => !seen.has(p.slug))].slice(0, 6);
-      })()
+    ? fetched.filter(p => (p.images && p.images.length) || (p.videos && p.videos.length)).slice(0, 6)
     : fetched;
   const workCategories = window.OSMUWorkCategories;
   const getWorkCategories = workCategories
