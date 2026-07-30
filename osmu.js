@@ -24,10 +24,14 @@ const PROJECTS = [
 /* Home hero showcases use their own editorial detail pages until they are
    replaced with approved client case studies in the admin. */
 const FEATURED_PROJECTS = [
-  {slug:'identity-system', name:'IDENTITY SYSTEM', cat:'Brand Identity', type:'Branding', year:2026, month:6, loc:'OSMU STUDIO', summary:'브랜드의 전략을 오래 쓰이는 시각 체계로 번역합니다.', body:'브랜드가 어떤 이유로 선택받아야 하는지 정의하고, 그 방향을 로고와 그래픽 시스템으로 확장했습니다.\n\n아이덴티티는 한 장의 결과물이 아니라 다양한 접점에서 같은 인상을 만드는 운영 언어입니다.', images:['assets-brand-guidelines.png']},
-  {slug:'package-system', name:'PACKAGE SYSTEM', cat:'Packaging', type:'Package', year:2026, month:6, loc:'OSMU STUDIO', summary:'제품의 첫 만남을 브랜드 경험으로 설계합니다.', body:'패키지는 제품을 감싸는 표면을 넘어 브랜드가 고객과 처음 만나는 장면입니다. 형태, 정보, 소재와 그래픽의 관계를 정리해 기억에 남는 시스템을 만듭니다.\n\n작은 단위의 적용에서도 브랜드의 태도가 흔들리지 않도록 확장 가능한 기준을 설계했습니다.', images:['assets-packaging-system.png']},
-  {slug:'campaign-graphic', name:'CAMPAIGN GRAPHIC', cat:'Brand Identity', type:'Branding', year:2026, month:6, loc:'OSMU STUDIO', summary:'캠페인의 메시지를 한눈에 읽히는 장면으로 만듭니다.', body:'캠페인의 핵심 메시지를 선명한 비주얼 언어로 압축하고, 매체와 포맷이 달라져도 같은 인상을 남기도록 그래픽 시스템을 구성했습니다.\n\n전략에서 출발한 한 문장이 포스터, 디지털 콘텐츠, 현장 장면으로 자연스럽게 이어지도록 설계합니다.', images:['assets-campaign-poster.png']},
-  {slug:'brand-film', name:'BRAND FILM', cat:'Brand Film', type:'Brand Film', year:2026, month:6, loc:'OSMU STUDIO', summary:'브랜드의 태도와 분위기를 한 장면의 기억으로 남깁니다.', body:'브랜드가 무엇을 말하는지보다 고객이 무엇을 느끼고 기억해야 하는지에서 출발합니다. 리듬, 이미지, 사운드와 모션을 하나의 흐름으로 엮어 브랜드의 성격을 영상으로 번역합니다.\n\n기획부터 편집과 모션 그래픽까지, 화면의 모든 요소가 같은 전략을 향하도록 완성합니다.', images:['assets-brand-film.png']}
+  {slug:'identity-system', name:'IDENTITY SYSTEM', cat:'Brand Identity', type:'Branding', year:2026, month:6, loc:'OSMU STUDIO', summary:'브랜드의 전략을 오래 쓰이는 시각 체계로 번역합니다.', body:'브랜드가 어떤 이유로 선택받아야 하는지 정의하고, 그 방향을 로고와 그래픽 시스템으로 확장했습니다.\n\n아이덴티티는 한 장의 결과물이 아니라 다양한 접점에서 같은 인상을 만드는 운영 언어입니다.', images:['assets/work-generated/identity-system-01.webp','assets/work-generated/identity-system-02.webp']},
+  {slug:'package-system', name:'PACKAGE SYSTEM', cat:'Packaging', type:'Package', year:2026, month:6, loc:'OSMU STUDIO', summary:'제품의 첫 만남을 브랜드 경험으로 설계합니다.', body:'패키지는 제품을 감싸는 표면을 넘어 브랜드가 고객과 처음 만나는 장면입니다. 형태, 정보, 소재와 그래픽의 관계를 정리해 기억에 남는 시스템을 만듭니다.\n\n작은 단위의 적용에서도 브랜드의 태도가 흔들리지 않도록 확장 가능한 기준을 설계했습니다.', images:['assets/work-generated/package-system-01.webp','assets/work-generated/package-system-02.webp']},
+  {slug:'campaign-graphic', name:'CAMPAIGN GRAPHIC', cat:'Brand Identity', type:'Branding', year:2026, month:6, loc:'OSMU STUDIO', summary:'캠페인의 메시지를 한눈에 읽히는 장면으로 만듭니다.', body:'캠페인의 핵심 메시지를 선명한 비주얼 언어로 압축하고, 매체와 포맷이 달라져도 같은 인상을 남기도록 그래픽 시스템을 구성했습니다.\n\n전략에서 출발한 한 문장이 포스터, 디지털 콘텐츠, 현장 장면으로 자연스럽게 이어지도록 설계합니다.', images:['assets/work-generated/campaign-graphic-01.webp','assets/work-generated/campaign-graphic-02.webp']},
+  {slug:'brand-film', name:'BRAND FILM', cat:'Brand Film', type:'Brand Film', year:2026, month:6, loc:'OSMU STUDIO', summary:'브랜드의 태도와 분위기를 한 장면의 기억으로 남깁니다.', body:'브랜드가 무엇을 말하는지보다 고객이 무엇을 느끼고 기억해야 하는지에서 출발합니다. 리듬, 이미지, 사운드와 모션을 하나의 흐름으로 엮어 브랜드의 성격을 영상으로 번역합니다.\n\n기획부터 편집과 모션 그래픽까지, 화면의 모든 요소가 같은 전략을 향하도록 완성합니다.', images:['assets/work-generated/brand-film-01.webp','assets/work-generated/brand-film-02.webp']},
+  {slug:'space-experience', name:'SPACE EXPERIENCE', cat:'Space Branding', type:'Spatial', year:2026, month:5, loc:'OSMU STUDIO', summary:'브랜드의 전략을 머무르고 움직이는 공간 경험으로 확장합니다.', body:'브랜드가 가진 태도를 동선, 소재, 빛, 사인과 그래픽으로 번역해 고객이 몸으로 이해하는 경험을 설계합니다.', images:['assets/work-generated/space-experience-01.webp','assets/work-generated/space-experience-02.webp']},
+  {slug:'brand-activation', name:'BRAND ACTIVATION', cat:'Campaign & Marketing', type:'Campaign', year:2026, month:4, loc:'OSMU STUDIO', summary:'한 번의 메시지가 다양한 채널에서 같은 움직임을 만들게 합니다.', body:'캠페인의 한 문장을 오프라인 장면, 디지털 콘텐츠와 고객 행동까지 이어지는 실행 시스템으로 만듭니다.', images:['assets/work-generated/brand-activation-01.webp','assets/work-generated/brand-activation-02.webp']},
+  {slug:'creative-collaboration', name:'CREATIVE COLLABORATION', cat:'Brand Strategy', type:'Strategy', year:2026, month:3, loc:'OSMU STUDIO', summary:'전략과 제작이 한 팀 안에서 같은 기준으로 움직입니다.', body:'리서치, 전략, 디자인과 제작이 분리되지 않도록 하나의 기준을 공유하며 브랜드의 방향을 완성합니다.', images:['assets/work-generated/creative-collaboration-01.webp','assets/work-generated/creative-collaboration-02.webp']},
+  {slug:'film-production', name:'FILM PRODUCTION', cat:'Brand Film', type:'Film', year:2026, month:2, loc:'OSMU STUDIO', summary:'브랜드의 생각을 장면과 리듬으로 기억하게 만듭니다.', body:'기획과 콘티부터 촬영, 편집과 모션그래픽까지 브랜드의 태도가 모든 프레임에 남도록 제작합니다.', images:['assets/work-generated/film-production-01.webp','assets/work-generated/film-production-02.webp']}
 ];
 const FEATURED_BY_SLUG = new Map(FEATURED_PROJECTS.map(p => [p.slug, p]));
 /* 기존 6개는 전용 정적 페이지, 새 프로젝트는 동적 템플릿(project.html?slug=) */
@@ -92,11 +96,11 @@ window.sb = sb;
 window.SB_URL = SB_URL; window.SB_ANON = SB_ANON;   // admin이 비영구 세션 클라이언트를 만들 때 사용
 const normProj = p => ({...p, images: Array.isArray(p.images) ? p.images : [], videos: Array.isArray(p.videos) ? p.videos : []});
 async function osmuFetchAll(){
-  if(!sb) return PROJECTS.map(p=>({...p, images:[]}));
+  if(!sb) return FEATURED_PROJECTS.map(normProj);
   const { data, error } = await sb.from('projects').select('*')
     .order('sort_order',{ascending:false}).order('created_at',{ascending:false});
-  if(error){ console.error('[osmu] fetchAll', error); return PROJECTS.map(p=>({...p, images:[]})); }
-  return (data||[]).map(normProj);
+  if(error){ console.error('[osmu] fetchAll', error); return FEATURED_PROJECTS.map(normProj); }
+  return data && data.length ? data.map(normProj) : FEATURED_PROJECTS.map(normProj);
 }
 async function osmuFetchOne(slug){
   const local = PROJECTS.find(x=>x.slug===slug) || FEATURED_BY_SLUG.get(slug);
@@ -110,13 +114,19 @@ window.osmuFetchOne = osmuFetchOne;
 
 /* ============ site settings (admin Settings → 사이트 반영) ============
    Fills any element with data-s="email|instagram|address|hours|phone". */
+function osmuSafeExternalUrl(value){
+  try{
+    const url = new URL(String(value || ''));
+    return url.protocol === 'https:' ? url.href : '';
+  }catch(_){ return ''; }
+}
 async function osmuApplySettings(){
   if(!sb) return;
   const { data, error } = await sb.from('settings').select('*').eq('id',1).maybeSingle();
   if(error || !data) return;
   const q = sel => document.querySelectorAll(sel);
   if(data.email) q('[data-s="email"]').forEach(el=>{ el.textContent = data.email; if(el.tagName==='A') el.href = 'mailto:'+data.email; });
-  if(data.instagram) q('[data-s="instagram"]').forEach(el=>{ if(el.tagName==='A') el.href = data.instagram; });
+  if(data.instagram && osmuSafeExternalUrl(data.instagram)) q('[data-s="instagram"]').forEach(el=>{ if(el.tagName==='A') el.href = osmuSafeExternalUrl(data.instagram); });
   if(data.address) q('[data-s="address"]').forEach(el=> el.textContent = data.address);
   if(data.hours)   q('[data-s="hours"]').forEach(el=> el.textContent = data.hours);
   q('[data-s="phone"]').forEach(el=>{
@@ -155,6 +165,175 @@ function osmuSetMeta(o){
   upd('meta','twitter:description', o.description);
 }
 window.osmuSetMeta = osmuSetMeta;
+
+/* ============ shared public navigation (matches the homepage) ============ */
+(function(){
+  if(!document.body.classList.contains('subpage')) return;
+  const header = document.getElementById('header');
+  if(!header) return;
+
+  header.classList.add('site-header-unified');
+  const nav = header.querySelector('nav.label');
+  const destinations = [
+    {href:'work.html', label:'Work'},
+    {href:'studio.html', label:'About'},
+    {href:'services.html', label:'Service'},
+    {href:'process.html', label:'Process'},
+    {href:'contact.html', label:'Contact'}
+  ];
+  if(nav){
+    nav.setAttribute('aria-label', '주요 메뉴');
+    nav.replaceChildren(...destinations.map(item=>{
+      const link = document.createElement('a');
+      link.href = item.href;
+      link.textContent = item.label;
+      return link;
+    }));
+  }
+
+  const menuButton = header.querySelector('#menuBtn');
+  if(menuButton && !header.querySelector('.header-actions')){
+    menuButton.type = 'button';
+    menuButton.setAttribute('aria-label', '메뉴 열기');
+    const actions = document.createElement('div');
+    actions.className = 'header-actions';
+    menuButton.before(actions);
+    actions.append(menuButton);
+  }
+
+  const overlay = document.getElementById('menuOverlay');
+  if(overlay){
+    overlay.setAttribute('aria-label', '모바일 메뉴');
+    const close = overlay.querySelector('#menuClose');
+    if(close) close.type = 'button';
+    overlay.querySelectorAll('a.big').forEach(link=>link.remove());
+    destinations.forEach(item=>{
+      const link = document.createElement('a');
+      link.className = 'big';
+      link.href = item.href;
+      link.textContent = item.label;
+      overlay.appendChild(link);
+    });
+  }
+})();
+
+/* ============ process: capability tabs ============ */
+(function(){
+  const tabs = [...document.querySelectorAll('[data-process-cap]')];
+  if(!tabs.length) return;
+
+  const panel = document.querySelector('.process-capability-panel');
+  const title = panel && panel.querySelector('[data-process-title]');
+  const description = panel && panel.querySelector('[data-process-description]');
+  const image = panel && panel.querySelector('[data-process-image]');
+  const detailTitles = panel ? [...panel.querySelectorAll('[data-process-detail-title]')] : [];
+  const detailBodies = panel ? [...panel.querySelectorAll('[data-process-detail-body]')] : [];
+  if(!panel || !title || !description || !image) return;
+
+  const capabilities = {
+    branding: {
+      title:'Branding system',
+      description:'선택받아야 할 이유를 정의하고, 모든 접점이 같은 방향으로 움직일 수 있는 브랜드의 기준을 만듭니다.',
+      image:'assets/work-generated/identity-system-01.webp',
+      alt:'브랜딩 시스템 프로젝트 이미지',
+      details:[
+        ['Brand strategy','시장과 고객, 브랜드 자산을 분석하고 포지셔닝과 핵심 가치를 정의합니다.'],
+        ['Verbal identity','브랜드의 관점과 메시지, 네이밍과 슬로건의 언어 체계를 정리합니다.'],
+        ['Experience principles','공간, 콘텐츠와 마케팅이 같은 기준으로 확장될 운영 원칙을 설계합니다.']
+      ]
+    },
+    identity: {
+      title:'Identity system',
+      description:'브랜드의 생각과 태도를 로고, 컬러, 서체와 그래픽 언어로 번역해 어디서나 알아볼 수 있는 시각 체계를 만듭니다.',
+      image:'assets/work-generated/identity-system-02.webp',
+      alt:'아이덴티티 시스템 프로젝트 이미지',
+      details:[
+        ['Visual direction','전략에서 도출한 핵심 인상을 시각 키워드와 디자인 원칙으로 구체화합니다.'],
+        ['Identity design','심볼과 워드마크, 컬러와 서체, 그래픽 모티프를 하나의 시스템으로 개발합니다.'],
+        ['Guideline','온·오프라인의 실제 적용 장면과 사용 기준을 정리해 일관된 운영을 돕습니다.']
+      ]
+    },
+    space: {
+      title:'Space branding',
+      description:'브랜드의 방향을 동선, 소재, 빛과 사인의 경험으로 확장해 고객이 머무는 모든 장면에 같은 인상을 만듭니다.',
+      image:'assets/work-generated/space-experience-01.webp',
+      alt:'공간 브랜딩 프로젝트 이미지',
+      details:[
+        ['Experience concept','입지와 고객 여정을 분석해 공간이 전해야 할 핵심 경험과 장면을 정의합니다.'],
+        ['Spatial language','조닝, 동선, 소재와 그래픽을 브랜드의 고유한 공간 언어로 설계합니다.'],
+        ['Implementation','도면과 제작 가이드, 현장 디렉션을 통해 의도한 경험의 완성도를 지킵니다.']
+      ]
+    },
+    package: {
+      title:'Package system',
+      description:'제품을 만나는 첫 순간부터 사용하고 보관하는 과정까지, 형태와 정보와 소재가 브랜드를 말하도록 설계합니다.',
+      image:'assets/work-generated/package-system-01.webp',
+      alt:'패키지 시스템 프로젝트 이미지',
+      details:[
+        ['Structure','제품 특성과 유통 환경에 맞는 구조, 규격과 정보의 우선순위를 정리합니다.'],
+        ['Graphic system','다양한 제품군을 하나의 브랜드로 묶는 컬러와 레이아웃 체계를 만듭니다.'],
+        ['Production','소재와 후가공, 인쇄 감리를 통해 화면의 디자인을 실제 품질로 완성합니다.']
+      ]
+    },
+    campaign: {
+      title:'Campaign',
+      description:'브랜드의 한 문장을 고객이 보고, 참여하고, 기억하는 캠페인 경험으로 확장합니다.',
+      image:'assets/work-generated/brand-activation-01.webp',
+      alt:'브랜드 캠페인 프로젝트 이미지',
+      details:[
+        ['Campaign idea','목표와 타깃에 맞는 캠페인 메시지와 고객 참여 아이디어를 설계합니다.'],
+        ['Content system','디지털, 소셜, 오프라인 매체에 유연하게 적용되는 콘텐츠 체계를 만듭니다.'],
+        ['Activation','론칭과 현장 운영, 채널별 확산까지 일관된 톤으로 실행합니다.']
+      ]
+    },
+    film: {
+      title:'Brand film',
+      description:'브랜드의 메시지와 감도를 이야기, 장면과 리듬으로 번역해 오래 남는 영상 경험을 만듭니다.',
+      image:'assets/work-generated/film-production-01.webp',
+      alt:'브랜드 필름 제작 프로젝트 이미지',
+      details:[
+        ['Story & direction','영상의 목적과 메시지를 정리하고 콘셉트, 시나리오와 콘티를 설계합니다.'],
+        ['Production','캐스팅과 로케이션, 촬영과 연출의 모든 요소를 브랜드의 톤에 맞춥니다.'],
+        ['Post production','편집, 사운드, 컬러와 모션을 완성하고 채널별 규격으로 확장합니다.']
+      ]
+    }
+  };
+
+  function activateCapability(id){
+    const content = capabilities[id];
+    if(!content) return;
+    tabs.forEach(tab=>{
+      const selected = tab.dataset.processCap === id;
+      tab.setAttribute('aria-selected', String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+    });
+    title.textContent = content.title;
+    description.textContent = content.description;
+    image.style.opacity = '0';
+    window.setTimeout(()=>{
+      image.src = content.image;
+      image.alt = content.alt;
+      image.style.opacity = '1';
+    }, 140);
+    content.details.forEach((detail, index)=>{
+      if(detailTitles[index]) detailTitles[index].textContent = detail[0];
+      if(detailBodies[index]) detailBodies[index].textContent = detail[1];
+    });
+  }
+
+  tabs.forEach((tab, index)=>{
+    tab.addEventListener('click', ()=>activateCapability(tab.dataset.processCap));
+    tab.addEventListener('keydown', event=>{
+      if(event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+      event.preventDefault();
+      const direction = event.key === 'ArrowRight' ? 1 : -1;
+      const next = tabs[(index + direction + tabs.length) % tabs.length];
+      next.focus();
+      activateCapability(next.dataset.processCap);
+    });
+  });
+  activateCapability((tabs.find(tab=>tab.getAttribute('aria-selected') === 'true') || tabs[0]).dataset.processCap);
+})();
 
 /* ============ studio stats — manual (admin Settings) or auto from projects ============ */
 (async function(){
@@ -303,6 +482,31 @@ const io = new IntersectionObserver(es=>{
 function observeReveals(){ document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el)); }
 observeReveals();
 
+function initProcessWorkflowMotion(){
+  const workflow = document.querySelector('.process-reference-workflow.process-motion');
+  if(!workflow) return;
+
+  const revealWorkflow = ()=>workflow.classList.add('is-motion-in');
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)){
+    revealWorkflow();
+    return;
+  }
+
+  workflow.classList.add('motion-ready');
+  requestAnimationFrame(()=>{
+    workflow.classList.add('motion-armed');
+    const workflowObserver = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(!entry.isIntersecting) return;
+        revealWorkflow();
+        workflowObserver.unobserve(workflow);
+      });
+    }, {threshold:.16,rootMargin:'0px 0px -8% 0px'});
+    workflowObserver.observe(workflow);
+  });
+}
+initProcessWorkflowMotion();
+
 /* ============ count-up stats ============ */
 (function(){
   const els = document.querySelectorAll('[data-count]');
@@ -410,6 +614,40 @@ function movePreview(e){
   preview.style.top = 0; preview.style.left = 0;
 }
 addEventListener('mousemove', movePreview);
+
+function initWorkCardSlideshows(root){
+  if(!root || matchMedia('(prefers-reduced-motion: reduce)').matches) return ()=>{};
+  const cleanups = [];
+  root.querySelectorAll('.work-card-media.is-slideshow').forEach((media, mediaIndex)=>{
+    const slides = [...media.querySelectorAll('img')];
+    if(slides.length < 2) return;
+    let index = 0;
+    let timer = null;
+    let delay = null;
+    const show = nextIndex=>{
+      index = (nextIndex + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex)=>{
+        const active = slideIndex === index;
+        slide.classList.toggle('is-active', active);
+        slide.setAttribute('aria-hidden', String(!active));
+      });
+    };
+    const start = ()=>{
+      if(!timer) timer = setInterval(()=>show(index + 1), 3600);
+    };
+    const stop = ()=>{
+      if(timer){ clearInterval(timer); timer = null; }
+    };
+    show(0);
+    delay = setTimeout(start, mediaIndex * 260);
+    cleanups.push(()=>{
+      clearTimeout(delay);
+      stop();
+    });
+  });
+  return ()=>cleanups.forEach(cleanup=>cleanup());
+}
+
 (async function(){
   const workList = document.getElementById('workList');
   if(!workList) return;
@@ -419,8 +657,12 @@ addEventListener('mousemove', movePreview);
   const homeMode = !document.body.classList.contains('subpage');
   const cardMode = homeMode
     || document.body.classList.contains('work-page');
+  const homeCandidates = homeMode
+    ? [...fetched, ...FEATURED_PROJECTS].filter((project, index, list) =>
+        list.findIndex(item => item.slug === project.slug) === index)
+    : fetched;
   const all = homeMode
-    ? fetched.filter(p => (p.images && p.images.length) || (p.videos && p.videos.length)).slice(0, 6)
+    ? homeCandidates.filter(p => (p.images && p.images.length) || (p.videos && p.videos.length)).slice(0, 11)
     : fetched;
   const workCategories = window.OSMUWorkCategories;
   const getWorkCategories = workCategories
@@ -442,7 +684,9 @@ addEventListener('mousemove', movePreview);
   const hasRequestedCat = filters && [...filters.querySelectorAll('.wf')]
     .some(btn => btn.dataset.cat === requestedCat);
   let activeCat = hasRequestedCat ? requestedCat : 'all';
+  let disposeSlideshows = ()=>{};
   function render(){
+    disposeSlideshows();
     const list = all.filter(p => matches(p, activeCat));
     workList.innerHTML = '';
     if(!list.length){
@@ -452,15 +696,17 @@ addEventListener('mousemove', movePreview);
       const a = document.createElement('a');
       a.className = cardMode ? 'work-card' : 'work-row';
       a.href = projUrl(p);
-      const cover = p.images && p.images[0];
+      const covers = Array.isArray(p.images) ? p.images.filter(Boolean) : [];
+      const cover = covers[0];
+      const cardImages = covers;
       const video = p.videos && p.videos[0];
       const categoryDisplay = getWorkCategories(p.cat)
         .map(id => filterLabels[id])
         .filter(Boolean)
         .join(' · ') || p.cat;
       if(cardMode){
-        a.innerHTML = `<div class="work-card-media">${cover
-          ? `<img src="${cover}" alt="${p.name}" loading="lazy">`
+        a.innerHTML = `<div class="work-card-media${cardImages.length > 1 ? ' is-slideshow' : ''}"${cardImages.length > 1 ? ` role="img" aria-label="${p.name} 프로젝트 이미지 슬라이드"` : ''}>${cover
+          ? cardImages.map((src, imageIndex) => `<img class="${imageIndex === 0 ? 'is-active' : ''}" src="${src}" alt="${imageIndex === 0 ? p.name + ' 프로젝트 이미지' : ''}" aria-hidden="${imageIndex === 0 ? 'false' : 'true'}" loading="${imageIndex === 0 ? 'eager' : 'lazy'}">`).join('')
           : video
             ? `<video src="${video}" muted autoplay loop playsinline preload="metadata" aria-label="${p.name} 영상"></video>`
           : previewSVG(i, p.name)}</div>
@@ -484,6 +730,7 @@ addEventListener('mousemove', movePreview);
       }
       workList.appendChild(a);
     });
+    disposeSlideshows = initWorkCardSlideshows(workList);
     const label = activeCat === 'all' ? 'Services in practice' : filterLabels[activeCat];
     if(count) count.textContent = `${label} — ${String(list.length).padStart(2,'0')}`;
     if(filters){
@@ -730,6 +977,25 @@ function initSvcSlider(root){
     }
   }
 })();
+
+/* ============ footer: smooth back to top ============ */
+document.querySelectorAll('.osmu-footer-top').forEach(link=>{
+  link.addEventListener('click', event=>{
+    event.preventDefault();
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+/* Keep the floating inquiry shortcut from covering footer controls. */
+{
+  const footer = document.querySelector('.osmu-footer');
+  const chat = document.querySelector('.kakao-chat');
+  if(footer && chat && 'IntersectionObserver' in window){
+    new IntersectionObserver(([entry])=>{
+      chat.classList.toggle('is-footer-overlap', entry.isIntersecting);
+    }, {threshold:.04}).observe(footer);
+  }
+}
 
 /* ============ toast ============ */
 let toastTimer;

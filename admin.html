@@ -6,6 +6,9 @@
 <title>Admin — OSMU STUDIO</title>
 <!-- SEO/GEO/AEO meta — generated, head only -->
 <meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'nonce-osmu-admin-v1'; connect-src 'self' https://polzkalenzpfmrgzwmfv.supabase.co; img-src 'self' data: blob: https://polzkalenzpfmrgzwmfv.supabase.co; media-src 'self' blob: https://polzkalenzpfmrgzwmfv.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=()">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
@@ -15,37 +18,40 @@
 <link rel="preconnect" href="https://polzkalenzpfmrgzwmfv.supabase.co" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="osmu.css?v=43">
+<link rel="stylesheet" href="osmu.css?v=43&rev=67">
 </head>
-<body class="admin-mode">
+<body class="admin-mode admin-page">
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <div class="admin" id="admin" style="display:block">
 
   <!-- login -->
   <div class="admin-login" id="adminLogin">
-    <div class="login-box">
+    <div class="login-box" role="main" aria-labelledby="adminLoginTitle">
+      <p class="admin-eyebrow">OSMU STUDIO / ADMIN CONSOLE</p>
       <img src="logo.png?v=2" alt="OSMU STUDIO">
-      <h1>Admin — Sign in</h1>
+      <h1 id="adminLoginTitle">Sign in to manage work.</h1>
+      <p class="admin-login-copy">승인된 관리자만 프로젝트, 문의 및 사이트 정보를 관리할 수 있습니다.</p>
       <div class="field">
         <label for="loginId">Email</label>
-        <input id="loginId" type="email" autocomplete="username" placeholder="you@email.com">
+        <input id="loginId" type="email" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="you@email.com" required>
       </div>
       <div class="field">
         <label for="loginPw">Password</label>
-        <input id="loginPw" type="password" autocomplete="current-password" placeholder="••••••••">
+        <input id="loginPw" type="password" autocomplete="current-password" maxlength="256" placeholder="••••••••" required>
       </div>
       <button class="btn" id="loginBtn" style="width:100%">Sign in</button>
-      <p class="login-err" id="loginErr">로그인에 실패했습니다. 이메일/비밀번호를 확인해주세요.</p>
-      <p class="login-hint">Supabase에 등록한 관리자 계정으로 로그인하세요.<br><a href="home.html" style="border-bottom:1px solid var(--ink)">← 사이트로 돌아가기</a></p>
+      <p class="login-err" id="loginErr" role="alert">로그인할 수 없습니다. 계정 정보와 관리자 권한을 확인해주세요.</p>
+      <p class="login-hint">15분 동안 활동이 없으면 자동으로 로그아웃됩니다.<br><a href="home.html">← 사이트로 돌아가기</a></p>
     </div>
   </div>
 
   <!-- dashboard -->
   <div class="admin-shell" id="adminShell">
-    <aside class="admin-side">
+    <aside class="admin-side" aria-label="관리자 메뉴">
       <img src="logo.png?v=2" alt="OSMU STUDIO">
+      <span class="admin-side-label">Content management</span>
       <a href="#" class="on" data-panel="projects">Projects</a>
       <a href="#" data-panel="services">Service photos</a>
       <a href="#" data-panel="inquiries">Inquiries</a>
@@ -55,6 +61,7 @@
     </aside>
 
     <div class="admin-main">
+      <div class="admin-topline"><span>CONTENT / OSMU STUDIO</span><span id="adminSessionState">Protected session</span></div>
 
       <!-- projects -->
       <div class="admin-panel on" id="panel-projects">
@@ -219,10 +226,10 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="work-categories.js?v=3"></script>
-<script src="osmu.js?v=25&rev=36"></script>
-<script>
+<script nonce="osmu-admin-v1" src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script nonce="osmu-admin-v1" src="work-categories.js?v=3"></script>
+<script nonce="osmu-admin-v1" src="osmu.js?v=25&rev=47"></script>
+<script nonce="osmu-admin-v1">
 /* admin — Supabase auth + project CRUD + image upload to Storage
    세션을 sessionStorage에 저장: 새로고침·같은 탭 이동은 로그인 유지,
    탭(또는 브라우저)을 닫으면 자동 로그아웃됩니다. */
@@ -233,11 +240,44 @@ let rows = [];           // projects from DB
 let draft = [];          // image public URLs for the project in the form
 let videoDraft = [];     // video public URLs for the project in the form
 let editId = null;       // id of project being edited (null = new)
+const ADMIN_IDLE_MS = 15 * 60 * 1000;
+const ADMIN_ROLES = new Set(['admin', 'owner']);
+const MAX_IMAGE_BYTES = 12 * 1024 * 1024;
+const MAX_VIDEO_BYTES = 250 * 1024 * 1024;
+let idleTimer = null;
+let activeAdmin = null;
 
 const adminLogin = document.getElementById('adminLogin');
 const adminShell = document.getElementById('adminShell');
 const $ = id => document.getElementById(id);
 const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function safeMediaUrl(value){
+  try{
+    const url = new URL(String(value || ''), location.origin);
+    const supabaseOrigin = new URL(window.SB_URL).origin;
+    return (url.origin === location.origin || url.origin === supabaseOrigin) && ['http:','https:'].includes(url.protocol) ? url.href : '';
+  }catch(_){ return ''; }
+}
+function hasAdminAccess(user){
+  return Boolean(user && user.email_confirmed_at && ADMIN_ROLES.has(user.app_metadata?.role));
+}
+function setLoginError(message){
+  const node = $('loginErr');
+  node.textContent = message || '로그인할 수 없습니다. 계정 정보와 관리자 권한을 확인해주세요.';
+  node.style.display = message ? 'block' : 'none';
+}
+function clearIdleTimer(){ if(idleTimer){ clearTimeout(idleTimer); idleTimer = null; } }
+async function lockAdmin(message){
+  clearIdleTimer();
+  activeAdmin = null;
+  if(SB) await SB.auth.signOut();
+  showLogin(message || '보안을 위해 로그아웃되었습니다.');
+}
+function resetIdleTimer(){
+  if(!activeAdmin) return;
+  clearIdleTimer();
+  idleTimer = setTimeout(()=>lockAdmin('15분 동안 활동이 없어 자동으로 로그아웃되었습니다.'), ADMIN_IDLE_MS);
+}
 
 let _loading = false;                       // dedupe dashboard data load (onclick + onAuthStateChange)
 function loadDashboard(){
@@ -246,30 +286,43 @@ function loadDashboard(){
   renderAdmin(); renderInquiries(); loadSettings();
   setTimeout(()=>{ _loading = false; }, 1500);
 }
-function showDashboard(){ adminLogin.style.display='none'; adminShell.classList.add('on'); loadDashboard(); }
-function showLogin(){ adminLogin.style.display='flex'; adminShell.classList.remove('on'); }
+function showDashboard(user){
+  activeAdmin = user;
+  adminLogin.style.display='none'; adminShell.classList.add('on');
+  $('adminSessionState').textContent = 'Verified admin · ' + user.email;
+  setLoginError(''); resetIdleTimer(); loadDashboard();
+}
+function showLogin(message){
+  activeAdmin = null; clearIdleTimer();
+  adminLogin.style.display='flex'; adminShell.classList.remove('on');
+  if(message) setLoginError(message);
+}
 async function refreshState(){
-  let on = false;
-  if(SB){ const { data } = await SB.auth.getSession(); on = !!(data && data.session); }
-  if(on) showDashboard(); else showLogin();
+  if(!SB){ showLogin('보안 연결을 시작할 수 없습니다. 새로고침 후 다시 시도해주세요.'); return; }
+  const { data, error } = await SB.auth.getUser();
+  const user = error ? null : data.user;
+  if(hasAdminAccess(user)){ showDashboard(user); return; }
+  if(user) await SB.auth.signOut();
+  showLogin(user ? '이 계정에는 관리자 권한이 없습니다.' : '');
 }
 
-/* login — reveal the dashboard immediately on success (no extra getSession round-trip) */
+/* Login access is verified against server-managed app_metadata, never user_metadata. */
 $('loginBtn').onclick = async ()=>{
   if(!SB){ toast('DB 연결 오류 — 새로고침 후 다시 시도'); return; }
   const email = $('loginId').value.trim();
   const password = $('loginPw').value;
+  if(!email || !password){ setLoginError('이메일과 비밀번호를 모두 입력해주세요.'); return; }
   $('loginBtn').disabled = true;
   const { error } = await SB.auth.signInWithPassword({ email, password });
   $('loginBtn').disabled = false;
-  if(error){ $('loginErr').style.display='block'; return; }
-  $('loginErr').style.display='none';
-  showDashboard();
-  toast('로그인 성공');
+  if(error){ setLoginError('로그인할 수 없습니다. 계정 정보와 관리자 권한을 확인해주세요.'); return; }
+  await refreshState();
+  if(activeAdmin) toast('보안 세션이 시작되었습니다');
 };
 $('loginId').addEventListener('keydown',e=>{ if(e.key==='Enter') $('loginPw').focus(); });
 $('loginPw').addEventListener('keydown',e=>{ if(e.key==='Enter') $('loginBtn').click(); });
-$('logoutBtn').onclick = async e=>{ e.preventDefault(); if(SB) await SB.auth.signOut(); location.href='home.html'; };
+$('logoutBtn').onclick = async e=>{ e.preventDefault(); await lockAdmin('로그아웃되었습니다.'); location.href='home.html'; };
+['pointerdown','keydown','touchstart','scroll'].forEach(event=>document.addEventListener(event, resetIdleTimer, {passive:true}));
 
 /* side tabs */
 document.querySelectorAll('.admin-side a[data-panel]').forEach(a=>{
@@ -291,16 +344,16 @@ async function renderAdmin(){
   tbody.innerHTML = '';
   rows.forEach((p,i)=>{
     const tr = document.createElement('tr');
-    const cover = (p.images && p.images[0])
-      ? `<img class="row-thumb" src="${p.images[0]}" alt="">`
+    const cover = (p.images && safeMediaUrl(p.images[0]))
+      ? `<img class="row-thumb" src="${esc(safeMediaUrl(p.images[0]))}" alt="">`
       : `<span style="color:var(--grey);font-size:10px">—</span>`;
     tr.innerHTML = `<td>${String(i+1).padStart(2,'0')}</td>
       <td>${cover}</td>
-      <td class="t-name">${p.name}</td><td>${p.type||'—'}</td><td>${p.cat}</td><td>${dateStr(p)}</td>
+      <td class="t-name">${esc(p.name)}</td><td>${esc(p.type||'—')}</td><td>${esc(p.cat)}</td><td>${esc(dateStr(p))}</td>
       <td>${(p.images?.length||0) + (p.videos?.length||0)}개</td>
       <td class="row-actions">
-        <button data-edit="${p.id}">Edit</button>
-        <button data-del="${p.id}">Delete</button>
+        <button data-edit="${esc(p.id)}">Edit</button>
+        <button data-del="${esc(p.id)}">Delete</button>
       </td>`;
     tbody.appendChild(tr);
   });
@@ -335,8 +388,8 @@ async function renderInquiries(){
       <td>${esc(q.biz_type)||'-'}</td>
       <td>${esc(q.budget)||'-'}</td>
       <td style="max-width:300px;white-space:pre-wrap;word-break:break-word">${esc(q.message)||'-'}</td>
-      <td><select data-status="${q.id}">${STATUS.map(s=>`<option ${s===q.status?'selected':''}>${s}</option>`).join('')}</select></td>
-      <td class="row-actions"><button data-delq="${q.id}">Delete</button></td>
+      <td><select data-status="${esc(q.id)}">${STATUS.map(s=>`<option ${s===q.status?'selected':''}>${s}</option>`).join('')}</select></td>
+      <td class="row-actions"><button data-delq="${esc(q.id)}">Delete</button></td>
     </tr>`;
   }).join('');
   tbody.querySelectorAll('[data-status]').forEach(sel=>sel.onchange = async ()=>{
@@ -351,8 +404,17 @@ async function renderInquiries(){
   });
 }
 
-/* ----- image upload (resize → Storage → public URL) ----- */
+/* ----- image upload (validate → resize → Storage → public URL) ----- */
+function validateImageFile(file){
+  if(!file || !/^image\/(jpeg|png|webp|gif|avif)$/i.test(file.type)) throw new Error('JPG, PNG, WebP, GIF 또는 AVIF 이미지만 업로드할 수 있습니다');
+  if(file.size > MAX_IMAGE_BYTES) throw new Error('이미지는 12MB 이하만 업로드할 수 있습니다');
+}
+function validateVideoFile(file){
+  if(!file || !/^video\/(mp4|webm|quicktime)$/i.test(file.type)) throw new Error('MP4, WebM, MOV 영상만 업로드할 수 있습니다');
+  if(file.size > MAX_VIDEO_BYTES) throw new Error('영상은 250MB 이하만 업로드할 수 있습니다');
+}
 async function uploadImage(file){
+  validateImageFile(file);
   const dataUrl = await osmuResizeImage(file, 1600, 0.85);
   const blob = await (await fetch(dataUrl)).blob();
   const path = `proj/${Date.now()}-${Math.random().toString(36).slice(2,7)}.jpg`;
@@ -361,7 +423,7 @@ async function uploadImage(file){
   return SB.storage.from('project-images').getPublicUrl(path).data.publicUrl;
 }
 async function uploadVideo(file){
-  if(!file.type || !file.type.startsWith('video/')) throw new Error('영상 파일만 업로드할 수 있습니다');
+  validateVideoFile(file);
   const rawExt = (file.name.split('.').pop() || 'mp4').toLowerCase().replace(/[^a-z0-9]/g,'');
   const ext = rawExt || 'mp4';
   const path = `proj/${Date.now()}-${Math.random().toString(36).slice(2,7)}.${ext}`;
@@ -374,7 +436,7 @@ function renderThumbs(){
   if(!draft.length){ box.innerHTML = '<p class="login-hint" style="margin:10px 0 0">아직 추가된 사진이 없습니다. 위 ＋ 버튼으로 추가하세요.</p>'; return; }
   box.innerHTML = draft.map((src,i)=>
     `<div class="thumb${i===0?' is-cover':''}">
-       <img src="${src}" alt="프로젝트 사진 ${i+1}">
+       <img src="${esc(safeMediaUrl(src))}" alt="프로젝트 사진 ${i+1}">
        <span class="thumb-no">${i+1}</span>
        ${i>0 ? `<button type="button" class="cover-set" data-cover="${i}">대표로</button>` : ''}
        <button type="button" class="thumb-rm" data-rm="${i}" title="삭제">×</button>
@@ -401,7 +463,7 @@ function renderVideoThumbs(){
   if(!videoDraft.length){ box.innerHTML = '<p class="login-hint" style="margin:10px 0 0">아직 추가된 영상이 없습니다. 위 ＋ 버튼으로 추가하세요.</p>'; return; }
   box.innerHTML = videoDraft.map((src,i)=>
     `<div class="thumb video-thumb">
-       <video src="${src}" preload="metadata" muted></video>
+       <video src="${esc(safeMediaUrl(src))}" preload="metadata" muted></video>
        <span class="thumb-no">${i+1}</span>
        ${i===0 ? '<span class="thumb-cover-label">대표</span>' : ''}
        <button type="button" class="thumb-rm" data-vrm="${i}" title="삭제">×</button>
@@ -559,7 +621,7 @@ function renderSvcThumbs(){
   if(!svcDraft.length){ box.innerHTML = '<p class="login-hint" style="margin:10px 0 0">아직 추가된 사진이 없습니다. 위 ＋ 버튼으로 추가하세요.</p>'; return; }
   box.innerHTML = svcDraft.map((src,i)=>
     `<div class="thumb${i===0?' is-cover':''}">
-       <img src="${src}" alt="사진 ${i+1}">
+       <img src="${esc(safeMediaUrl(src))}" alt="사진 ${i+1}">
        <span class="thumb-no">${i+1}</span>
        ${i>0 ? `<button type="button" class="cover-set" data-scover="${i}">대표로</button>` : ''}
        <button type="button" class="thumb-rm" data-srm="${i}" title="삭제">×</button>

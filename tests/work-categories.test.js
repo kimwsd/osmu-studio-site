@@ -23,5 +23,5 @@ test('maps legacy project categories to the new admin categories', () => {
   assert.equal(getPrimaryWorkCategory('Packaging'), 'Package');
   assert.equal(getPrimaryWorkCategory('Space Design'), 'Space');
   assert.equal(getPrimaryWorkCategory('Marketing'), 'Branding');
-  assert.equal(getPrimaryWorkCategory('Video'), 'Video');
+  assert.equal(getPrimaryWorkCategory('Video'), 'Brand Film');
 });

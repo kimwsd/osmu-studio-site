@@ -16,21 +16,26 @@ test('defines the five OSMU branding agency services', () => {
 });
 
 test('presents the same five services on the services page', () => {
-  ['Space Branding', 'Branding', 'CI/BI', 'Marketing', 'Video'].forEach(name => {
+  ['Space Branding', 'Branding', 'CI/BI', 'Marketing', 'Brand Film'].forEach(name => {
     assert.match(servicesPage, new RegExp(name.replace('/', '\\/')));
   });
+});
+
+test('keeps the services page focused on capabilities, not the standalone process flow', () => {
+  assert.doesNotMatch(servicesPage, /class="process-showcase"/);
+  assert.doesNotMatch(servicesPage, /class="process-card-grid"/);
 });
 
 test('positions the home page as a branding agency', () => {
   assert.match(home, /브랜딩 에이전시/);
   assert.match(home, /공간 브랜딩, 브랜딩, CI\/BI, 마케팅, 영상/);
-  assert.match(home, /Video/);
+  assert.match(home, /Brand Film/);
 });
 
 test('uses the same five services in public structured data', () => {
   ['home.html', 'index.html', 'services.html', 'studio.html', 'contact.html'].forEach(file => {
     const page = fs.readFileSync(path.join(root, file), 'utf8');
-    ['Space Branding', 'Branding', 'CI/BI', 'Marketing', 'Video'].forEach(name => {
+    ['Space Branding', 'Branding', 'CI/BI', 'Marketing', 'Brand Film'].forEach(name => {
       assert.match(page, new RegExp(`"name": "${name.replace('/', '\\/')}"`));
     });
     assert.doesNotMatch(page, /"name": "Packaging"/);

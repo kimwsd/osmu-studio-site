@@ -5,6 +5,7 @@ const path = require('node:path');
 
 const css = fs.readFileSync(path.join(__dirname, '..', 'osmu.css'), 'utf8');
 const headerRule = css.match(/header\{([\s\S]*?)\}/)?.[1] || '';
+const logoRule = css.match(/\.header-logo img\{([^}]*)\}/)?.[1] || '';
 
 test('keeps the fixed navigation transparent with an inverted contrast effect', () => {
   assert.match(headerRule, /background:transparent/);
@@ -18,7 +19,12 @@ test('uses the header color for navigation details and the mobile menu', () => {
 });
 
 test('increases the header logo size by ten percent', () => {
-  assert.match(css, /\.header-logo img\{[\s\S]*?height:19\.8px/);
+  assert.match(logoRule, /height:19\.8px/);
+});
+
+test('shows the original image logo immediately on the home page', () => {
+  assert.match(logoRule, /opacity:1/);
+  assert.match(logoRule, /transform:none/);
 });
 
 test('loads the current shared stylesheet version on every page', () => {

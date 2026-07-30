@@ -36,7 +36,7 @@ test('uses the official Korean brand name in primary search snippets', () => {
 
 test('keeps the official Korean name visible on the homepage', () => {
   assert.match(home, /<h1[^>]*>오스무 스튜디오\(OSMU STUDIO\)/);
-  assert.match(home, /class="foot-biz">오스무 스튜디오\(OSMU STUDIO\)/);
+  assert.match(home, /class="osmu-footer-contact">[\s\S]*?오스무 스튜디오\(OSMU STUDIO\)/);
   assert.match(home, /alt="오스무 스튜디오 OSMU STUDIO"/);
 });
 
