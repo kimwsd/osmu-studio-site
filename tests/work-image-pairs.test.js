@@ -28,10 +28,11 @@ test('ships two generated images for every featured Work project', () => {
   });
 });
 
-test('turns every multi-image project card into an automatic slideshow', () => {
-  assert.match(script, /const cardImages = covers/);
+test('keeps homepage project-card images fixed and limits slideshows to the Work page', () => {
+  assert.match(script, /const slideshowEnabled = document\.body\.classList\.contains\('work-page'\)/);
+  assert.match(script, /const cardImages = slideshowEnabled \? covers : covers\.slice\(0, 1\)/);
   assert.match(script, /work-card-media\$\{cardImages\.length > 1 \? ' is-slideshow' : ''\}/);
-  assert.match(script, /initWorkCardSlideshows\(workList\)/);
+  assert.match(script, /slideshowEnabled \? initWorkCardSlideshows\(workList\) : \(\)=>\{\}/);
   assert.match(script, /setInterval\(\(\)=>show\(index \+ 1\), 3600\)/);
   assert.match(css, /\.work-card-media\.is-slideshow img\{/);
   assert.match(css, /\.work-card-media\.is-slideshow img\.is-active\{/);

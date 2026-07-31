@@ -408,10 +408,20 @@ window.osmuSetMeta = osmuSetMeta;
   const overlay = document.getElementById('menuOverlay');
   const btn = document.getElementById('menuBtn');
   if(!overlay || !btn) return;
-  btn.onclick = ()=>overlay.classList.add('open');
+  const setMenuOpen = open=>{
+    overlay.classList.toggle('open', open);
+    btn.classList.toggle('is-active', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+  };
+  btn.setAttribute('aria-expanded', 'false');
+  btn.onclick = ()=>setMenuOpen(!overlay.classList.contains('open'));
   const close = document.getElementById('menuClose');
-  if(close) close.onclick = ()=>overlay.classList.remove('open');
-  overlay.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>overlay.classList.remove('open')));
+  if(close) close.onclick = ()=>setMenuOpen(false);
+  overlay.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenuOpen(false)));
+  addEventListener('keydown', event=>{
+    if(event.key === 'Escape') setMenuOpen(false);
+  });
 })();
 
 /* ============ home service ticker ============ */
@@ -655,6 +665,7 @@ function initWorkCardSlideshows(root){
   const count = document.getElementById('workCount');
   const filters = document.getElementById('workFilters');
   const homeMode = !document.body.classList.contains('subpage');
+  const slideshowEnabled = document.body.classList.contains('work-page');
   const cardMode = homeMode
     || document.body.classList.contains('work-page');
   const homeCandidates = homeMode
@@ -698,7 +709,7 @@ function initWorkCardSlideshows(root){
       a.href = projUrl(p);
       const covers = Array.isArray(p.images) ? p.images.filter(Boolean) : [];
       const cover = covers[0];
-      const cardImages = covers;
+      const cardImages = slideshowEnabled ? covers : covers.slice(0, 1);
       const video = p.videos && p.videos[0];
       const categoryDisplay = getWorkCategories(p.cat)
         .map(id => filterLabels[id])
@@ -730,7 +741,7 @@ function initWorkCardSlideshows(root){
       }
       workList.appendChild(a);
     });
-    disposeSlideshows = initWorkCardSlideshows(workList);
+    disposeSlideshows = slideshowEnabled ? initWorkCardSlideshows(workList) : ()=>{};
     const label = activeCat === 'all' ? 'Services in practice' : filterLabels[activeCat];
     if(count) count.textContent = `${label} — ${String(list.length).padStart(2,'0')}`;
     if(filters){

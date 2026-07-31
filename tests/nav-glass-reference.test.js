@@ -9,7 +9,7 @@ test('uses the measured inset glass navigation frame from the reference', () => 
   assert.match(css, /--nav-edge:10px/);
   assert.match(css, /--nav-top:9px/);
   assert.match(css, /--nav-height:50px/);
-  assert.match(css, /--nav-glass:rgba\(255,255,255,.28\)/);
+  assert.match(css, /--nav-glass:rgba\(20,20,20,.09\)/);
   assert.match(css, /header\.home-header,[\s\S]*?header\.site-header-unified\{[\s\S]*?inset:var\(--nav-top\) var\(--nav-edge\) auto/);
   assert.match(css, /header\.home-header,[\s\S]*?header\.site-header-unified\{[\s\S]*?border-radius:var\(--radius-box\)/);
 });
@@ -25,5 +25,7 @@ test('matches the reference logo, menu type, and spacing proportions', () => {
 
 test('keeps the compact glass frame responsive', () => {
   assert.match(css, /@media\(max-width:900px\)\{[\s\S]*?--nav-edge:8px/);
-  assert.match(css, /@media\(max-width:560px\)\{[\s\S]*?height:96px/);
+  assert.match(css, /header\.home-header nav,[\s\S]*?header\.site-header-unified nav\{display:none;/);
+  assert.match(css, /@media\(max-width:560px\)\{[\s\S]*?height:52px/);
+  assert.match(css, /body\.home-brandcenter \.header-actions,[\s\S]*?site-header-unified \.header-actions\{[\s\S]*?position:static/);
 });
