@@ -1,48 +1,43 @@
-# OSMU / Wolff Olins design QA
+# OSMU / Wolff Olins mobile design QA
 
 Date: 2026-09-07
-final result: passed for the inspected local static export
 
-The later Wolff Olins direction replaces the earlier Fineworks composition. This result covers observed reference surfaces with the user's OSMU brand assets, content, Helvetica preference and independent subpages. It is not a claim of identical third-party media or every possible hidden interaction.
+## Comparison target
 
-## Combined visual inspection
+- Source visual truth: Wolff Olins home, menu, search, Work, About, Contact and Decathlon detail captured from `https://wolffolins.com/` at CSS viewport 390×844.
+- Implementation: local GitHub Pages export at `http://127.0.0.1:3000/` with the same CSS viewport and state.
+- Browser screenshots are normalized to 375×812 pixels. Full-page source is 375×9380 and OSMU is 375×6854. The height difference comes from eight source news items versus four real OSMU editorial links.
+- Full-view comparison: `docs/qa-wolff/comparison-mobile-final-full.png`.
+- Focused comparisons: `comparison-mobile-final.png`, `comparison-menu-mobile-final.png`, `comparison-compact-mobile-final.png`, `comparison-work-mobile-final.png`, `comparison-detail-mobile-final.png`, and `comparison-search-mobile-final.png` in `docs/qa-wolff/`.
 
-- `docs/qa-wolff/comparison-desktop.png`: source left, OSMU right, desktop CSS viewport 1440×900.
-- `docs/qa-wolff/comparison-mobile.png`: source left, OSMU right, mobile CSS viewport 390×844.
-- `docs/qa-wolff/comparison-menu.png`: source and implementation mobile menus together.
-- Source captures additionally include Work, About, Contact, project detail, expanded narrative, search and full home.
-- Browser normalizes screenshot pixels (1425×891 desktop; 375×812 mobile). Combined inputs align by the smaller image dimensions; these are visual comparisons, not pixel-difference scores.
+## Findings and iteration history
 
-The combined comparisons were opened and inspected. The header/hero division, full-height photography, caption/counter placement, mobile type hierarchy, rounded menu and blurred background match the reference structure. The extra Services and Process menu entries reflect the requested OSMU subpages. Original OSMU logo proportions are retained.
+- [P2 fixed] Mobile header scale differed. OSMU used a 136px logo and 20px icons. The source uses a roughly 102×16 logo, 15px icons and 56px touch targets. OSMU now uses a 102px original SVG without distortion, 15px icons and 56px targets. The compact bar now measures 280×56 at x=47.5/y=16; source measures about 280×56 at x=47.4/y=16. Post-fix evidence: `comparison-compact-mobile-final.png`.
+- [P2 fixed] Hero controls and typography drifted. OSMU previously showed previous, next and pause controls while the source mobile state shows a swipeable hero with only a counter. Visible buttons are removed on mobile, swipe remains, the counter is x=20/y=800, and the hero is 754px high from y=88 to 842. Title and statement are 20/35px with 22/38.5px line heights. Post-fix evidence: `comparison-mobile-final.png`.
+- [P2 fixed] Work’s first card began below the initial viewport. The supporting note is omitted on mobile, filters use one horizontal scroll row, and the first 311px-wide card begins at y≈465, within 10px of the source. Five home cards use the source’s larger vertical rhythm. Post-fix evidence: `comparison-work-mobile-final.png`.
+- [P1 fixed] Mobile project detail used a nearly full-screen cover and placed metadata before the story. The source uses an inset 311×207 cover followed at y=311 by title, summary and narrative. OSMU now matches those exact cover/title coordinates and orders the narrative before metadata. Desktop keeps the existing two-column composition. Post-fix evidence: `comparison-detail-mobile-final.png`.
+- [P2 fixed] Search expanded to 589px with 35px result rows. The source uses a compact panel. OSMU now measures 374×326 at x=8/y=16, uses a 16px input, seven 24px rows, a yellow first result and real OSMU social links. Post-fix evidence: `comparison-search-mobile-final.png`.
+- [P2 fixed] General mobile gutters were 30px while the reference uses 32px. Main text, 16:9 media and project cards now align at x=32 with 311px content width.
 
-## Corrections and fidelity surfaces
+## Required fidelity surfaces
 
-- Fixed a P2 header margin-collapse defect: compact-bar margin was moving the hero down. The header spacer now uses flex layout. Final desktop/mobile top-of-page measurements: header 88px and hero document top 88px.
-- Added swipe-click suppression so moving a slide does not immediately open the project link. Keyboard focus stops automatic advancement.
-- Kept white/black/yellow (#fff84b) surfaces, Helvetica-first stack, large ruled headings and asymmetrical work cards. Typography differs intentionally from the source serif font, following the user's request.
-- OSMU own concept media replaces the source client media. Concept labels remain visible. No source clients, testimonials, offices or results were invented.
-- Corrected earlier screenshot capture timing: pause control can scroll into view; final home captures were taken after returning to document top and confirming scrollY=0.
-- No remaining P0/P1/P2 defects were found in the inspected responsive and functional scope.
+- Typography: mobile UI sizes, line heights and wrapping match observed values. The reference serif remains replaced by Helvetica at the user’s direction. Helvetica is not bundled; this machine renders Arial fallback. The original OSMU logo keeps its natural 242:33 ratio, so its 102px width is shorter in height than the source wordmark.
+- Spacing and layout: 88px header, 754px hero, 64px section rhythm, 32px gutters, 311px media, 280×56 compact header and 28px rounded panels were measured against the source.
+- Colors: black/white surfaces, muted gray labels, yellow #fff84b active/search/showreel controls and yellow full-height footer match the observed system.
+- Images: all visible images are OSMU-owned or explicitly labelled concept media. Crops use the source slot ratios and no source client assets are hotlinked.
+- Copy: source client claims, offices, awards and news are replaced with OSMU positioning, services, real contact details and four existing editorial links. Work remains labelled Concept Project / 가상 브랜드.
 
-## Functional and build evidence
+## Functional verification
 
-- Next.js static export: 36 pages generated successfully; no dynamic API route or server runtime required.
-- TypeScript: `npm run typecheck` passed.
-- `npm test`: 14 tests passed. Includes 20 route availability checks, missing-page 404s, legacy bridge targets, video byte ranges, input validation, missing-consent/no-write, storage rejection/no-notification, and notification timeout after successful storage.
-- Hero manual previous/next and automatic progression, pause state and showreel playback were observed. Video metadata: H.264, 1280×720, 30fps, 12 seconds.
-- Search returns the package project and Identity & Packaging service for 패키지; no-results state checked; Escape closes and restores focus to the search trigger.
-- Work grid/list toggle and category filter: all eight / selected three; project detail navigation and More info expansion checked.
-- Mobile menu opens, locks background scrolling and closes on independent page navigation. Work, About, Services, Process and Contact routes verified.
-- Static `/contact/?service=ci-bi` selects Identity & Packaging. Empty submit focuses name and rejects name/email/phone/consent before any external write. Email and phone validity checked.
-- Static legacy `project.html?slug=identity-system` was observed navigating to `/work/identity-system/` in the browser, with the expected heading.
-- Desktop and mobile home/contact have one H1 and no horizontal overflow; all main mobile routes were checked during implementation. Existing FAQ expands and service detail CTA preserves the chosen service.
+- Home, Work, About, Services, Process, Contact, project detail and service detail each have one H1, no horizontal overflow and no broken loaded images at 390×844.
+- Additional 360×800 and 430×932 checks have no horizontal overflow; hero ends two pixels above the viewport as in the captured source.
+- Menu opens with background blur and scroll lock, routes to independent pages, and restores focus when closed.
+- Search filters real OSMU projects/services; seven compact results are visible, first result is highlighted, Escape closes the panel.
+- Work filters remain swipe-scrollable, grid/list controls work, and the first card stays visible above the fold.
+- Project More info expands after the mobile story reorder, and the existing image-download link remains present.
+- Build generated 36 static pages; TypeScript passed; all 14 route, compatibility, video and inquiry tests passed.
+- Browser console errors: none. Real inquiry submission was not sent.
 
-## Limits and operation
+No P0/P1/P2 findings remain in the inspected mobile scope. The extra Services and Process menu rows, shorter editorial list, OSMU media, and Helvetica typography are required content/product differences.
 
-- Helvetica is prioritized, not bundled; this Windows machine uses Arial fallback. Korean uses system gothic. Exact Helvetica rendering needs a licensed webfont or installed font.
-- Mobile native touch swipes, pointer hover/cursor animation and OS reduced-motion preference were reviewed in source but not fully exercised by available automation.
-- No real inquiry, stored test row or notification email was sent. Mock tests do not prove real-world email delivery.
-- Existing public Supabase GET returned HTTP 200 with zero public projects. This is not the administrator's total row count. Database schema, RLS and administrator credentials were unchanged.
-- GitHub Pages exports project content at build time. After editing projects in the retained administrator, run the deployment workflow again.
-
-Deployment evidence is recorded separately in `docs/deployment-github-pages.md` after the production workflow and live checks complete.
+final result: passed

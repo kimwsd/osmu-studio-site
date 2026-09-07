@@ -19,6 +19,8 @@ Selection intent: large work-led presentation, restrained navigation, readable l
 | Project More Info and Download Images | Expand/collapse narrative with accessible state and actual image download |
 | Page entrances and section reveals | 500ms route fade, 700ms below-fold reveals; prefers-reduced-motion fallback |
 
+Mobile follow-up measurements: 88px header; 102px wordmark; 15px menu/search icons in 56px targets; 754px hero; 20/35px hero copy; counter at x=20/y=800; 32px page gutter; 311px work and detail media; 280×56 compact header; compact search with 16px input and seven 24px result rows. Project detail changes from the desktop full-height cover to a 311×207 inset cover, then title, narrative and metadata.
+
 Exclusions: source client photos/videos, clients, testimonials, offices, news, awards and proprietary variable wordmark. They are replaced by actual OSMU content or explicitly labelled concept studies. The source serif/Untitled font is replaced by the requested Helvetica-first stack. OSMU retains independent Services and Process routes and a real inquiry form.
 
 Limits: this is a reconstruction of the observed desktop/mobile surfaces and interactions, not a claim that every hidden state or third-party asset is identical. Mobile swipe and desktop cursor/hover behavior have implementation checks; native touch gesture and pointer-hover automation were not available in this browser tool. Reduced-motion branches were reviewed in source; operating-system preference toggling was not exercised.
