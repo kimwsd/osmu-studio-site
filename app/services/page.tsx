@@ -1,3 +1,3 @@
 import { ServiceRows, Growth, ContactInvite } from '@/components/sections';
-export const metadata={title:'Services — 브랜드 전략·그래픽·패키지 디자인',alternates:{canonical:'/services'}};
-export default function ServicesPage(){return <><section className="page-intro section-pad"><h1>From the first question to the final detail. We make the things that make your brand.</h1><p className="intro-note">브랜드의 방향을 세우는 일부터 제품을 손에 쥐는 순간까지. 필요한 작업의 범위와 매체를 함께 정합니다.</p></section><section className="services-content section-pad"><h2 className="section-rule">What we do</h2><ServiceRows expanded/></section><Growth/><ContactInvite/></>}
+export const metadata={title:'Services — 브랜드 진단·브랜딩·그래픽·마케팅·디지털',alternates:{canonical:'/services'}};
+export default function ServicesPage(){return <><section className="page-intro section-pad"><h1>From a clearer diagnosis to a stronger next move. We shape the places where a brand meets people.</h1><p className="intro-note">브랜드의 현재를 진단하는 일부터 콘텐츠, 마케팅과 디지털 경험까지. 지금 필요한 여섯 가지 서비스를 연결해 제안합니다.</p></section><section className="services-content section-pad"><h2 className="section-rule">Our services</h2><ServiceRows/></section><Growth/><ContactInvite/></>}

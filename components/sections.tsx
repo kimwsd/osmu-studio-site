@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { ArrowUpRight, Plus } from 'lucide-react';
 import ServiceGrid from '@/components/service-grid';
-export function ServiceRows({ expanded = false }: { expanded?: boolean }) {
- return <ServiceGrid expanded={expanded}/>;
+export function ServiceRows() {
+ return <ServiceGrid/>;
 }
 export function ContactInvite(){return <section className="contact-invite section-pad"><div><h2>Have a project in mind?</h2><p>필요한 작업과 일정을 들려주세요.</p></div><Link className="button" href="/contact">프로젝트 문의하기 <ArrowUpRight size={18}/></Link></section>}
 export function Growth(){return <section className="touchpoints section-pad"><div className="split-heading"><h2>One idea.<br/>Many touchpoints.</h2><div><h3>A brand people recognise,<br/>wherever they meet it.</h3><p>포장지 한 장부터 화면 속 작은 이미지까지.<br/>매체의 크기와 쓰임에 맞춰 브랜드의 인상을 이어갑니다.</p></div></div><div className="touchpoint-wall">{['Identity','Packaging','Editorial','Signage','Digital','Motion','Campaign','Guidelines'].map(t=><span key={t}>{t}</span>)}</div></section>}

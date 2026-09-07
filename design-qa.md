@@ -41,3 +41,28 @@ Date: 2026-09-07
 No P0/P1/P2 findings remain in the inspected mobile scope. The extra Services and Process menu rows, shorter editorial list, OSMU media, and Helvetica typography are required content/product differences.
 
 final result: passed
+
+## Services reorganisation QA — 2026-09-07
+
+Source visual truth: user-provided process reference, copied to `docs/qa-services/source-process-reference.png` (1660×741). The reference establishes the numbered horizontal-row structure, thin dividers, title column and explanatory copy column; its Analytics/Strategy content is intentionally replaced by OSMU’s requested services.
+
+Implementation: `http://127.0.0.1:3000/services/`, captured at CSS 1628×741 / browser output 1613×734 in `docs/qa-services/local-services-default.jpg`. The focused Korean transition is captured in `docs/qa-services/local-services-korean-focus.jpg`; mobile CSS 390×844 / browser output 375×812 is `docs/qa-services/local-services-mobile.jpg`. Full-view comparison is `docs/qa-services/comparison-services-default.jpg`, with source and implementation each normalized to 814px wide inside the 1628×741 composite.
+
+Findings and corrections:
+
+- [P1 fixed] The prior card grid did not reflect the reference’s ordered process rhythm. Services now use six linked, numbered rows with aligned title and explanatory-copy columns.
+- [P1 fixed] The supplied service offering replaces the older category set: Brand Audit & Consulting, Branding, Graphic Design, Photo & Film, Marketing, and Web & Digital. Each row and detail page has newly written OSMU-specific Korean copy.
+- [P2 fixed] English titles are the default desktop state; pointer hover and keyboard focus transition the active title to its Korean counterpart. The verified focus state renders `브랜드 진단 · 컨설팅` on black with white type.
+- [P2 fixed] The first long title was reduced to the reference’s row-scale typography and given sufficient column width to keep a single-line desktop reading. At 390px all six rows remain reachable with zero horizontal overflow.
+
+Required fidelity surfaces:
+
+- Typography: Helvetica-first stack retains the existing site system; desktop row titles are 30–40px and explanatory copy 18px, with mobile titles 32px and copy 16px.
+- Spacing/layout: desktop rows are 106px minimum with one-pixel dividers, 72px number column and 38% title column. Mobile collapses to 52px number + content column.
+- Colors/tokens: default is existing white/ink/muted-gray system; active row is black with white text, matching a clear interactive state without changing the #3368A0 navigation or footer token.
+- Image quality: the selected reference is typographic and contains no in-page image asset to recreate; OSMU service rows introduce no synthetic imagery.
+- Copy/content: all service labels and descriptions represent the user-supplied OSMU offering; source company and process claims were not reused.
+
+Interaction and build evidence: first service row navigated to `/services/branding/`; focused Korean state measured English opacity 0 and Korean opacity 1; desktop/mobile layouts had no horizontal overflow. `npm run build`, `npm run typecheck`, and all 14 tests passed. No P0/P1/P2 findings remain.
+
+final result: passed
