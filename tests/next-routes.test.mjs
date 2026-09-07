@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+const base=process.env.TEST_BASE_URL||'http://127.0.0.1:3000';
+const routes=['/','/work','/studio','/services','/process','/contact','/privacy','/terms','/services/branding','/services/ci-bi','/services/space-branding','/services/brand-film','/services/web-digital','/services/marketing','/services/packaging','/work/identity-system','/work/cafe-mono','/admin.html','/robots.txt','/sitemap.xml'];
+test('Next.js pages and retained admin respond successfully',async()=>{for(const path of routes){const response=await fetch(base+path);assert.equal(response.status,200,path);}});
+test('legacy inbound URLs include static redirect bridges',async()=>{for(const [from,to]of [['/home.html','/'],['/work.html','/work/'],['/service-branding.html','/services/branding/'],['/project-cafe-mono.html','/work/cafe-mono/'],['/project.html?slug=identity-system','/project/']]){const response=await fetch(base+from);assert.equal(response.status,200,from);const html=await response.text();assert.ok(html.includes(`url=${to}`),from);assert.ok(html.includes('location.search'),from);}});
+test('unknown project and service pages return 404',async()=>{for(const path of ['/work/does-not-exist','/services/does-not-exist'])assert.equal((await fetch(base+path)).status,404,path)});
+test('static host does not expose a server inquiry endpoint',async()=>{assert.equal((await fetch(base+'/api/inquiries')).status,404);assert.equal((await fetch(base+'/api/inquiries',{method:'POST',body:'{}'})).status,405)});
+test('showreel supports byte-range playback',async()=>{const response=await fetch(base+'/assets/osmu-concept-reel.mp4',{headers:{Range:'bytes=0-1023'}});assert.equal(response.status,206);assert.equal((await response.arrayBuffer()).byteLength,1024);assert.match(response.headers.get('content-range'),/^bytes 0-1023\/\d+$/)});

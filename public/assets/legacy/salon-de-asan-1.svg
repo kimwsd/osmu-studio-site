@@ -1,0 +1,5 @@
+<svg viewBox="0 0 1200 520" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="520" fill="#0a0a0a"/>
+      <line x1="130" y1="150" x2="1070" y2="150" stroke="#fff"/><line x1="130" y1="260" x2="1070" y2="260" stroke="#fff"/><line x1="130" y1="370" x2="1070" y2="370" stroke="#fff"/><rect x="130" y="300" width="220" height="110" fill="#fff"/>
+      <text x="40" y="490" fill="#fff" font-family="Archivo,Helvetica,Arial" font-size="13" letter-spacing="3">SALON DE ASAN — 2025</text>
+    </svg>

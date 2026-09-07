@@ -1,0 +1,262 @@
+{
+  "featured": [
+    {
+      "slug": "identity-system",
+      "name": "Identity in print",
+      "cat": "Brand Identity",
+      "type": "Branding",
+      "year": 2026,
+      "month": 6,
+      "loc": "OSMU STUDIO",
+      "summary": "인쇄물로 확장한 브랜드 아이덴티티",
+      "body": "로고가 여러 크기와 지면에서도 일관된 인상을 만드는지 살펴보는 자체 스터디입니다. 명함과 편집물에 글자, 여백, 정보의 위계를 적용한 장면을 구성했습니다.\n\n서로 다른 인쇄물에 사용할 그래픽의 비율과 정렬을 탐색했습니다. 이미지는 표현 방향을 보여주는 콘셉트 비주얼입니다.",
+      "images": [
+        "/assets/work-generated/identity-system-01.webp",
+        "/assets/work-generated/identity-system-02.webp"
+      ],
+      "concept": true,
+      "videos": []
+    },
+    {
+      "slug": "package-system",
+      "name": "The package study",
+      "cat": "Packaging",
+      "type": "Package",
+      "year": 2026,
+      "month": 6,
+      "loc": "OSMU STUDIO",
+      "summary": "형태와 정보가 만나는 패키지 디자인",
+      "body": "패키지의 형태, 재질과 정보 배치가 제품의 인상에 미치는 영향을 탐색한 자체 스터디입니다. 여러 품목을 하나의 시각 체계로 묶는 구성을 살펴봅니다.\n\n용기의 비율과 라벨 영역, 색상 조합을 중심으로 시각 방향을 제안합니다. 실제 제품의 규격·법정 표기·인쇄 검증을 완료한 납품 사례가 아닙니다.",
+      "images": [
+        "/assets/work-generated/package-system-01.webp",
+        "/assets/work-generated/package-system-02.webp"
+      ],
+      "concept": true,
+      "videos": []
+    },
+    {
+      "slug": "campaign-graphic",
+      "name": "A graphic language",
+      "cat": "Brand Identity",
+      "type": "Branding",
+      "year": 2026,
+      "month": 6,
+      "loc": "OSMU STUDIO",
+      "summary": "한 문장을 여러 매체로 옮기는 그래픽",
+      "body": "하나의 메시지가 포스터와 디지털 화면에서 어떻게 달라지는지 살펴봅니다. 타이포그래피의 크기와 대비, 화면의 밀도를 중심으로 구성한 자체 콘셉트 스터디입니다.\n\n각 매체에서 먼저 읽혀야 할 내용을 구분하고 그래픽의 반복 규칙을 탐색했습니다. 실제 캠페인 집행이나 성과를 나타내는 사례가 아닙니다.",
+      "images": [
+        "/assets/work-generated/campaign-graphic-01.webp",
+        "/assets/work-generated/campaign-graphic-02.webp"
+      ],
+      "concept": true,
+      "videos": []
+    },
+    {
+      "slug": "brand-film",
+      "name": "Motion, considered",
+      "cat": "Brand Film",
+      "type": "Brand Film",
+      "year": 2026,
+      "month": 6,
+      "loc": "OSMU STUDIO",
+      "summary": "브랜드 모션을 위한 장면과 분위기",
+      "body": "브랜드 영상의 분위기와 시각적 리듬을 탐색하기 위한 이미지 스터디입니다. 조명과 구도, 화면 사이의 연결을 기획하는 출발점으로 구성했습니다.\n\n현재 공개 자료는 콘셉트 스틸 이미지입니다. 완성된 영상이나 실제 촬영 프로젝트의 결과물을 의미하지 않습니다.",
+      "images": [
+        "/assets/work-generated/brand-film-01.webp",
+        "/assets/work-generated/brand-film-02.webp"
+      ],
+      "concept": true,
+      "videos": []
+    },
+    {
+      "slug": "space-experience",
+      "name": "Signs of a place",
+      "cat": "Space Branding",
+      "type": "Spatial",
+      "year": 2026,
+      "month": 5,
+      "loc": "OSMU STUDIO",
+      "summary": "공간에서 브랜드를 만나는 방식",
+      "body": "공간의 사인과 그래픽이 브랜드의 인상을 어떻게 이어가는지 탐색한 자체 스터디입니다. 시선의 흐름과 안내 정보, 소재의 관계를 살펴봅니다.\n\n입구에서 공간 내부까지 만나는 시각 요소의 방향을 제안합니다. 실제 공간의 설계·시공을 완료한 사례가 아닙니다.",
+      "images": [
+        "/assets/work-generated/space-experience-01.webp",
+        "/assets/work-generated/space-experience-02.webp"
+      ],
+      "concept": true,
+      "videos": []
+    },
+    {
+      "slug": "brand-activation",
+      "name": "Ready to meet people",
+      "cat": "Campaign & Marketing",
+      "type": "Campaign",
+      "year": 2026,
+      "month": 4,
+      "loc": "OSMU STUDIO",
+      "summary": "출시 접점에 맞춘 브랜드 표현",
+      "body": "제품을 소개하는 여러 접점에서 같은 핵심 메시지를 전달하는 방법을 탐색합니다. 키 비주얼과 인쇄·디지털 소재의 관계를 구성한 자체 콘셉트 스터디입니다.\n\n판매 채널에 맞춰 이미지와 정보의 우선순위를 조정하는 방향을 보여줍니다. 광고 집행과 매출 성과가 검증된 프로젝트가 아닙니다.",
+      "images": [
+        "/assets/work-generated/brand-activation-01.webp",
+        "/assets/work-generated/brand-activation-02.webp"
+      ],
+      "concept": true,
+      "videos": []
+    },
+    {
+      "slug": "creative-collaboration",
+      "name": "Thinking on the table",
+      "cat": "Brand Strategy",
+      "type": "Strategy",
+      "year": 2026,
+      "month": 3,
+      "loc": "OSMU STUDIO",
+      "summary": "리서치에서 비주얼 방향으로",
+      "body": "브랜드의 자료를 펼쳐놓고 판단의 기준을 세우는 과정을 시각화한 자체 스터디입니다. 질문과 단서가 비주얼 방향으로 연결되는 작업 장면을 표현했습니다.\n\n리서치와 제작이 같은 기준을 공유한다는 스튜디오의 작업 태도를 담았습니다. 특정 고객을 위한 실제 워크숍 기록이 아닙니다.",
+      "images": [
+        "/assets/work-generated/creative-collaboration-01.webp",
+        "/assets/work-generated/creative-collaboration-02.webp"
+      ],
+      "concept": true,
+      "videos": []
+    },
+    {
+      "slug": "film-production",
+      "name": "Light, frame, rhythm",
+      "cat": "Brand Film",
+      "type": "Film",
+      "year": 2026,
+      "month": 2,
+      "loc": "OSMU STUDIO",
+      "summary": "영상의 시각 언어를 위한 스터디",
+      "body": "빛과 구도가 브랜드 이미지에 만드는 차이를 탐색한 콘셉트 스틸입니다. 영상 제작의 방향을 논의할 때 활용할 수 있는 장면을 제안합니다.\n\n현장 촬영 및 완성 영상의 납품 사례가 아닌 자체 이미지 스터디입니다. 실제 제작 범위는 프로젝트의 목표와 일정에 맞춰 별도로 정합니다.",
+      "images": [
+        "/assets/work-generated/film-production-01.webp",
+        "/assets/work-generated/film-production-02.webp"
+      ],
+      "concept": true,
+      "videos": []
+    }
+  ],
+  "legacy": [
+    {
+      "slug": "cafe-mono",
+      "name": "CAFE MONO",
+      "cat": "Space + Branding",
+      "type": "카페",
+      "year": 2026,
+      "month": 3,
+      "loc": "아산 Asan",
+      "summary": "흑과 백, 단 두 가지 톤으로 커피의 본질만 남긴 미니멀 카페.",
+      "body": "커피 외의 모든 것을 덜어냈습니다. 벽도, 가구도, 사인도 흑과 백으로만 정리해 손님의 시선이 오직 바(bar) 위로 모이도록 했습니다.\n\n바 상판은 단일 스테인리스로 제작해 이음새를 없앴고, 메뉴는 벽면에 직접 실크 인쇄했습니다. 로고는 알파벳 ‘M’의 음영만으로 커피 한 잔을 연상시킵니다.\n\n오픈 후 ‘사진 찍기 좋은 카페’로 입소문이 나며, 흑백 톤은 그대로 매장의 인스타그램 아이덴티티가 되었습니다.",
+      "images": [
+        "/assets/legacy/cafe-mono-1.svg",
+        "/assets/legacy/cafe-mono-2.svg",
+        "/assets/legacy/cafe-mono-3.svg",
+        "/assets/legacy/cafe-mono-4.svg"
+      ],
+      "videos": [],
+      "concept": false,
+      "archived": true
+    },
+    {
+      "slug": "bakery-onhwa",
+      "name": "BAKERY ONHWA",
+      "cat": "Space Design",
+      "type": "음식점",
+      "year": 2026,
+      "month": 1,
+      "loc": "천안 Cheonan",
+      "summary": "갓 구운 빵의 온기를 닮은, 따뜻한 베이지와 원목의 동네 베이커리.",
+      "body": "동네 사람들이 매일 들러도 질리지 않는 편안함을 목표로 했습니다. 차가운 트렌드 대신 빵의 온도를 닮은 색과 소재를 골랐습니다.\n\n평면은 진열대를 중심으로 회유 동선을 그려 손님이 자연스럽게 모든 빵을 지나도록 했습니다. 사인과 가격표는 크라프트지에 손글씨 톤으로 통일했습니다.\n\n오픈 6개월 만에 단골 비중이 절반을 넘었습니다. 따뜻한 톤의 패키지는 선물용 수요까지 끌어냈습니다.",
+      "images": [
+        "/assets/legacy/bakery-onhwa-1.svg",
+        "/assets/legacy/bakery-onhwa-2.svg",
+        "/assets/legacy/bakery-onhwa-3.svg",
+        "/assets/legacy/bakery-onhwa-4.svg"
+      ],
+      "videos": [],
+      "concept": false,
+      "archived": true
+    },
+    {
+      "slug": "salon-de-asan",
+      "name": "SALON DE ASAN",
+      "cat": "Brand Identity",
+      "type": "상업",
+      "year": 2025,
+      "month": 11,
+      "loc": "아산 Asan",
+      "summary": "군더더기를 덜어낸 절제된 라인으로 완성한 헤어 살롱의 아이덴티티.",
+      "body": "헤어 살롱은 거울 앞에서 보내는 시간이 전부입니다. 그 시간을 방해하지 않도록 모든 그래픽을 최소한으로 절제했습니다.\n\n로고는 가위의 두 날을 추상화한 두 개의 선에서 출발합니다. 시그니처 컬러는 차분한 그레이 한 톤으로 고정해 어떤 시술 사진과도 충돌하지 않습니다.\n\n브랜드 그레이는 명함부터 가운, 인스타그램 피드까지 이어지며 살롱의 ‘조용한 전문성’을 만들었습니다.",
+      "images": [
+        "/assets/legacy/salon-de-asan-1.svg",
+        "/assets/legacy/salon-de-asan-2.svg",
+        "/assets/legacy/salon-de-asan-3.svg",
+        "/assets/legacy/salon-de-asan-4.svg"
+      ],
+      "videos": [],
+      "concept": false,
+      "archived": true
+    },
+    {
+      "slug": "butcher-no9",
+      "name": "BUTCHER NO.9",
+      "cat": "Space + Branding",
+      "type": "음식점",
+      "year": 2025,
+      "month": 6,
+      "loc": "서울 Seoul",
+      "summary": "붉은 고기와 차가운 스틸이 만나는, 도심형 정육 다이닝.",
+      "body": "정육과 다이닝을 한 공간에 담았습니다. 쇼케이스의 붉은 살코기를 주인공으로 두고, 마감은 차가운 스틸과 콘크리트로 받쳤습니다.\n\n넘버 ‘9’를 도장처럼 찍어 쓰는 브랜드 마크를 만들었습니다. 포장지, 앞치마, 간판까지 같은 마크 하나로 일관되게 묶었습니다.\n\n붉은 마크와 차가운 공간의 대비가 강한 인상을 남기며, 정육 구매와 다이닝 매출이 함께 올랐습니다.",
+      "images": [
+        "/assets/legacy/butcher-no9-1.svg",
+        "/assets/legacy/butcher-no9-2.svg",
+        "/assets/legacy/butcher-no9-3.svg",
+        "/assets/legacy/butcher-no9-4.svg"
+      ],
+      "videos": [],
+      "concept": false,
+      "archived": true
+    },
+    {
+      "slug": "teahouse-dam",
+      "name": "TEAHOUSE DAM",
+      "cat": "Packaging",
+      "type": "카페",
+      "year": 2024,
+      "month": 9,
+      "loc": "전주 Jeonju",
+      "summary": "한 잔의 차가 머무는 시간을 담은, 차분한 패키지 시스템.",
+      "body": "제품이 아니라 ‘차를 마시는 시간’을 팔기로 했습니다. 패키지는 조용하고 단단하게, 손에 쥐었을 때의 무게감까지 설계했습니다.\n\n녹차·홍차·발효차를 색이 아닌 ‘획의 굵기’로 구분하는 라벨 시스템을 만들었습니다. 박스는 다시 쓰고 싶은 단단한 구조로 설계했습니다.\n\n패키지 자체가 선물이 되며 명절 시즌 박스 판매가 매장 매출의 큰 축으로 자리 잡았습니다.",
+      "images": [
+        "/assets/legacy/teahouse-dam-1.svg",
+        "/assets/legacy/teahouse-dam-2.svg",
+        "/assets/legacy/teahouse-dam-3.svg",
+        "/assets/legacy/teahouse-dam-4.svg"
+      ],
+      "videos": [],
+      "concept": false,
+      "archived": true
+    },
+    {
+      "slug": "gallery-hue",
+      "name": "GALLERY HUE",
+      "cat": "Space Design",
+      "type": "상업",
+      "year": 2024,
+      "month": 4,
+      "loc": "서울 Seoul",
+      "summary": "작품과 관람객 사이의 여백을 설계한, 화이트 큐브 갤러리.",
+      "body": "갤러리에서 가장 중요한 건 작품과 여백입니다. 공간이 작품을 이기지 않도록, 동선과 조명만 남기고 모두 비웠습니다.\n\n가벽의 위치와 높이를 전시마다 바꿀 수 있게 모듈화했습니다. 조명은 작품에만 떨어지고, 바닥과 벽은 빛을 흡수하도록 마감했습니다.\n\n가변 가벽 시스템 덕분에 전시 교체 비용이 줄었고, 갤러리는 대관 공간으로도 운영되고 있습니다.",
+      "images": [
+        "/assets/legacy/gallery-hue-1.svg",
+        "/assets/legacy/gallery-hue-2.svg",
+        "/assets/legacy/gallery-hue-3.svg",
+        "/assets/legacy/gallery-hue-4.svg"
+      ],
+      "videos": [],
+      "concept": false,
+      "archived": true
+    }
+  ]
+}

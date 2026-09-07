@@ -1,0 +1,7 @@
+import Link from 'next/link';
+import {ArrowRight} from 'lucide-react';
+import Showreel from '@/components/showreel';
+import StudioExperience from '@/components/studio-experience';
+import {ContactInvite} from '@/components/sections';
+export const metadata={title:'About — 생각을 형태로 옮기는 스튜디오',alternates:{canonical:'/studio'}};
+export default function StudioPage(){return <><section className="page-intro section-pad"><h1>We bring clear thinking and a designer’s instinct together. To give brands a voice, a face and a place in people’s lives.</h1><p className="intro-note">오스무 스튜디오는 브랜드 전략을 그래픽과 패키지로 옮깁니다. 판단의 이유를 세우고, 브랜드만의 표정을 찾아갑니다.</p></section><div className="studio-reel section-pad"><Showreel/></div><section className="section-pad"><div className="studio-statement"><h2>One source.<br/>Multi use.</h2><div><p>하나의 생각에서 여러 쓰임으로. 브랜드가 말하고 싶은 것과 고객이 알고 싶은 것 사이에서 디자인의 출발점을 찾습니다.</p><p>로고의 작은 획, 포장지의 정보 순서, 손에 닿는 소재. 각각의 선택이 같은 방향을 향하도록 설계합니다. 완성된 디자인과 함께 다음 작업에 사용할 기준을 남깁니다.</p></div></div><div className="studio-values">{[['01','A clear reason.','선택을 설명할 수 있는 디자인','고객과 시장의 맥락, 제품의 특성과 물리적인 조건을 살피고 판단의 이유를 공유합니다.'],['02','A human instinct.','감각이 만드는 브랜드의 표정','형태와 여백, 리듬을 탐색하며 브랜드의 성격을 드러낼 표현을 찾습니다.'],['03','A useful system.','제작 현장까지 이어지는 기준','화면의 결과를 인쇄와 운영 환경에 맞추고, 반복해서 쓸 수 있는 파일과 가이드를 정리합니다.']].map(([n,t,h,p])=><article key={n}><span>{n}</span><h3>{t}</h3><h4>{h}</h4><p>{p}</p></article>)}</div><Link href="/services" className="text-link"><ArrowRight size={16}/>Explore our services</Link></section><StudioExperience/><ContactInvite/></>}

@@ -1,0 +1,3 @@
+import { ServiceRows, Growth, ContactInvite } from '@/components/sections';
+export const metadata={title:'Services — 브랜드 전략·그래픽·패키지 디자인',alternates:{canonical:'/services'}};
+export default function ServicesPage(){return <><section className="page-intro section-pad"><h1>From the first question to the final detail. We make the things that make your brand.</h1><p className="intro-note">브랜드의 방향을 세우는 일부터 제품을 손에 쥐는 순간까지. 필요한 작업의 범위와 매체를 함께 정합니다.</p></section><section className="services-content section-pad"><h2 className="section-rule">What we do</h2><ServiceRows expanded/></section><Growth/><ContactInvite/></>}

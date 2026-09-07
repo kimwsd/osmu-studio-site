@@ -1,0 +1,3 @@
+import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
+export default function StudioExperience(){return <section className="experience split-section section-pad"><h2>Our experience.</h2><div><h3>Ten years of making.<br/>Always asking why.</h3><p>10년간 그래픽과 패키지 디자인을 이어오며, 화면에서의 인상과 손에 쥐었을 때의 경험을 함께 고민해왔습니다. 브랜드의 출발점과 제작 현장의 조건 사이에서 답을 찾습니다.</p><div className="experience-rows"><article><h4>Think through.</h4><p>타깃, 판매 환경과 제품의 특성을 이해합니다.</p></article><article><h4>Make it tangible.</h4><p>글자와 그래픽, 종이와 소재로 방향을 구체화합니다.</p></article><article><h4>Keep it useful.</h4><p>다음 제작에도 활용할 수 있는 파일과 기준을 남깁니다.</p></article></div><Link className="text-link" href="/work">Explore our works <ArrowUpRight size={18}/></Link></div></section>;}

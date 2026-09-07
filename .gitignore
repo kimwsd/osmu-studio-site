@@ -6,3 +6,10 @@ Thumbs.db
 .worktrees/
 video/studio-hero/node_modules/
 video/studio-hero/output/
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+*.tsbuildinfo
+.vercel/

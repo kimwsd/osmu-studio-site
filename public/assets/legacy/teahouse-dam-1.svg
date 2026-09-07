@@ -1,0 +1,5 @@
+<svg viewBox="0 0 1200 520" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="520" fill="#0a0a0a"/>
+      <rect x="170" y="120" width="90" height="300" fill="#fff"/><rect x="320" y="180" width="90" height="240" fill="none" stroke="#fff"/><rect x="470" y="120" width="90" height="300" fill="#fff"/><rect x="620" y="180" width="90" height="240" fill="none" stroke="#fff"/><rect x="770" y="120" width="90" height="300" fill="#fff"/>
+      <text x="40" y="490" fill="#fff" font-family="Archivo,Helvetica,Arial" font-size="13" letter-spacing="3">TEAHOUSE DAM — 2024</text>
+    </svg>
