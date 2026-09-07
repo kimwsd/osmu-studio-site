@@ -11,5 +11,4 @@ export default async function Home(){const projects=await getProjects();return <
  <HomeEditorial section="ambition"/>
  <div className="reel-section section-pad"><Showreel/></div>
  <section className="selected-work section-pad"><h2 className="section-rule">Selected Work</h2><WorkGrid projects={projects.slice(0,5)}/><Link className="pill-button all-work-link" href="/work">View all work <ArrowRight size={18}/></Link></section>
- <HomeEditorial section="stories"/>
  </>}
