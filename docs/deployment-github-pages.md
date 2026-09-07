@@ -16,3 +16,12 @@ Result: deployed successfully.
 - No real inquiry or notification email was sent. Existing Supabase anonymous access and database policies were retained.
 
 Future content update: edit in `/admin.html`, then run Actions → Deploy Next.js to GitHub Pages → Run workflow. Inquiry storage itself remains directly connected to the existing Supabase table.
+
+## Mobile fidelity follow-up
+
+- Deployed source commit: `359f399c661581a140ac3a15589671e6ba02bbd0`
+- Successful workflow: https://github.com/kimwsd/osmu-studio-site/actions/runs/34122334392
+- CI rebuilt all 36 static pages, passed TypeScript, passed all 14 tests, and completed the Pages deploy job.
+- Production at 390×844: 102px wordmark, 88px header, 754px hero, zero horizontal overflow and one H1 on every main route.
+- Production menu opened with scroll lock and all five independent routes. A `브랜드` search produced seven visible compact rows, a yellow first result and the 374×326 mobile panel.
+- Work, About, Services, Process, Contact, project detail and service detail returned their expected Next.js pages with zero broken loaded images.
