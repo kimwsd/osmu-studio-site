@@ -9,7 +9,7 @@ export function Header({items=[]}:{items?:SearchItem[]}) {
  const pathname=usePathname().replace(/\/$/,'')||'/',router=useRouter();
  const [compact,setCompact]=useState(false),[mode,setMode]=useState<'menu'|'search'|null>(null),[query,setQuery]=useState('');
  const dialog=useRef<HTMLDialogElement>(null),menuButton=useRef<HTMLButtonElement>(null),searchButton=useRef<HTMLButtonElement>(null),previousMode=useRef<'menu'|'search'>('menu');
- const dark=pathname.startsWith('/work')||pathname==='/contact';
+ const dark=pathname.startsWith('/work')||pathname==='/contact'||(pathname==='/'&&!compact);
  const results=query.trim()?items.filter(item=>(item.title+' '+item.description+' '+item.category).toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())).slice(0,12):[];
  useEffect(()=>{const update=()=>setCompact(scrollY>40);update();addEventListener('scroll',update,{passive:true});return()=>removeEventListener('scroll',update);},[]);
  useEffect(()=>{setMode(null);setQuery('');},[pathname]);
