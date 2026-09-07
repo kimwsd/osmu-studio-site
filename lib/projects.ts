@@ -14,7 +14,7 @@ function normalize(value: Record<string, unknown>): Project | null {
   return { slug: value.slug, name: value.name, cat: String(value.cat || 'Branding'), year: Number(value.year) || 2026,
     month: Number(value.month) || undefined, loc: String(value.loc || ''), type: String(value.type || ''),
     summary: String(value.summary || ''), body: String(value.body || ''), images: strings('images'), videos: strings('videos'),
-    concept: local.featured.some(p => p.slug === value.slug) || value.concept === true };
+    concept: local.featured.some(p => p.slug === value.slug) || value.concept === true, archived: value.archived === true };
 }
 export const getProjects = cache(async (): Promise<Project[]> => {
   try {

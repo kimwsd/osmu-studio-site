@@ -1,4 +1,4 @@
-import {FAQ,ContactInvite} from '@/components/sections';
+import {FAQ,FAQJsonLd,ContactInvite} from '@/components/sections';
 
 const steps=[
  ['01','Align & Scope.','프로젝트 정렬','목표·우선순위·예산·일정·의사결정자를 정리해, 해결할 문제와 이번 단계의 범위를 먼저 합의합니다.'],
@@ -9,8 +9,8 @@ const steps=[
  ['06','Launch & Learn.','런칭·운영 인수','최종 파일과 가이드를 전달하고 실제 적용 후 보완 지점을 확인합니다. 다음 캠페인과 확장 작업에 재사용할 기준을 남깁니다.']
 ] as const;
 
-export const metadata={title:'Process — 진단에서 운영까지',alternates:{canonical:'/process'}};
+export const metadata={title:'브랜딩 프로세스 — 진단에서 운영까지',description:'목표와 범위 정리, 브랜드 진단, 전략 방향, 디자인 시스템, 제작 검증과 런칭·운영 인수까지 오스무 스튜디오의 브랜드 프로젝트 진행 과정을 소개합니다.',alternates:{canonical:'/process'}};
 
 export default function ProcessPage(){
- return <><section className="page-intro section-pad"><h1>Good work moves from a shared question to a system that works in the real world.</h1><p className="intro-note">좋은 결과는 감각만으로 진행되지 않습니다. 확인할 사실, 승인할 결정과 제작 조건을 단계마다 맞춰 브랜드가 현장에서 작동하도록 만듭니다.</p></section><section className="process-content section-pad"><h2 className="section-rule">Our process</h2><div className="service-rows process-rows" role="list" aria-label="OSMU 프로젝트 진행 과정">{steps.map(([number,title,korean,copy])=><article key={number} className="service-row process-row" role="listitem" tabIndex={0}><span className="service-number">{number}</span><h3 className="service-title"><span className="service-title-en" aria-hidden="true">{title}</span><span className="service-title-ko">{korean}</span></h3><p>{copy}</p></article>)}</div></section><FAQ/><ContactInvite/></>;
+ return <><section className="page-intro section-pad"><h1>Good work moves from a shared question to a system that works in the real world.</h1><p className="intro-note">좋은 결과는 감각만으로 진행되지 않습니다. 확인할 사실, 승인할 결정과 제작 조건을 단계마다 맞춰 브랜드가 현장에서 작동하도록 만듭니다.</p></section><section className="process-content section-pad"><h2 className="section-rule">Our process</h2><div className="service-rows process-rows" role="list" aria-label="OSMU 프로젝트 진행 과정">{steps.map(([number,title,korean,copy])=><article key={number} className="service-row process-row" role="listitem" tabIndex={0}><span className="service-number">{number}</span><h3 className="service-title"><span className="service-title-en" aria-hidden="true">{title}</span><span className="service-title-ko">{korean}</span></h3><p>{copy}</p></article>)}</div></section><FAQ/><FAQJsonLd/><ContactInvite/></>;
 }

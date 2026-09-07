@@ -1,3 +1,3 @@
 import { ServiceRows, Growth, ContactInvite } from '@/components/sections';
-export const metadata={title:'Services — 브랜드 진단·브랜딩·그래픽·AI 이미지·영상·마케팅·디지털',alternates:{canonical:'/services'}};
+export const metadata={title:'서비스 — 브랜드 진단·브랜딩·그래픽·AI 이미지·영상·마케팅·디지털',description:'브랜드 진단·컨설팅, 브랜딩, 그래픽 디자인, 사진·영상, 마케팅, 웹·디지털과 AI 이미지·영상 제작 서비스를 한 흐름으로 설계합니다.',alternates:{canonical:'/services'}};
 export default function ServicesPage(){return <><section className="page-intro section-pad"><h1>From a clearer diagnosis to a stronger next move. We shape the places where a brand meets people.</h1><p className="intro-note">브랜드의 현재를 진단하는 일부터 AI 이미지·영상, 콘텐츠, 마케팅과 디지털 경험까지. 지금 필요한 일곱 가지 서비스를 연결해 제안합니다.</p></section><section className="services-content section-pad"><h2 className="section-rule">Our services</h2><ServiceRows/></section><Growth/><ContactInvite/></>}
