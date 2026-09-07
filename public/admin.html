@@ -52,6 +52,7 @@
     <aside class="admin-side" aria-label="관리자 메뉴">
       <img src="logo.png?v=2" alt="OSMU STUDIO">
       <span class="admin-side-label">Content management</span>
+      <a href="#" data-panel="homepage">Homepage</a>
       <a href="#" class="on" data-panel="projects">Projects</a>
       <a href="#" data-panel="services">Service photos</a>
       <a href="#" data-panel="inquiries">Inquiries</a>
@@ -62,6 +63,32 @@
 
     <div class="admin-main">
       <div class="admin-topline"><span>CONTENT / OSMU STUDIO</span><span id="adminSessionState">Protected session</span></div>
+
+      <!-- homepage -->
+      <div class="admin-panel" id="panel-homepage">
+        <h2>Homepage</h2>
+        <p class="admin-note">메인 비주얼은 <b>Projects</b>에 등록한 작업에서, Selected Work는 최신 작업에서 자동으로 구성됩니다. 이 화면에서는 첫 문장과 Inside OSMU 카드 문구를 수정할 수 있습니다.</p>
+        <div class="admin-form" style="margin-top:0">
+          <h3>Our Ambition</h3>
+          <div class="field"><label for="hAmbitionEyebrow">Section label</label><input id="hAmbitionEyebrow" type="text" maxlength="48"></div>
+          <div class="field"><label for="hAmbition">Main statement</label><textarea id="hAmbition" rows="3" maxlength="280"></textarea></div>
+          <h3 style="margin-top:36px">Inside OSMU</h3>
+          <div class="field"><label for="hInsideTitle">Section title</label><input id="hInsideTitle" type="text" maxlength="80"></div>
+          <div class="field"><label for="hStory1Label">Card 01 · Label</label><input id="hStory1Label" type="text" maxlength="60"></div>
+          <div class="field"><label for="hStory1Title">Card 01 · Title</label><input id="hStory1Title" type="text" maxlength="120"></div>
+          <div class="field"><label for="hStory1Copy">Card 01 · Description</label><textarea id="hStory1Copy" rows="2" maxlength="240"></textarea></div>
+          <div class="field"><label for="hStory2Label">Card 02 · Label</label><input id="hStory2Label" type="text" maxlength="60"></div>
+          <div class="field"><label for="hStory2Title">Card 02 · Title</label><input id="hStory2Title" type="text" maxlength="120"></div>
+          <div class="field"><label for="hStory2Copy">Card 02 · Description</label><textarea id="hStory2Copy" rows="2" maxlength="240"></textarea></div>
+          <div class="field"><label for="hStory3Label">Card 03 · Label</label><input id="hStory3Label" type="text" maxlength="60"></div>
+          <div class="field"><label for="hStory3Title">Card 03 · Title</label><input id="hStory3Title" type="text" maxlength="120"></div>
+          <div class="field"><label for="hStory3Copy">Card 03 · Description</label><textarea id="hStory3Copy" rows="2" maxlength="240"></textarea></div>
+          <div class="field"><label for="hStory4Label">Card 04 · Label</label><input id="hStory4Label" type="text" maxlength="60"></div>
+          <div class="field"><label for="hStory4Title">Card 04 · Title</label><input id="hStory4Title" type="text" maxlength="120"></div>
+          <div class="field"><label for="hStory4Copy">Card 04 · Description</label><textarea id="hStory4Copy" rows="2" maxlength="240"></textarea></div>
+          <button class="btn" id="homepageSave">Save homepage</button>
+        </div>
+      </div>
 
       <!-- projects -->
       <div class="admin-panel on" id="panel-projects">
@@ -573,10 +600,76 @@ $('saveBtn').onclick = async ()=>{
     $('saveBtn').disabled = false;
   }
 };
+/* ----- homepage (메인 문구/카드) ----- */
+const HOME_DEFAULTS = {
+  ambitionEyebrow:'Our Ambition',
+  ambition:'We turn a clear thought into a brand people recognise, connect with and remember.',
+  insideTitle:'Inside OSMU',
+  stories:[
+    {label:'Our approach',title:'좋은 디자인의 시작은, 좋은 질문.',copy:'전략과 감각을 연결하는 오스무 스튜디오의 생각.'},
+    {label:'Identity & Packaging',title:'한눈에 알아보고, 손끝에 기억되도록.',copy:'로고에서 제품 패키지까지 이어지는 브랜드의 표정.'},
+    {label:'Our process',title:'질문에서 납품까지, 같은 방향으로.',copy:'함께 결정하고 확인하는 디자인 진행 과정.'},
+    {label:'Motion & Content',title:'브랜드의 리듬을 만드는 방법.',copy:'브랜드 자산을 움직임과 콘텐츠로 확장합니다.'}
+  ]
+};
+function cleanHomeText(value, fallback, max){
+  return typeof value === 'string' && value.trim() ? value.trim().slice(0,max) : fallback;
+}
+function resolveHomeContent(value){
+  const input = value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+  const stories = Array.isArray(input.stories) ? input.stories : [];
+  return {
+    ambitionEyebrow: cleanHomeText(input.ambitionEyebrow, HOME_DEFAULTS.ambitionEyebrow, 48),
+    ambition: cleanHomeText(input.ambition, HOME_DEFAULTS.ambition, 280),
+    insideTitle: cleanHomeText(input.insideTitle, HOME_DEFAULTS.insideTitle, 80),
+    stories: HOME_DEFAULTS.stories.map((story,index)=>{
+      const saved = stories[index] && typeof stories[index] === 'object' && !Array.isArray(stories[index]) ? stories[index] : {};
+      return {
+        label: cleanHomeText(saved.label,story.label,60),
+        title: cleanHomeText(saved.title,story.title,120),
+        copy: cleanHomeText(saved.copy,story.copy,240)
+      };
+    })
+  };
+}
+function fillHomepageSettings(value){
+  const home = resolveHomeContent(value);
+  $('hAmbitionEyebrow').value = home.ambitionEyebrow;
+  $('hAmbition').value = home.ambition;
+  $('hInsideTitle').value = home.insideTitle;
+  home.stories.forEach((story,index)=>{
+    const number = index + 1;
+    $('hStory'+number+'Label').value = story.label;
+    $('hStory'+number+'Title').value = story.title;
+    $('hStory'+number+'Copy').value = story.copy;
+  });
+}
+function homepagePayload(){
+  return resolveHomeContent({
+    ambitionEyebrow:$('hAmbitionEyebrow').value,
+    ambition:$('hAmbition').value,
+    insideTitle:$('hInsideTitle').value,
+    stories:[1,2,3,4].map(number=>({
+      label:$('hStory'+number+'Label').value,
+      title:$('hStory'+number+'Title').value,
+      copy:$('hStory'+number+'Copy').value
+    }))
+  });
+}
+$('homepageSave').onclick = async ()=>{
+  if(!SB){ toast('DB 연결 오류 — 새로고침 후 다시 시도'); return; }
+  const button = $('homepageSave');
+  button.disabled = true;
+  const { error } = await SB.from('settings').upsert({id:1,home_content:homepagePayload()});
+  button.disabled = false;
+  toast(error ? '저장 실패: ' + error.message : '홈페이지 문구가 저장되었습니다 — 새로고침하면 반영됩니다');
+};
+
 /* ----- settings (사이트 연락처/SNS/주소/시간) ----- */
 async function loadSettings(){
   if(!SB) return;
   const { data } = await SB.from('settings').select('*').eq('id',1).maybeSingle();
+  fillHomepageSettings(data?.home_content);
   if(!data) return;
   $('sEmail').value = data.email || '';
   $('sPhone').value = data.phone || '';
