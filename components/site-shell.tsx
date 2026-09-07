@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { Search, X, Menu, ArrowUp, ArrowRight } from 'lucide-react';
+import { Search, X, Menu, ArrowUp, ArrowRight, MessageCircle } from 'lucide-react';
 const links=[['Work','/work'],['About','/studio'],['Services','/services'],['Process','/process'],['Contact','/contact']] as const;
 export type SearchItem={title:string;href:string;description:string;category:string};
 export function Header({items=[]}:{items?:SearchItem[]}) {
@@ -26,4 +26,8 @@ export function Footer(){
  const footer=useRef<HTMLElement>(null),logo=useRef<HTMLImageElement>(null);
  useEffect(()=>{const reduced=matchMedia('(prefers-reduced-motion: reduce)');let frame=0;const update=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{if(!footer.current||!logo.current)return;const r=footer.current.getBoundingClientRect();const progress=Math.max(0,Math.min(1,(innerHeight-r.top)/(r.height*.8)));logo.current.style.transform=reduced.matches?'none':`translateY(${(1-progress)*160}px)`;});};update();addEventListener('scroll',update,{passive:true});addEventListener('resize',update);return()=>{cancelAnimationFrame(frame);removeEventListener('scroll',update);removeEventListener('resize',update);};},[]);
  return <footer ref={footer} className="footer"><div className="footer-top"><div className="footer-business"><p>© 2026 OSMU STUDIO</p><p>오스무 스튜디오 · 대표 김시우<br/>사업자등록번호 836-65-00790</p></div><div className="footer-contact"><p>Talk to us or ask us anything.</p><Link href="/contact"><ArrowRight/>Contact us</Link><Link href="/privacy"><ArrowRight/>Privacy policy</Link><Link href="/terms"><ArrowRight/>Terms of use</Link></div><div className="footer-social"><a href="https://www.instagram.com/studio_osmu/" target="_blank" rel="noopener noreferrer"><ArrowRight/>Instagram</a><a href="https://pf.kakao.com/_rJrGX/chat" target="_blank" rel="noopener noreferrer"><ArrowRight/>KakaoTalk</a><a href="mailto:osmu_studio@naver.com"><ArrowRight/>Email</a><Link href="/work"><ArrowRight/>All work</Link></div><button className="back-to-top" onClick={()=>scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})}><ArrowUp size={38}/><span>Back to top</span></button></div><Link href="/" className="footer-wordmark" aria-label="OSMU STUDIO 홈"><img ref={logo} src="/logo.svg" alt="OSMU STUDIO" width="242" height="33"/></Link></footer>;
+}
+
+export function KakaoQuickLink(){
+ return <a className="kakao-quick" href="https://pf.kakao.com/_rJrGX/chat" target="_blank" rel="noopener noreferrer" aria-label="카카오톡으로 상담하기" title="카카오톡 상담"><MessageCircle size={25} strokeWidth={2.3}/><span className="sr-only">카카오톡으로 상담하기</span></a>;
 }

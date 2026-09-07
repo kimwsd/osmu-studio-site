@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Header, Footer } from '@/components/site-shell';
+import { Header, Footer, KakaoQuickLink } from '@/components/site-shell';
 import PageMotion from '@/components/page-motion';
 import './globals.css';
 import { getProjects } from '@/lib/projects';
@@ -22,5 +22,5 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
  const projects=await getProjects();
  const searchItems=[...projects.map(p=>({title:p.name,href:`/work/${p.slug}`,description:p.summary,category:p.cat})),...services.map(s=>({title:s.title,href:`/services/${s.slug}`,description:s.description,category:'Services'})),{title:'About OSMU STUDIO',href:'/studio',description:'오스무 스튜디오 소개',category:'Studio'},{title:'How we work',href:'/process',description:'진행 과정 프로세스 견적 일정 질문 FAQ',category:'Process'},{title:'Contact',href:'/contact',description:'프로젝트 문의 연락처 상담',category:'Contact'}];
- return <html lang="ko"><body id="top"><Header items={searchItems}/><main id="main">{children}</main><Footer/><PageMotion/></body></html>;
+ return <html lang="ko"><body id="top"><Header items={searchItems}/><main id="main">{children}</main><Footer/><KakaoQuickLink/><PageMotion/></body></html>;
 }
