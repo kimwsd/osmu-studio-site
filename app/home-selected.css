@@ -1,0 +1,31 @@
+/* Preserve the supplied artwork in full, including its original lettering. */
+.hero-slider[data-uncropped=true]{height:auto;min-height:0;background:#171717}
+.hero-slider[data-uncropped=true] .hero-track{height:auto}
+.hero-slider[data-uncropped=true] .hero-slide{height:auto}
+.hero-slider[data-uncropped=true] .hero-media{height:auto;aspect-ratio:1672/941;object-fit:contain}
+.hero-slider[data-uncropped=true] .hero-slide:after{display:none}
+.hero-slider[data-uncropped=true] .hero-project{position:relative;display:block;min-height:150px;padding:24px var(--gutter);padding-right:max(220px,var(--gutter))}
+.hero-slider[data-uncropped=true] .hero-caption{position:static;max-width:none}
+.hero-slider[data-uncropped=true] .hero-caption p{font-size:clamp(20px,2vw,28px)}
+.hero-slider[data-uncropped=true] .hero-zone{height:calc(100% - 150px)}
+.home-selected-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:56px 32px;align-items:start}
+.home-selected-card{min-width:0;scroll-margin-top:110px}
+.home-selected-card img{width:100%;height:auto;object-fit:contain}
+.home-selected-card figcaption{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px 20px;padding-top:16px}
+.home-selected-card h3{font-size:22px;line-height:1.2}
+.home-selected-card p{font-size:13px;color:var(--muted)}
+.home-selected-odd-hours{grid-column:1;grid-row:1/span 2}
+.home-selected-mora{grid-column:2;grid-row:1}
+.home-selected-zest-club{grid-column:2;grid-row:2}
+@media(max-width:767px){
+  .hero-slider[data-uncropped=true] .hero-project{min-height:156px;padding:20px 24px 52px}
+  .hero-slider[data-uncropped=true] .hero-caption>span{font-size:20px}
+  .hero-slider[data-uncropped=true] .hero-caption p{font-size:20px;line-height:1.35;letter-spacing:-.02em}
+  .hero-slider[data-uncropped=true] .hero-controls{left:18px;bottom:8px;pointer-events:auto;gap:12px}
+  .hero-slider[data-uncropped=true] .hero-controls>button{display:block;padding:8px}
+  .hero-slider[data-uncropped=true] .slide-counter{font-size:15px}
+  .home-selected-grid{grid-template-columns:1fr;gap:44px}
+  .home-selected-card{grid-column:auto;grid-row:auto}
+  .home-selected-card h3{font-size:20px}
+  .home-selected-grid + .all-work-link{margin-top:44px}
+}
