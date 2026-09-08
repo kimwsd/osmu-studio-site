@@ -3,22 +3,18 @@ import assert from 'node:assert/strict';
 
 const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:3000';
 
-test('homepage hero renders a silent looping video without playback controls', async () => {
+test('homepage hero restores the original project image slider', async () => {
   const response = await fetch(base + '/');
   assert.equal(response.status, 200);
   const html = await response.text();
-  const hero = html.match(/<section[^>]*class="hero-video"[\s\S]*?<\/section>/)?.[0];
-  assert.ok(hero, 'The first hero must be the brand film');
-  const video = hero.match(/<video\b[^>]*>/)?.[0];
-  assert.ok(video, 'The hero needs its own video, separate from the showreel');
-  for (const attribute of ['muted', 'autoPlay', 'loop', 'playsInline']) {
-    assert.match(video, new RegExp(`\\s${attribute}(?:[\\s=>])`, 'i'), attribute);
-  }
-  assert.doesNotMatch(video, /\scontrols(?:[\s=>])/i);
-  assert.doesNotMatch(hero, /<button\b/);
+  const hero = html.match(/<section[^>]*class="hero-slider"[\s\S]*?<\/section>/)?.[0];
+  assert.ok(hero, 'The original project slider is restored');
+  assert.doesNotMatch(hero, /<video\b|kinetic-v5/);
+  assert.match(hero, /class="hero-track"/);
+  assert.match(hero, /class="hero-media"/);
+  assert.match(hero, /이전 프로젝트/);
+  assert.match(hero, /다음 프로젝트/);
   assert.match(hero, /<h1\b/);
-  assert.match(hero, /<source[^>]*media="\(max-width: 767px\)"[^>]*srcSet="\/assets\/hero\/kinetic-v5\/poster-mobile.jpg"/i);
-  assert.match(hero, /<img[^>]*src="\/assets\/hero\/kinetic-v5\/poster-pc.jpg"/);
   assert.match(html, /class="reel-section section-pad"/);
   assert.match(html, /Selected Work/);
 });
