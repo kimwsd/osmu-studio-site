@@ -12,6 +12,7 @@ test('homepage hero restores the original project image slider', async () => {
   assert.doesNotMatch(hero, /<video\b|kinetic-v5/);
   assert.match(hero, /class="hero-track"/);
   assert.match(hero, /class="hero-media"/);
+  assert.doesNotMatch(hero, /data-uncropped="true"/, 'Homepage hero must fill the viewport without a separate caption panel');
   assert.match(hero, /이전 프로젝트/);
   assert.match(hero, /다음 프로젝트/);
   assert.match(hero, />PREV<\/span>/);
