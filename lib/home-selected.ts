@@ -7,4 +7,15 @@ export const homeSelected = [
   {slug:'bastet',name:'BASTÉT',cat:'Package Design',summary:'욕실의 오브제와 어울리는 고전적 인상과 현대적 여백을 조율한 오럴 케어 패키지.',width:960,height:640},
 ].map(project=>({...project,images:[`/assets/home-selected/${project.slug}.webp`],href:`/work/${project.slug}/`}));
 
-export const homeHero = homeSelected.filter(project=>project.slug==='mora'||project.slug==='zest-club');
+const originalHeroSummaries: Record<string,string> = {
+  mora: '바디 케어 패키지 디자인',
+  'zest-club': '탄산음료 패키지 디자인',
+};
+
+export const homeHero = homeSelected
+  .filter(project=>project.slug==='mora'||project.slug==='zest-club')
+  .map(project=>({
+    ...project,
+    summary: originalHeroSummaries[project.slug],
+    href: `#project-${project.slug}`,
+  }));
