@@ -14,6 +14,8 @@ test('homepage hero restores the original project image slider', async () => {
   assert.match(hero, /class="hero-media"/);
   assert.match(hero, /이전 프로젝트/);
   assert.match(hero, /다음 프로젝트/);
+  assert.match(hero, />PREV<\/span>/);
+  assert.match(hero, />NEXT<\/span>/);
   assert.match(hero, /<h1\b/);
   assert.match(html, /class="reel-section section-pad"/);
   assert.match(html, /Selected Work/);
