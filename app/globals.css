@@ -65,3 +65,15 @@
 .service-visual{min-width:0}.service-visual-images{display:grid;gap:24px}.service-visual-images a{display:block;cursor:zoom-in}.service-visual img{width:100%;height:auto;object-fit:contain;aspect-ratio:auto;border-radius:10px}.service-detail-grid .service-visual-label{font-size:14px;color:var(--ink);margin-bottom:10px}.service-visual figcaption{padding-top:22px}.service-visual figcaption strong{display:block;font-size:21px;font-weight:500;line-height:1.45;word-break:keep-all;overflow-wrap:anywhere}.service-detail-grid .service-visual figcaption p{font-size:15px;line-height:1.8;margin-top:10px}.service-visual figcaption small{display:block;font-size:11px;line-height:1.7;color:var(--muted);margin-top:12px}.service-detail-grid>div{min-width:0}@media(max-width:767px){.service-visual img{border-radius:8px}.service-visual figcaption strong{font-size:19px}.service-detail-grid .service-visual figcaption p{font-size:14px}.service-visual-images{gap:24px}}
 
 @media(pointer:fine){.hero-zone-label{position:absolute;top:50%;font-size:15px;font-weight:700;letter-spacing:.04em;color:var(--yellow);opacity:0;transform:translateY(-50%);transition:opacity .16s ease}.hero-zone:hover .hero-zone-label,.hero-zone:focus-visible .hero-zone-label{opacity:1}.hero-prev .hero-zone-label{left:var(--gutter)}.hero-next .hero-zone-label{right:var(--gutter)}}
+/* Edge-to-edge homepage portfolio tiles. */
+.home-portfolio.section-pad{max-width:none;width:100%;padding:0 0 64px;margin:0}
+.home-portfolio .home-portfolio-grid{gap:0}
+.home-portfolio .project-card{position:relative;overflow:hidden}
+.home-portfolio .project-image{border-radius:0}
+.home-portfolio .project-caption{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;gap:8px;padding:24px;background:linear-gradient(transparent 45%,rgba(0,0,0,.65));color:#fff;opacity:0;transition:opacity .25s;pointer-events:none}
+.home-portfolio .project-caption h3{white-space:normal;overflow:visible;font-size:20px;line-height:1.25;overflow-wrap:anywhere}
+.home-portfolio .project-tags{display:flex;margin:0;color:#fff;white-space:normal}
+.home-portfolio .project-card:hover .project-caption,.home-portfolio .project-card:focus-visible .project-caption{opacity:1}
+.home-portfolio .project-card:focus-visible{outline-offset:-3px;border-radius:0}
+@media(max-width:767px){.home-portfolio.section-pad{padding-bottom:40px}.home-portfolio .home-portfolio-grid{gap:0}.home-portfolio .project-caption{padding:12px}.home-portfolio .project-caption h3{font-size:15px}.home-portfolio .load-more{width:calc(100% - 40px)}}
+@media(prefers-reduced-motion:reduce){.home-portfolio .project-caption{transition:none}}
