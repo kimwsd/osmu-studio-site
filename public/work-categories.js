@@ -5,34 +5,36 @@
   if(root) root.OSMUWorkCategories = api;
 })(typeof window !== 'undefined' ? window : globalThis, function(){
   const WORK_FILTERS = [
-    { id:'all', label:'All' },
-    { id:'brand-strategy', label:'Brand Strategy' },
-    { id:'identity-package', label:'Identity & Package' },
-    { id:'space-branding', label:'Space Branding' },
-    { id:'campaign-marketing', label:'Campaign & Marketing' },
-    { id:'video', label:'Brand Film' }
+    {id:'all',label:'All'},
+    {id:'brand-strategy',label:'Brand Strategy'},
+    {id:'branding',label:'Branding'},
+    {id:'bi-ci',label:'BI/CI'},
+    {id:'ux-ui',label:'UX/UI'},
+    {id:'web-app',label:'WEB/APP'},
+    {id:'character',label:'Character'},
+    {id:'package',label:'Package'},
+    {id:'graphic-design',label:'Graphic Design'},
+    {id:'motion-graphic',label:'Motion Graphic'},
+    {id:'film',label:'Film'},
+    {id:'photograph',label:'Photograph'},
+    {id:'ai-visual-studio',label:'AI Visual Studio'},
+    {id:'marketing',label:'Marketing'}
   ];
-
-  const CATEGORY_LABELS = Object.fromEntries(WORK_FILTERS.map(({id,label}) => [id,label]));
-  const CATEGORY_ALIASES = {
-    branding:'brand-strategy',
-    'ci-bi':'identity-package',
-    package:'identity-package',
-    space:'space-branding',
-    marketing:'campaign-marketing'
-  };
-
+  const CATEGORY_LABELS = Object.fromEntries(WORK_FILTERS.map(({id,label})=>[id,label]));
+  const CATEGORY_ALIASES = {'ci-bi':'bi-ci','identity-package':'bi-ci','campaign-marketing':'marketing',video:'film'};
   function getWorkCategories(category){
-    const value = String(category || '').trim().toLowerCase();
-    const matches = [];
-    if(/\bbranding\b|brand strategy|strategy/.test(value)) matches.push('brand-strategy');
-    if(/identity|ci[\s/-]*bi|visual identity|logo|package|packaging/.test(value)) matches.push('identity-package');
-    if(/space|spatial|exhibition|signage/.test(value)) matches.push('space-branding');
-    if(/marketing|campaign|promotion|social|sns|content/.test(value)) matches.push('campaign-marketing');
-    if(/video|film|motion/.test(value)) matches.push('video');
-    return matches;
+    const value=String(category||'').trim().toLowerCase();
+    const parts=value.split(/\s*\+\s*/);
+    const exact=parts.map(part=>WORK_FILTERS.find(item=>item.label.toLowerCase()===part||item.id===part)?.id);
+    if(exact.length&&exact.every(Boolean))return [...new Set(exact)];
+    const rules={
+      'brand-strategy':/strategy/,'branding':/branding/,'bi-ci':/identity|logo|ci[\s/-]*bi/,
+      'ux-ui':/\b(?:ux|ui)\b/,'web-app':/\b(?:web|app)\b|website/,'character':/character|mascot/,
+      'package':/packag/,'graphic-design':/graphic|poster|space|signage/,'motion-graphic':/motion|animation/,
+      'film':/film|video/,'photograph':/photo/,'ai-visual-studio':/\bai\b/,'marketing':/campaign|marketing|social|content/
+    };
+    return Object.keys(rules).filter(id=>rules[id].test(value));
   }
-
   function normalizeWorkCategoryId(category){
     const value = String(category || '').trim().toLowerCase();
     return CATEGORY_ALIASES[value] || value;
