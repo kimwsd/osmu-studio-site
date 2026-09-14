@@ -9,8 +9,8 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://osmu-studio.com'),
   title: { default: '오스무 스튜디오 | OSMU STUDIO — 브랜딩·그래픽·패키지 디자인', template: '%s | OSMU STUDIO' },
   description: '브랜드 진단과 브랜딩부터 그래픽, 패키지, 사진·영상, 마케팅과 디지털 경험까지 설계하는 오스무 스튜디오입니다.',
-  openGraph: { type: 'website', locale: 'ko_KR', siteName: 'OSMU STUDIO', images: [{url: '/og-image.png', width: 1200, height: 630}] },
-  twitter: { card: 'summary_large_image', images: ['/og-image.png'] },
+  openGraph: { type: 'website', locale: 'ko_KR', siteName: 'OSMU STUDIO', images: [{url: '/og-services-20260914.png', width: 1296, height: 717, alt: 'OSMU STUDIO 제공 서비스'}] },
+  twitter: { card: 'summary_large_image', images: ['/og-services-20260914.png'] },
   icons: {
     icon: [
       { url: '/favicon.ico?v=svg-brand', sizes: '16x16 32x32 48x48', type: 'image/x-icon' },
