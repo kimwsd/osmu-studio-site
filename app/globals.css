@@ -91,3 +91,15 @@
 .category-banner-tags li a{display:block;padding:3px 15px;border-radius:999px;transition:background .2s,color .2s}
 .category-banner-tags li a:hover,.category-banner-tags li a:focus-visible{background:#000;color:#fff}
 @media(max-width:767px){.category-banner-tags li{padding:0}.category-banner-tags li a{padding:4px 11px}}
+.home-category-banner{background:#000;color:#fff}
+.category-banner-logo{filter:invert(1)}
+.category-banner-rule{border-color:#444;color:#bcbcbc}
+.category-banner-content{grid-template-columns:minmax(180px,.9fr) minmax(0,2fr)}
+.category-banner-tags li a:hover,.category-banner-tags li a:focus-visible{background:#fff;color:#000}
+.social-quick{position:fixed;right:24px;bottom:24px;z-index:60;display:flex;flex-direction:column;gap:10px}
+.social-quick-links:not([hidden]){display:flex;flex-direction:column;gap:10px}
+.social-quick a,.social-quick-toggle{display:grid;place-items:center;width:56px;height:56px;border:1px solid #777;border-radius:50%;background:#000;color:#fff;box-shadow:0 4px 18px #0002;transition:color .2s,background .2s}
+.social-quick a:hover,.social-quick a:focus-visible,.social-quick-toggle:hover,.social-quick-toggle:focus-visible{background:#fff;color:#000}
+.social-quick-toggle svg{transition:transform .2s}.social-quick-toggle[aria-expanded=true] svg{transform:rotate(45deg)}
+@media(max-width:767px){.category-banner-content{grid-template-columns:1fr}.social-quick{right:16px;bottom:calc(16px + env(safe-area-inset-bottom))}.social-quick a,.social-quick-toggle{width:50px;height:50px}}
+@media(prefers-reduced-motion:reduce){.social-quick a,.social-quick-toggle,.social-quick-toggle svg{transition:none}}

@@ -1,5 +1,5 @@
 import type { Project } from './projects';
-export const categories = ['All', 'Brand Strategy', 'BI/CI', 'UX/UI', 'WEB', 'APP', 'Character', 'Package', 'Graphic Design', 'Film', 'Photograph', 'AI Visual Studio', 'Marketing'];
+export const categories = ['All', 'Brand Strategy', 'Branding', 'BI/CI', 'UX/UI', 'WEB/APP', 'Character', 'Package', 'Graphic Design', 'Motion Graphic', 'Film', 'Photograph', 'AI Visual Studio', 'Marketing'];
 
 export function categoryMatches(project: Pick<Project, 'cat' | 'type' | 'name' | 'slug'>, category: string) {
   if (category === 'All') return true;
@@ -11,10 +11,11 @@ export function categoryMatches(project: Pick<Project, 'cat' | 'type' | 'name' |
 
   return ({
     'Brand Strategy': /strategy/,
+    Branding: /branding|identity/,
+    'Motion Graphic': /motion|animation/,
     'BI/CI': /\b(?:bi|ci|logo|identity|branding)\b/,
     'UX/UI': /\b(?:ux|ui)\b/,
-    WEB: /\bweb\b|website/,
-    APP: /\bapp\b|application design|mobile app/,
+    'WEB/APP': /\b(?:web|app)\b|website|application design/,
     Character: /character|mascot/,
     Package: /packag/,
     'Graphic Design': /graphic|poster|campaign/,

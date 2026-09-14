@@ -29,5 +29,13 @@ export function Footer(){
 }
 
 export function KakaoQuickLink(){
- return <a className="kakao-quick" href="https://pf.kakao.com/_rJrGX/chat" target="_blank" rel="noopener noreferrer" aria-label="카카오톡으로 상담하기" title="카카오톡 상담"><MessageCircle size={25} strokeWidth={2.3}/><span className="sr-only">카카오톡으로 상담하기</span></a>;
+ const [open,setOpen]=useState(false);
+ const toggle=useRef<HTMLButtonElement>(null);
+ return <div className="social-quick" onKeyDown={event=>{if(event.key==='Escape'){setOpen(false);toggle.current?.focus();}}}>
+  <div id="social-quick-links" className="social-quick-links" hidden={!open}>
+   <a href="https://pf.kakao.com/_rJrGX/chat" target="_blank" rel="noopener noreferrer" aria-label="카카오톡으로 상담하기" title="카카오톡"><MessageCircle size={25}/></a>
+   <a href="https://www.instagram.com/studio_osmu/" target="_blank" rel="noopener noreferrer" aria-label="OSMU 인스타그램" title="인스타그램"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+  </div>
+  <button ref={toggle} className="social-quick-toggle" onClick={()=>setOpen(value=>!value)} aria-label={open?'소셜 바로가기 닫기':'소셜 바로가기 열기'} aria-expanded={open} aria-controls="social-quick-links"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg></button>
+ </div>;
 }
