@@ -1,5 +1,5 @@
 import type { Project } from './projects';
-export const categories = ['All', 'Brand Strategy', 'Branding', 'Logo', 'Graphic Design', 'Visual Art', 'Brand Film', 'AI Image / Video', 'Web UI', 'Marketing'];
+export const categories = ['All', 'Brand Strategy', 'BI/CI', 'UX/UI', 'WEB', 'APP', 'Character', 'Package', 'Graphic Design', 'Film', 'Photograph', 'AI Visual Studio', 'Marketing'];
 
 export function categoryMatches(project: Pick<Project, 'cat' | 'type' | 'name' | 'slug'>, category: string) {
   if (category === 'All') return true;
@@ -11,13 +11,16 @@ export function categoryMatches(project: Pick<Project, 'cat' | 'type' | 'name' |
 
   return ({
     'Brand Strategy': /strategy/,
-    Branding: /branding|brand identity|identity|packag/,
-    Logo: /logo|ci.bi|brand identity|identity/,
+    'BI/CI': /\b(?:bi|ci|logo|identity|branding)\b/,
+    'UX/UI': /\b(?:ux|ui)\b/,
+    WEB: /\bweb\b|website/,
+    APP: /\bapp\b|application design|mobile app/,
+    Character: /character|mascot/,
+    Package: /packag/,
     'Graphic Design': /graphic|poster|campaign/,
-    'Visual Art': /visual|art|gallery/,
-    'Brand Film': /film|video|motion/,
-    'AI Image / Video': /\bai\b|artificial intelligence/,
-    'Web UI': /web|ui|digital|website/,
+    Film: /film|video|motion/,
+    Photograph: /photo/,
+    'AI Visual Studio': /\bai\b|artificial intelligence/,
     Marketing: /campaign|marketing|social|content/
   }[category]?.test(searchable) ?? false);
 }
