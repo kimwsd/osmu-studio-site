@@ -12,8 +12,8 @@ test('homepage uses the approved responsive video as its only hero', async () =>
   assert.match(hero, /<video\b/);
   assert.match(hero, /autoPlay=""/);
   assert.match(hero, /muted=""/);
-  assert.match(hero, /hero-pc-silent\.mp4/);
-  assert.match(hero, /hero-mobile-silent\.mp4/);
+  assert.match(hero, /pollyanna-landscape\.mp4/);
+  assert.match(hero, /loop=""/);
   assert.doesNotMatch(hero, /hero-slider|hero-track|PREV|NEXT/);
   assert.match(html, /class="home-showreel section-pad"/);
   assert.match(html, /class="home-portfolio section-pad"/);
