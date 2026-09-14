@@ -3,23 +3,20 @@ import assert from 'node:assert/strict';
 
 const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:3000';
 
-test('homepage hero restores the original project image slider', async () => {
+test('homepage uses the approved responsive video as its only hero', async () => {
   const response = await fetch(base + '/');
   assert.equal(response.status, 200);
   const html = await response.text();
-  const hero = html.match(/<section[^>]*class="hero-slider"[\s\S]*?<\/section>/)?.[0];
-  assert.ok(hero, 'The original project slider is restored');
-  assert.doesNotMatch(hero, /<video\b|kinetic-v5/);
-  assert.match(hero, /class="hero-track"/);
-  assert.match(hero, /class="hero-media"/);
-  assert.doesNotMatch(hero, /data-uncropped="true"/, 'Homepage hero must fill the viewport without a separate caption panel');
-  assert.match(hero, /이전 프로젝트/);
-  assert.match(hero, /다음 프로젝트/);
-  assert.match(hero, />PREV<\/span>/);
-  assert.match(hero, />NEXT<\/span>/);
-  assert.match(hero, /<h1\b/);
-  assert.match(html, /class="reel-section section-pad"/);
-  assert.match(html, /Selected Work/);
+  const hero = html.match(/<section[^>]*class="home-video-hero"[\s\S]*?<\/section>/)?.[0];
+  assert.ok(hero, 'The homepage has a video hero');
+  assert.match(hero, /<video\b/);
+  assert.match(hero, /autoPlay=""/);
+  assert.match(hero, /muted=""/);
+  assert.match(hero, /hero-pc-silent\.mp4/);
+  assert.match(hero, /hero-mobile-silent\.mp4/);
+  assert.doesNotMatch(hero, /hero-slider|hero-track|PREV|NEXT/);
+  assert.match(html, /class="home-showreel section-pad"/);
+  assert.match(html, /class="home-portfolio section-pad"/);
 });
 
 function boxes(buffer, start = 0, end = buffer.length) {
