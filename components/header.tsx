@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {useEffect,useRef,useState} from 'react';
-import {ArrowRight,ArrowUpRight,ChevronDown,LockKeyhole,Menu,Search,X} from 'lucide-react';
+import {ArrowRight,ArrowUpRight,ChevronDown,Menu,Search,X} from 'lucide-react';
 import {services,solutions,articles,nav} from '@/lib/content';
 
 const sectionCopy:Record<string,{title:string;description:string}>={
@@ -49,10 +49,13 @@ export function Header(){
    {mobile&&<nav id="mobile-navigation" className="mobile-navigation" aria-label="모바일 주 메뉴">{nav.map(n=><section key={n.name}><button className="mobile-nav-trigger" aria-expanded={open===n.name} aria-controls={'mobile-'+n.name} onClick={()=>setOpen(open===n.name?null:n.name)}>{n.name}<ChevronDown size={19}/></button>{open===n.name&&<div className="mobile-nav-links" id={'mobile-'+n.name}><Link className="mobile-overview" href={n.href} onClick={()=>closeNavigation()}>{n.name} 전체 보기 <ArrowUpRight size={16}/></Link>{n.children.filter(([,h])=>h!==n.href).map(([t,h])=><Link href={h} key={h} onClick={()=>closeNavigation()}><strong>{t}</strong><span>{descriptions[h]}</span></Link>)}</div>}</section>)}<Link className="button" href="/contact" onClick={()=>closeNavigation()}>프로젝트 상담하기 <ArrowUpRight size={16}/></Link></nav>}
   </header>
   {(active||mobile)&&<button className="navigation-backdrop" tabIndex={-1} aria-label="메뉴 배경 닫기" onClick={()=>closeNavigation(true)}/>}
-  {active&&!mobile&&<div className="mega-menu" id="site-mega-menu" aria-label={active.name+' 하위 페이지'}>
-   <div className="mega-chrome"><span className="window-dots" aria-hidden="true"><i/><i/><i/></span><span className="mega-address"><LockKeyhole size={11}/>osmu-studio.com{active.href}/</span><button onClick={()=>closeNavigation(true)} aria-label="하위 메뉴 닫기"><span>Esc 닫기</span><X size={15}/></button></div>
-   <div className="mega-body"><div className="mega-intro"><span className="eyebrow">EXPLORE / {active.name.toUpperCase()}</span><h2>{sectionCopy[active.name].title}</h2><p>{sectionCopy[active.name].description}</p><Link className="mega-overview text-link" href={active.href} onClick={()=>closeNavigation()}>전체 보기 <ArrowUpRight size={17}/></Link></div><div className={'mega-links'+(active.children.length>4?' is-six':'')}>{active.children.map(([t,h],i)=><Link key={h} href={h} onClick={()=>closeNavigation()} aria-current={path===h?'page':undefined}><span className="mega-link-top"><small>{String(i+1).padStart(2,'0')}</small><ArrowUpRight size={18}/></span><strong>{t}</strong><span>{descriptions[h]}</span></Link>)}</div></div>
-  </div>}
+  {active&&!mobile&&<nav className="mega-menu" id="site-mega-menu" aria-label={active.name+' 하위 페이지'}>
+   <div className="mega-shell">
+    <div className="mega-topline"><span><i aria-hidden="true"/>OSMU INDEX <span className="mega-section-number">{String(nav.indexOf(active)+1).padStart(2,'0')} / 05</span></span><button className="mega-close" onClick={()=>closeNavigation(true)} aria-label="하위 메뉴 닫기"><span>닫기</span><X size={18}/></button></div>
+    <div className="mega-body"><div className="mega-intro"><span className="mega-display" aria-hidden="true">{active.name}<span>.</span></span><h2>{sectionCopy[active.name].title}</h2><p>{sectionCopy[active.name].description}</p><Link className="mega-overview" href={active.href} onClick={()=>closeNavigation()}>전체 보기 <span><ArrowUpRight size={20}/></span></Link></div><div className="mega-links">{active.children.map(([t,h],i)=><Link key={h} href={h} onClick={()=>closeNavigation()} aria-current={path.replace(/\/$/,'')===h?'page':undefined}><span className="mega-link-number">{String(i+1).padStart(2,'0')}</span><span className="mega-link-copy"><strong>{t}</strong><span>{descriptions[h]}</span></span><span className="mega-link-arrow"><ArrowUpRight size={21}/></span></Link>)}</div></div>
+    <div className="mega-footnote"><span>SEARCH. ANSWER. BUSINESS.</span><span>{String(active.children.length).padStart(2,'0')} PAGES TO EXPLORE</span></div>
+   </div>
+  </nav>}
   <dialog ref={dialog} className="search-dialog" onCancel={()=>setSearch(false)} onClose={()=>{setSearch(false);searchTrigger.current?.focus()}}><div className="search-heading"><label htmlFor="search">어떤 답을 찾고 계신가요?</label><button aria-label="검색 닫기" onClick={()=>setSearch(false)}><X/></button></div><input id="search" placeholder="서비스 또는 인사이트 검색" value={q} onChange={e=>setQ(e.target.value)}/><div className="search-results">{results.map(i=><Link key={i.href} href={i.href} onClick={()=>setSearch(false)}>{i.title}<ArrowRight size={18}/></Link>)}{!results.length&&<p>검색 결과가 없습니다. 다른 단어로 검색해 주세요.</p>}</div></dialog>
  </>;
 }
