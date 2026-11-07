@@ -1,8 +1,8 @@
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import {dirname,join} from 'node:path';
 const origin=(process.env.NEXT_PUBLIC_SITE_URL||'http://127.0.0.1:3001').replace(/\/$/,'');
-const aliases={'/home.html':'/','/studio/':'/about/','/about.html':'/about/','/contact.html':'/contact/','/services.html':'/services/','/process.html':'/process/','/privacy.html':'/privacy/','/terms.html':'/terms/','/work/':'/cases/','/work.html':'/cases/'};
-const retired=['/project/','/project.html','/admin.html',...['odd-hours','mora','zest-club','dianas','bastet','identity-system','package-system','campaign-graphic','brand-film','space-experience','brand-activation','creative-collaboration','film-production'].map(s=>'/work/'+s+'/'),...['branding','ci-bi','space-branding','brand-film','marketing','web-digital','ai-image-film'].map(s=>'/services/'+s+'/')];
+const aliases={'/admin.html':'/admin/','/editor/':'/admin/','/services/seo/':'/services/3eo/','/services/aeo-geo/':'/services/3eo/','/home.html':'/','/studio/':'/about/','/about.html':'/about/','/contact.html':'/contact/','/services.html':'/services/','/process.html':'/process/','/privacy.html':'/privacy/','/terms.html':'/terms/','/work/':'/cases/','/work.html':'/cases/'};
+const retired=['/project/','/project.html',...['odd-hours','mora','zest-club','dianas','bastet','identity-system','package-system','campaign-graphic','brand-film','space-experience','brand-activation','creative-collaboration','film-production'].map(s=>'/work/'+s+'/'),...['branding','ci-bi','space-branding','brand-film','marketing','web-digital','ai-image-film'].map(s=>'/services/'+s+'/')];
 const style='body{font-family:Helvetica,Arial,sans-serif;margin:0;padding:10vh 24px;color:#111;background:#fff;line-height:1.8}main{max-width:650px;margin:auto}img{width:210px;height:auto}h1{font-size:32px;line-height:1.4;margin-top:50px}p{color:#666}a{color:#111}nav{display:flex;gap:24px;flex-wrap:wrap;margin-top:35px}';
 for(const [url,target] of [...Object.entries(aliases),...retired.map(url=>[url,null])]){
  const file=join('out',url.endsWith('/')?url.slice(1)+'index.html':url.slice(1));await mkdir(dirname(file),{recursive:true});

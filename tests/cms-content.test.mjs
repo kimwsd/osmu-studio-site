@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {safeMediaUrl,videoEmbed,validatePost} from '../lib/cms-types.ts';
+assert.equal(safeMediaUrl('javascript:alert(1)'), '');
+assert.equal(safeMediaUrl('data:text/html,<script>'), '');
+assert.equal(safeMediaUrl('http://example.com/picture.png'), '');
+assert.equal(safeMediaUrl('/images/editorial-content.jpg'), '/images/editorial-content.jpg');
+assert.equal(videoEmbed('https://youtube.com.evil.example/watch?v=abcdefghijk'), '');
+assert.equal(videoEmbed('https://youtu.be/abcdefghijk'), 'https://www.youtube-nocookie.com/embed/abcdefghijk');
+assert.equal(videoEmbed('https://vimeo.com/123456789'), 'https://player.vimeo.com/video/123456789');
+const doc={title:'검증용 콘텐츠',slug:'content-check',summary:'고객 질문과 콘텐츠 구조를 함께 점검하는 검증용 요약입니다.',category:'콘텐츠',service:'content',author:'3EO Editorial',cover:'/images/editorial-content.jpg',coverAlt:'콘텐츠 기획',seoTitle:'',seoDescription:'',ogImage:'',blocks:[{id:'a',type:'paragraph',text:'검증용 문단입니다.'}],sources:[]};
+assert.deepEqual(validatePost(doc),[]);
+assert.ok(validatePost({...doc,slug:'../admin'}).length);
+assert.ok(validatePost({...doc,blocks:[{id:'a',type:'image',url:'/images/test.jpg'}]}).length);
+assert.ok(validatePost({...doc,blocks:[...doc.blocks,{id:'b',type:'video',url:'https://example.com/page.html'}]}).length);
+assert.ok(validatePost({...doc,sources:[{name:'Unsafe',url:'javascript:alert(1)'}]}).length);
+assert.deepEqual(validatePost({...doc,blocks:[...doc.blocks,{id:'b',type:'video',url:'https://example.com/film.mp4',alt:'브랜드 영상'}]}),[]);
+console.log('13 CMS content and media validation assertions passed.');

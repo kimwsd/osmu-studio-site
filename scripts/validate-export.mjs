@@ -4,8 +4,10 @@ const origin=(process.env.NEXT_PUBLIC_SITE_URL||'https://osmu-studio.com').repla
 const xml=await readFile('out/sitemap.xml','utf8');
 const urls=[...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(m=>m[1]);
 const errors=[],titles=new Set(),descriptions=new Set(),localLinks=new Set(),assets=new Set();
-if(urls.length!==41)errors.push(`Expected 41 indexed pages; got ${urls.length}`);
-for(const url of [...urls,origin+'/editor/']){
+const snapshot=JSON.parse(await readFile('lib/cms-snapshot.json','utf8'));
+const expected=snapshot.initialized?33+snapshot.articles.length:41;
+if(urls.length!==expected)errors.push(`Expected ${expected} indexed pages; got ${urls.length}`);
+for(const url of [...urls,origin+'/admin/']){
  const route=new URL(url).pathname;
  const html=await readFile(join('out',route,'index.html'),'utf8');
  const title=html.match(/<title>(.*?)<\/title>/s)?.[1];
@@ -17,7 +19,7 @@ for(const url of [...urls,origin+'/editor/']){
  if((html.match(/<h1(?:\s|>)/g)||[]).length!==1)errors.push(route+': expected one H1');
  if(/127\.0\.0\.1|localhost/.test(html))errors.push(route+': local URL leaked');
  const robots=html.match(/<meta name="robots" content="([^"]*)"/)?.[1]||'';
- if(route==='/editor/'?!robots.includes('noindex'):robots.includes('noindex')||!robots.includes('index'))errors.push(route+': robots mismatch');
+ if(route==='/admin/'?!robots.includes('noindex'):robots.includes('noindex')||!robots.includes('index'))errors.push(route+': robots mismatch');
  for(const match of html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)){try{JSON.parse(match[1])}catch{errors.push(route+': invalid JSON-LD')}}
  for(const m of html.matchAll(/<a\b[^>]*href="(\/[^"#?]*)/g))localLinks.add(m[1]);
  for(const m of html.matchAll(/(?:src|href)="(\/(?:images|_next|logo|favicon|og-image)[^"?#]*)/g))assets.add(m[1]);

@@ -11,8 +11,8 @@
 - [자주 묻는 질문](https://osmu-studio.com/faq/)
 
 ## 서비스
-- [SEO 최적화](https://osmu-studio.com/services/seo/)
-- [AEO · GEO 최적화](https://osmu-studio.com/services/aeo-geo/)
+- [3EO 검색 최적화](https://osmu-studio.com/services/3eo/): SEO·AEO·GEO 통합 설계와 실행
+- [마케팅 컨설팅](https://osmu-studio.com/services/consulting/): 현황 진단, 전략, 실행 우선순위와 가이드
 - [웹사이트 구축](https://osmu-studio.com/services/website/)
 - [콘텐츠 기획 · 발행](https://osmu-studio.com/services/content/)
 - [퍼포먼스 마케팅](https://osmu-studio.com/services/performance/)

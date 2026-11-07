@@ -7,9 +7,11 @@
     "build": "next build --webpack",
     "typecheck": "tsc --noEmit",
     "postbuild": "node scripts/export-legacy.mjs",
-    "validate:export": "node scripts/validate-export.mjs"
+    "validate:export": "node scripts/validate-export.mjs",
+    "cms:sync": "node scripts/sync-cms.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.119.0",
     "lucide-react": "1.41.0",
     "next": "16.4.5",
     "react": "19.2.8",
