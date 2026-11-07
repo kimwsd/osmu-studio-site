@@ -24,7 +24,7 @@ for(const url of [...urls,origin+'/editor/']){
  for(const m of html.matchAll(/<source[^>]*srcSet="([^"]*)"/g))for(const item of m[1].split(','))assets.add(item.trim().split(' ')[0]);
 }
 for(const route of localLinks){const file=join('out',/\.[a-z0-9]+$/i.test(route)?route:route+'/index.html');try{await stat(file)}catch{errors.push('Missing linked page '+route)}}
-for(const asset of assets){try{await stat(join('out',asset))}catch{errors.push('Missing asset '+asset)}}
+for(const asset of assets){try{await stat(join('out',decodeURIComponent(asset)))}catch{errors.push('Missing asset '+asset)}}
 const robots=await readFile('out/robots.txt','utf8');
 if(!robots.includes('Allow: /')||robots.includes('Disallow: /\n')||!robots.includes(origin+'/sitemap.xml'))errors.push('Production robots mismatch');
 if((await readFile('out/CNAME','utf8')).trim()!=='osmu-studio.com')errors.push('CNAME mismatch');
