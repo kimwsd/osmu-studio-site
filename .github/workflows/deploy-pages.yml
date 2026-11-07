@@ -10,6 +10,9 @@ permissions:
 concurrency:
   group: pages
   cancel-in-progress: false
+env:
+  NEXT_PUBLIC_SITE_URL: https://osmu-studio.com
+  SITE_PUBLIC: 'true'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,11 +26,8 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run typecheck
-      - name: Test exported site
-        run: |
-          npm start &
-          for i in {1..30}; do curl -fsS http://127.0.0.1:3000/ -o /dev/null && break || sleep 1; done
-          npm test
+      - name: Validate public pages, metadata, links, and media
+        run: npm run validate:export
       - uses: actions/upload-pages-artifact@v4
         with:
           path: out

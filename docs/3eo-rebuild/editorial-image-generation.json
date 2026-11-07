@@ -1,0 +1,88 @@
+{
+  "generation_date": "2026-11-07",
+  "estimated_unit_cost_usd": 0.08,
+  "estimated_total_cost_usd": 0.64,
+  "billing_note": "Listed API price; actual billing statement not queried.",
+  "images": [
+    {
+      "name": "editorial-aeo-geo",
+      "request_id": "01a1b433-a0c4-755a-82da-790645d40c8d",
+      "status": "completed",
+      "provider": "Higgsfield direct API",
+      "model": "xai/grok-imagine-image-2.0",
+      "quality": "medium",
+      "resolution": "2k",
+      "published": true
+    },
+    {
+      "name": "editorial-analytics",
+      "request_id": "01a1b436-2840-7e73-a722-e847c9877aab",
+      "status": "completed",
+      "provider": "Higgsfield direct API",
+      "model": "xai/grok-imagine-image-2.0",
+      "quality": "medium",
+      "resolution": "2k",
+      "published": true
+    },
+    {
+      "name": "editorial-content",
+      "request_id": "01a1b436-10ea-7652-99ee-1928ece47d08",
+      "status": "completed",
+      "provider": "Higgsfield direct API",
+      "model": "xai/grok-imagine-image-2.0",
+      "quality": "medium",
+      "resolution": "2k",
+      "published": true
+    },
+    {
+      "name": "editorial-hero-a",
+      "request_id": "01a1b433-6ec8-7920-bfeb-2d01a6eda949",
+      "status": "completed",
+      "provider": "Higgsfield direct API",
+      "model": "xai/grok-imagine-image-2.0",
+      "quality": "medium",
+      "resolution": "2k",
+      "published": false
+    },
+    {
+      "name": "editorial-hero-b",
+      "request_id": "01a1b433-7d5c-768b-b490-111bec73652d",
+      "status": "completed",
+      "provider": "Higgsfield direct API",
+      "model": "xai/grok-imagine-image-2.0",
+      "quality": "medium",
+      "resolution": "2k",
+      "published": true
+    },
+    {
+      "name": "editorial-performance",
+      "request_id": "01a1b436-1bd4-7e24-b60a-4137d97caa2f",
+      "status": "completed",
+      "provider": "Higgsfield direct API",
+      "model": "xai/grok-imagine-image-2.0",
+      "quality": "medium",
+      "resolution": "2k",
+      "published": true
+    },
+    {
+      "name": "editorial-seo",
+      "request_id": "01a1b433-8c1c-72ac-8134-598b910c0a57",
+      "status": "completed",
+      "provider": "Higgsfield direct API",
+      "model": "xai/grok-imagine-image-2.0",
+      "quality": "medium",
+      "resolution": "2k",
+      "published": true
+    },
+    {
+      "name": "editorial-website",
+      "request_id": "01a1b436-04df-7bc5-914f-17981dcfad21",
+      "status": "completed",
+      "provider": "Higgsfield direct API",
+      "model": "xai/grok-imagine-image-2.0",
+      "quality": "medium",
+      "resolution": "2k",
+      "published": true
+    }
+  ]
+}

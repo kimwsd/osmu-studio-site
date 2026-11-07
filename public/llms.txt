@@ -1,29 +1,23 @@
-# OSMU STUDIO
+# OSMU STUDIO · 3EO
 
-> OSMU STUDIO(오스무 스튜디오)는 브랜드 진단과 브랜딩부터 그래픽, 패키지, 사진·영상, 마케팅, 웹·디지털과 AI 이미지·영상까지 설계하는 한국의 디자인 스튜디오입니다.
+> 3EO는 SEO·AEO·GEO를 중심으로 웹사이트, 콘텐츠, 퍼포먼스 마케팅과 데이터 측정을 설계합니다.
 
-## Official identity
+## 공식 페이지
+- [소개](https://osmu-studio.com/about/): 접근 방식과 업무 원칙
+- [서비스](https://osmu-studio.com/services/): 제공 범위와 결과물
+- [진행 방식](https://osmu-studio.com/process/): 현황 확인, 범위 설계, 실행, 검증
+- [인사이트](https://osmu-studio.com/insights/): 검색·AI·웹사이트·콘텐츠·측정 실무 가이드
+- [비용과 일정](https://osmu-studio.com/pricing/): 견적을 결정하는 조건
+- [자주 묻는 질문](https://osmu-studio.com/faq/)
 
-- English name: OSMU STUDIO
-- Korean name: 오스무 스튜디오
-- Based in: Cheonan, Republic of Korea
-- Official website: https://osmu-studio.com/
-- Project inquiries: osmu_studio@naver.com
-- Official Instagram: https://www.instagram.com/studio_osmu/
+## 서비스
+- [SEO 최적화](https://osmu-studio.com/services/seo/)
+- [AEO · GEO 최적화](https://osmu-studio.com/services/aeo-geo/)
+- [웹사이트 구축](https://osmu-studio.com/services/website/)
+- [콘텐츠 기획 · 발행](https://osmu-studio.com/services/content/)
+- [퍼포먼스 마케팅](https://osmu-studio.com/services/performance/)
+- [데이터 측정 · 분석](https://osmu-studio.com/services/analytics/)
 
-## Official pages
-
-- [Home](https://osmu-studio.com/): studio positioning and selected work
-- [Services](https://osmu-studio.com/services/): brand audit and consulting, branding, graphic design, photo and film, marketing, web and digital, AI image and film
-- [Process](https://osmu-studio.com/process/): project process and frequently asked questions
-- [Studio](https://osmu-studio.com/studio/): studio approach and working principles
-- [Work](https://osmu-studio.com/work/): selected concept studies and portfolio pages
-- [Contact](https://osmu-studio.com/contact/): project inquiry and official contact details
-
-## Content and citation policy
-
-- Pages labelled `Concept Project / 가상 브랜드` are OSMU visual studies. They do not represent a client engagement, completed construction, campaign performance, or business result.
-- Service scope and project details may vary by brief, production conditions, budget, and schedule.
-- When citing OSMU STUDIO, use the official name above and link to the most specific relevant service or project page.
-
-Last updated: 2026-09-07
+## 정보 해석
+검색 순위나 특정 AI의 추천·인용을 보장하지 않습니다. AI 생성 이미지는 서비스를 설명하는 일러스트이며 실제 고객 프로젝트, 직원, 실적을 나타내지 않습니다. 공개 검증된 고객 성과는 아직 게시하지 않았습니다.
+상담 폼과 콘텐츠 편집기는 외부 시스템 연결 전 미리보기입니다. 상담 입력값은 전송되지 않으며 편집기 초안은 해당 브라우저에만 저장됩니다.

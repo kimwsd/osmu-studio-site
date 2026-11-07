@@ -1,0 +1,65 @@
+[
+  {
+    "name": "hero",
+    "source": "editorial-hero-b.png",
+    "original": {
+      "width": 2912,
+      "height": 1456
+    },
+    "bytes1280": 56230
+  },
+  {
+    "name": "seo",
+    "source": "editorial-seo.png",
+    "original": {
+      "width": 2816,
+      "height": 1584
+    },
+    "bytes1280": 36944
+  },
+  {
+    "name": "aeo-geo",
+    "source": "editorial-aeo-geo.png",
+    "original": {
+      "width": 2816,
+      "height": 1584
+    },
+    "bytes1280": 52816
+  },
+  {
+    "name": "website",
+    "source": "editorial-website.png",
+    "original": {
+      "width": 2816,
+      "height": 1584
+    },
+    "bytes1280": 27934
+  },
+  {
+    "name": "content",
+    "source": "editorial-content.png",
+    "original": {
+      "width": 2816,
+      "height": 1584
+    },
+    "bytes1280": 51744
+  },
+  {
+    "name": "performance",
+    "source": "editorial-performance.png",
+    "original": {
+      "width": 2816,
+      "height": 1584
+    },
+    "bytes1280": 41314
+  },
+  {
+    "name": "analytics",
+    "source": "editorial-analytics.png",
+    "original": {
+      "width": 2816,
+      "height": 1584
+    },
+    "bytes1280": 43648
+  }
+]

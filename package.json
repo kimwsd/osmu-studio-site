@@ -1,18 +1,17 @@
 {
-  "name": "osmu-studio",
-  "version": "1.0.0",
+  "name": "3eo-website",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --hostname 127.0.0.1 --port 3000",
-    "build": "next build",
-    "postbuild": "node scripts/post-export.mjs",
-    "start": "node scripts/serve-static.mjs",
+    "dev": "next dev --webpack --hostname 127.0.0.1 --port 3001",
+    "build": "next build --webpack",
     "typecheck": "tsc --noEmit",
-    "test": "node --test tests/next-*.test.mjs"
+    "postbuild": "node scripts/export-legacy.mjs",
+    "validate:export": "node scripts/validate-export.mjs"
   },
   "dependencies": {
     "lucide-react": "1.41.0",
-    "next": "16.3.4",
+    "next": "16.4.5",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
