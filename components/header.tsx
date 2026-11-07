@@ -7,6 +7,7 @@ import {ArrowRight,ArrowUpRight,ChevronDown,Menu,Search,X} from 'lucide-react';
 import {services,solutions,articles,nav} from '@/lib/content';
 
 const sectionCopy:Record<string,{title:string;description:string}>={
+ Desk:{title:'생각을 실행으로, 3EO Desk.',description:'점검하고, 만들고, 다음 선택을 준비하는 무료 실무 도구입니다.'},
  About:{title:'방향을 함께 정하는 파트너.',description:'3EO가 문제를 바라보고 실행하는 방식을 소개합니다.'},
  Services:{title:'필요한 실행을 한눈에.',description:'검색부터 콘텐츠, 웹사이트와 측정까지. 지금의 과제에 맞는 서비스를 살펴보세요.'},
  Solutions:{title:'우리 비즈니스의 시작점.',description:'업종과 성장 단계에 따라 달라지는 질문과 실행의 우선순위.'},
@@ -14,6 +15,9 @@ const sectionCopy:Record<string,{title:string;description:string}>={
  Resources:{title:'다음 결정을 위한 도구.',description:'서비스를 비교하고, 웹사이트를 점검하고, 프로젝트의 범위를 준비하세요.'}
 };
 const descriptions:Record<string,string>={
+ '/tools':'필요한 도구를 꺼내 쓰는 무료 작업대',
+ '/tools/utm-builder':'출처와 캠페인을 구분하는 링크 생성',
+ '/tools/share-preview':'제목·요약·이미지의 표시 구성 검토',
  '/about':'검색·답변·비즈니스를 연결하는 우리의 관점',
  '/process':'현황 확인부터 실행과 검증까지, 함께 일하는 순서',
  '/insights':'SEO·AI 검색·콘텐츠·데이터에 관한 실무 이야기',
@@ -52,7 +56,7 @@ export function Header(){
   {(active||mobile)&&<button className="navigation-backdrop" tabIndex={-1} aria-label="메뉴 배경 닫기" onClick={()=>closeNavigation(true)}/>}
   {active&&!mobile&&<nav className="mega-menu" id="site-mega-menu" aria-label={active.name+' 하위 페이지'}>
    <div className="mega-shell">
-    <div className="mega-topline"><span><i aria-hidden="true"/>OSMU INDEX <span className="mega-section-number">{String(nav.indexOf(active)+1).padStart(2,'0')} / 05</span></span><button className="mega-close" onClick={()=>closeNavigation(true)} aria-label="하위 메뉴 닫기"><span>닫기</span><X size={18}/></button></div>
+    <div className="mega-topline"><span><i aria-hidden="true"/>OSMU INDEX <span className="mega-section-number">{String(nav.indexOf(active)+1).padStart(2,'0')} / {String(nav.length).padStart(2,'0')}</span></span><button className="mega-close" onClick={()=>closeNavigation(true)} aria-label="하위 메뉴 닫기"><span>닫기</span><X size={18}/></button></div>
     {active.name==='Services'?<><div className="service-menu-heading"><span className="mega-display">Services<span>.</span></span><p>필요한 일을 묶고,<br/>시작할 지점을 찾습니다.</p></div><ServiceDirectory variant="menu" onNavigate={()=>closeNavigation()}/><Link className="service-menu-overview" href="/services" onClick={()=>closeNavigation()}>서비스 전체 보기 <ArrowUpRight size={17}/></Link></>:<div className="mega-body"><div className="mega-intro"><span className="mega-display" aria-hidden="true">{active.name}<span>.</span></span><h2>{sectionCopy[active.name].title}</h2><p>{sectionCopy[active.name].description}</p><Link className="mega-overview" href={active.href} onClick={()=>closeNavigation()}>전체 보기 <span><ArrowUpRight size={20}/></span></Link></div><div className="mega-links">{active.children.map(([t,h],i)=><Link key={h} href={h} onClick={()=>closeNavigation()} aria-current={path.replace(/\/$/,'')===h?'page':undefined}><span className="mega-link-number">{String(i+1).padStart(2,'0')}</span><span className="mega-link-copy"><strong>{t}</strong><span>{descriptions[h]}</span></span><span className="mega-link-arrow"><ArrowUpRight size={21}/></span></Link>)}</div></div>}
     <div className="mega-footnote"><span>SEARCH. ANSWER. BUSINESS.</span><span>{String(active.children.length).padStart(2,'0')} PAGES TO EXPLORE</span></div>
    </div>

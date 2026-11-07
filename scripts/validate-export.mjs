@@ -5,7 +5,7 @@ const xml=await readFile('out/sitemap.xml','utf8');
 const urls=[...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(m=>m[1]);
 const errors=[],titles=new Set(),descriptions=new Set(),localLinks=new Set(),assets=new Set();
 const snapshot=JSON.parse(await readFile('lib/cms-snapshot.json','utf8'));
-const expected=snapshot.initialized?33+snapshot.articles.length:41;
+const expected=snapshot.initialized?36+snapshot.articles.length:44;
 if(urls.length!==expected)errors.push(`Expected ${expected} indexed pages; got ${urls.length}`);
 for(const url of [...urls,origin+'/admin/']){
  const route=new URL(url).pathname;
