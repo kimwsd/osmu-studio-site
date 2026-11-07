@@ -127,3 +127,5 @@ footer{background:#0b0b0b;color:#fff;border-top:1px solid #333}.footer-top .logo
 .solution-editorial-hero .button{background:#fff;color:#111;border:1px solid #fff}.solution-editorial-hero .button:hover{background:var(--lime);border-color:var(--lime)}
 .solution-map-table table{min-width:0}.solution-map-table thead th{color:#fff;padding-left:20px}.solution-map-table thead th:first-child{padding-left:18px}
 @media(max-width:600px){.solution-map-table table,.solution-map-table tbody{display:block}.solution-map-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.solution-map-table tr{display:block;border-top:1px solid #111;padding:20px 0}.solution-map-table tbody th:first-child{display:block;width:100%;border:0;padding:0 0 14px;font-size:18px}.solution-map-table td{display:block;border:0;padding:8px 0;font-size:14px;line-height:1.8}.solution-map-table td::before{content:attr(data-label);display:block;font-size:10px;color:#777;margin-bottom:3px}.solution-map-table td:last-child{padding-bottom:0}}
+
+.solution-index-grid>a:hover .eyebrow,.solution-index-grid>a:focus-visible .eyebrow{color:#bbb}
