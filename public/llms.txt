@@ -35,3 +35,17 @@
 - 주소: 천안시 서북구 불당17길 23, 크리스탈프라자
 - 이메일: osmu_studio@naver.com
 - [개인정보 처리 안내](https://osmu-studio.com/privacy/)
+
+## 업종과 성장 단계별 솔루션
+- [B2B SaaS](https://osmu-studio.com/solutions/b2b-saas/): 고객 질문, 실행 범위, 산출물과 확인할 지표
+- [제조·산업](https://osmu-studio.com/solutions/manufacturing/): 고객 질문, 실행 범위, 산출물과 확인할 지표
+- [IT·Tech](https://osmu-studio.com/solutions/it-tech/): 고객 질문, 실행 범위, 산출물과 확인할 지표
+- [전문 서비스](https://osmu-studio.com/solutions/professional/): 고객 질문, 실행 범위, 산출물과 확인할 지표
+- [커머스](https://osmu-studio.com/solutions/commerce/): 고객 질문, 실행 범위, 산출물과 확인할 지표
+- [지역 비즈니스](https://osmu-studio.com/solutions/local/): 고객 질문, 실행 범위, 산출물과 확인할 지표
+- [소셜 임팩트](https://osmu-studio.com/solutions/social-impact/): 고객 질문, 실행 범위, 산출물과 확인할 지표
+- [새롭게 시작하는 기업](https://osmu-studio.com/solutions/new-business/): 고객 질문, 실행 범위, 산출물과 확인할 지표
+- [성장 단계 기업](https://osmu-studio.com/solutions/growth/): 고객 질문, 실행 범위, 산출물과 확인할 지표
+
+## 출처와 검증 원칙
+제공 범위와 업무 방법의 작성 주체는 오스무 스튜디오입니다. 기술·플랫폼 설명은 각 인사이트의 공식 출처를 참고합니다. 검색 접근, 실제 색인, 답변 인용은 서로 다른 확인 항목입니다. llms.txt는 공식 문서를 찾기 위한 안내이며 엔진의 사용이나 인용을 입증하지 않습니다.
