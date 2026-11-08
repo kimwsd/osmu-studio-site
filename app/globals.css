@@ -174,3 +174,6 @@ table.guide-table{min-width:0;width:100%;table-layout:fixed;font-size:14px}
 .article-body .insight-guide-section>p{color:#444}
 
 @media(max-width:640px){.guide-table caption{display:block;width:100%;height:auto;text-align:left}}
+
+/* Keep recovery links separated on narrow error-page layouts. */
+.empty .hero-actions{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin-top:28px}
