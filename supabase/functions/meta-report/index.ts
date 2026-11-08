@@ -17,7 +17,7 @@ Deno.serve(async req=>{
   for(let page=0;page<50;page++){
    const url=new URL('https://graph.facebook.com/v25.0/'+pixel+'/stats');url.searchParams.set('aggregation','event');url.searchParams.set('event_source','WEB_ONLY');url.searchParams.set('start_time',String(Math.floor(Date.parse(start+'T00:00:00+09:00')/1000)));url.searchParams.set('end_time',String(Math.floor(Date.now()/1000)));url.searchParams.set('limit','1000');if(after)url.searchParams.set('after',after);
    const response=await fetch(url,{headers:{Authorization:'Bearer '+access},signal:AbortSignal.timeout(20000)});const body=await response.json();
-   if(!response.ok||body.error)throw Error(body.error?.code===190?'Meta 조회 권한이 만료되었습니다. 재연결이 필요합니다.':'Meta 조회 권한 또는 응답을 확인해 주세요. 기존 보고서는 유지됩니다.');if(!Array.isArray(body.data))throw Error('Meta 통계 응답 형식을 확인해 주세요.');rows.push(...body.data);
+   if(!response.ok||body.error)throw Error(body.error?.code===190?'Meta 조회 권한이 만료되었습니다. 재연결이 필요합니다.':'Meta 조회 오류 '+String(body.error?.code||response.status)+': '+String(body.error?.message||'응답을 확인해 주세요.').replaceAll(access,'[hidden]').slice(0,300));if(!Array.isArray(body.data))throw Error('Meta 통계 응답 형식을 확인해 주세요.');rows.push(...body.data);
    if(!body.paging?.next)break;const next=body.paging?.cursors?.after;if(typeof next!=='string'||next===after||page===49)throw Error('Meta 보고서를 모두 가져오지 못했습니다. 기존 보고서는 유지됩니다.');after=next;
   }
   const report=normalizeMeta(rows,start,end);const {error:saveError}=await db.from('cms_report_snapshots').upsert(report,{onConflict:'source,period_start,period_end'});if(saveError)throw Error('통계를 저장하지 못했습니다.');return reply(200,{report,cached:false});
