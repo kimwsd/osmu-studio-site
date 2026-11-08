@@ -42,7 +42,7 @@ const robots=await readFile('out/robots.txt','utf8');
 if(!robots.includes('Allow: /')||robots.includes('Disallow: /\n')||!robots.includes(origin+'/sitemap.xml'))errors.push('Production robots mismatch');
 if((await readFile('out/CNAME','utf8')).trim()!=='osmu-studio.com')errors.push('CNAME mismatch');
 const home=pages.get('/');
-if(!meta(home,'google-site-verification')||!meta(home,'naver-site-verification'))errors.push('Missing existing site ownership verification');
+if(!meta(home,'google-site-verification')||!meta(home,'naver-site-verification')||!meta(home,'msvalidate.01'))errors.push('Missing existing site ownership verification');
 const legacy=JSON.parse(await readFile('out/legacy-routes.json','utf8'));
 const manifest=JSON.parse(await readFile('lib/legacy-routes.json','utf8'));
 if(JSON.stringify(legacy)!==JSON.stringify(manifest))errors.push('Exported legacy manifest is stale');
