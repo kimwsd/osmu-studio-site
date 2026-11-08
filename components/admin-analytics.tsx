@@ -7,9 +7,9 @@ import {calendarSeries,eventCount,eventLabels,percent,channelRows} from '@/lib/a
 import type {TrackingConfig} from '@/lib/cms-types';
 import {cmsClient} from '@/lib/cms-client';
 
-const colors=['#8574d4','#afd54d','#64b8a0','#81abd7','#d5a269','#b78fc1'];
+const colors=['#087e55','#afd54d','#69aa8a','#81abd7','#d5a269','#b78fc1'];
 const n=(value:number|null)=>value===null?'—':amount(value);
-function Trend({title,data,color='#8574d4'}:{title:string;data:{date:string;value:number|null}[];color?:string}){
+function Trend({title,data,color='#087e55'}:{title:string;data:{date:string;value:number|null}[];color?:string}){
  const id=useId().replaceAll(':',''),[focus,setFocus]=useState<number|null>(null),max=Math.max(1,...data.map(x=>x.value||0)),hasData=data.some(x=>x.value!==null);
  const coords=data.map((d,i)=>({x:36+(data.length===1?.5:i/(data.length-1))*580,y:160-((d.value||0)/max)*130}));
  const line=coords.map((p,i)=>(i?'L':'M')+p.x+','+p.y).join(' ');
