@@ -5,7 +5,7 @@ grant all on ops_qa_state to authenticated;
 set local role authenticated;
 select set_config('request.jwt.claims','{"sub":"1cc3f1b3-402e-4c55-8dc5-895ef38c4a71","app_metadata":{"role":"admin"}}',true);
 do $$declare l uuid;p cms_posts;v uuid;b uuid;s uuid;begin
- insert into crm_leads(name,company,contract_value,contract_date) values('QA 운영 검증','삭제 가능한 테스트',1000,current_date) returning id into l;
+ insert into crm_leads(name,company,contract_value,contract_date,is_test) values('QA 운영 검증','삭제 가능한 테스트',1000,current_date,true) returning id into l;
  insert into crm_tasks(lead_id,title,due_date) values(l,'QA 연락',current_date-1);
  update crm_tasks set completed_at=now() where lead_id=l;
  insert into crm_payments(lead_id,kind,amount,paid_on) values(l,'계약금',200,current_date);
@@ -36,7 +36,7 @@ do $$declare counts jsonb;begin
  counts:=ops_restore_missing((select backup_id from ops_qa_state),true);
  if (counts->>'leads')::int<>1 or (counts->>'payments')::int<>1 or (counts->>'tasks')::int<>1 then raise exception 'Restore preview incorrect %',counts;end if;
  perform ops_restore_missing((select backup_id from ops_qa_state),false);
- if not exists(select 1 from crm_leads where id=(select lead_id from ops_qa_state)) then raise exception 'Missing-record restore failed';end if;
+ if not exists(select 1 from crm_leads where id=(select lead_id from ops_qa_state) and is_test) then raise exception 'Missing-record restore or test flag failed';end if;
  perform ops_restore_missing((select backup_id from ops_qa_state),false);
  if (select count(*) from crm_payments where lead_id=(select lead_id from ops_qa_state))<>1 then raise exception 'Restore duplicated payment';end if;
 end $$;
