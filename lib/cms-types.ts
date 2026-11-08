@@ -1,7 +1,7 @@
 export type BlockKind='paragraph'|'heading'|'image'|'video'|'quote'|'list'|'table'|'links';
 export type ContentBlock={id:string;type:BlockKind;text?:string;url?:string;alt?:string;caption?:string;poster?:string};
 export type PostDocument={title:string;slug:string;summary:string;category:string;service:string;author:string;cover:string;coverAlt:string;seoTitle:string;seoDescription:string;ogImage:string;blocks:ContentBlock[];sources:{name:string;url:string}[];related?:string[]};
-export type DraftPost={id:string;document:PostDocument;created_at:string;updated_at:string};
+export type DraftPost={id:string;document:PostDocument;created_at:string;updated_at:string;deleted_at?:string|null};
 export type PublishedPost={id:string;slug:string;document:PostDocument;published_at:string;updated_at:string};
 export type TrackingConfig={mode:'off'|'gtm'|'direct';ga4MeasurementId:string;ga4PropertyId:string;gtmContainerId:string;metaPixelId:string;capiEndpoint:string;analyticsEnabled:boolean;marketingEnabled:boolean};
 export const emptyTracking:TrackingConfig={mode:'off',ga4MeasurementId:'',ga4PropertyId:'',gtmContainerId:'',metaPixelId:'',capiEndpoint:'',analyticsEnabled:false,marketingEnabled:false};
