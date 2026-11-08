@@ -30,7 +30,10 @@
 - 29개 집중 테스트 통과: 시간대, 테스트 문의 중복 제외, 보관 코호트, 미계약 금액, 빈/비정상 응답, 광고 중복 전환 별칭, 원본 합계 기반 CPC·CPA, 데이터 제약 보존.
 - TypeScript 검사 및 공개 빌드 통과. 48페이지 / 공개 색인 47개 / 내부 링크 251개 / 자산 48개 검증 오류 없음.
 - GA4 조회 함수 v10, Meta 광고 조회 함수 v2 배포 및 관리자 인증 유지.
-- 공개 화면 배포 후 기간 전환, 실문의 0건, 기록 없음 안내 및 실제 API 재조회 확인 예정.
+- 운영 배포 2a022cc 및 표시 보완 8079579 성공(GitHub Actions 42494581109, 42494803371). 운영 화면에서 실문의 0건, 방문자·세션 미확인 표시, 빈 그래프 숫자 제거를 확인했다.
+- 7→90일 빠른 변경 및 30일 복귀 검증: GA4·광고 보고서가 각각 2026-11-03, 2026-08-12, 2026-10-11 시작일로 저장됨. 늦은 이전 기간 응답이 현재 화면을 덮지 않음.
+- CRM 상세도 기간 내 고객 1명/계약 0건/확정 금액 0원으로 요약과 일치함.
+- 00:26 KST Meta 최근 7일 실제 원본: PageView 8 + Lead 1 = 전체 9, 화면과 일치. Lead 1은 앞서 승인한 내부 접수 검증을 포함하며 실문의 0건과 별도이다.
 
 정의 근거: https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema
 집계 제약: https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/ResponseMetaData
