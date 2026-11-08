@@ -33,6 +33,10 @@
 - 23개 단위 검증: 동의·개인정보 제외·중복 이벤트·스크롤 경계·비율 분모·CRM 코호트·CSV 처리.
 - analytics-report v9의 실제 GA4 조회 13개 모두 정상 응답(2026-11-09 00:03 KST). 일반 보고서는 처리된 행 없음, 최근 30분 방문자 1명 반환. 미수집/미조회와 빈 응답을 구분한다.
 - 공개 빌드 48페이지, 공개 색인 페이지 47개, 링크 251개, 자산 48개 검증 오류 없음.
+- 운영 배포 7639c63 / GitHub Actions 42493057762 성공. 모바일 375px에서 문서 너비 375px, 요약 카드 2열(각 143.5px), 제목 22px 확인. 표는 자체 가로 스크롤 영역으로 제한.
+- 00:09 KST 실제 실시간 조회: navigation_click 3, interface_click 2, scroll_depth_25 3, scroll_depth_50 2, scroll_depth_75 1, scroll_depth_90 1. 테스트 동작을 포함한 수신 확인이며 마케팅 성과로 해석하지 않는다.
+- 최종 표시 개선 1b9063d / GitHub Actions 42493397340 성공. 운영 대시보드 표 제목 대비와 기간별 조회 상태 표시를 확인했다.
+- GA4 실시간 navigation_click의 link_id에서 main_link_4, main_link_9 각 1회를 확인했다. 상세 링크 위치 전송은 확인됐으며 일반 보고서의 페이지별 참여 시간·클릭 표는 처리 대기 상태다.
 
 공식 정의: https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema
 활성 참여 시간: https://support.google.com/analytics/answer/11109416
