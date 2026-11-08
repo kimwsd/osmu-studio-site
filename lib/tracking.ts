@@ -21,10 +21,24 @@ export function initializeMeasurement(){
  }
  if(measurementAllowed('marketing')&&/^\d+$/.test(tracking.metaPixelId)&&!window.fbq){const f:TagFunction=function(...args:unknown[]){if(f.callMethod)f.callMethod(...args);else f.queue!.push(args)};f.push=f;f.loaded=true;f.version='2.0';f.queue=[];window.fbq=window._fbq=f;f('consent','grant');f('set','autoConfig',false,tracking.metaPixelId);f('init',tracking.metaPixelId);appendScript('osmu-meta-pixel','https://connect.facebook.net/en_US/fbevents.js')}
 }
-const allowedEvents=new Set(['page_view','view_service','view_solution','view_insight','select_service','contact_start','generate_lead','contact_click','consultation_click']);
+const allowedEvents=new Set(['page_view','view_service','view_solution','view_insight','select_service','contact_start','generate_lead','contact_click','consultation_click','navigation_click','interface_click']);
+const areas=new Set(['header','menu','search','main','footer']);
+export function safeTrackedDestination(value:string){try{const u=new URL(value);if(u.origin==='https://osmu-studio.com'&&publicPage(u.pathname))return u.origin+u.pathname;if(['https://pf.kakao.com','https://www.instagram.com','https://instagram.com'].includes(u.origin))return u.origin+'/';if(value==='mailto:')return value;return ''}catch{return value==='mailto:'?value:''}}
+export function navigationEvent(href:string,path:string,area:string){
+ if(!publicPage(path)||!areas.has(area))return null;
+ try{const u=new URL(href,'https://osmu-studio.com'+path);let name='navigation_click',label='',destination='',method='';
+ if(u.origin==='https://osmu-studio.com'){if(!publicPage(u.pathname)||u.pathname.replace(/\/$/,'')===path.replace(/\/$/,''))return null;destination=u.origin+u.pathname;label=u.pathname.replace(/\/$/,'')==='/contact'?'상담하기':pageGroup(u.pathname)==='services'?'서비스 보기':pageGroup(u.pathname)==='insights'?'인사이트 보기':pageGroup(u.pathname)==='solutions'?'솔루션 보기':'페이지 이동';if(label==='상담하기')name='consultation_click'}
+ else{method=u.protocol==='mailto:'?'email':u.hostname==='pf.kakao.com'?'kakao':['instagram.com','www.instagram.com'].includes(u.hostname)?'instagram':'';if(!method)return null;name='contact_click';label=method==='email'?'이메일 연락':method==='kakao'?'카카오톡 연락':'인스타그램 방문';destination=method==='email'?'mailto:':u.origin+'/'}
+ return {name,parameters:{page_path:path,link_url:destination,link_text:label,link_id:area,...(method?{contact_method:method}:{})}};
+ }catch{return null}
+}
+export function trackInterface(action:string,area:string){if(!/^(menu_(about|services|solutions|insights|resources|desk)|service_tab_(3eo|consulting|website|content|performance|analytics)|search_open|mobile_menu|insight_more|share_link)$/.test(action)||!areas.has(area))return;trackEvent('interface_click',{page_path:location.pathname,link_text:action,link_id:area})}
 export function trackEvent(name:string,parameters:Record<string,string|number>={}){
  if(!allowedEvents.has(name)||!measurementAllowed('analytics')||!window.gtag)return;
  const clean:Record<string,string|number>={};for(const key of ['service','content_group','content_slug','contact_method','page_path']){const value=parameters[key];if(typeof value==='string'&&(key==='page_path'?publicPage(value):safeLabel(value)))clean[key]=value}
+ if(typeof parameters.link_url==='string'){const destination=safeTrackedDestination(parameters.link_url);if(destination)clean.link_url=destination}
+ if(typeof parameters.link_text==='string'&&safeLabel(parameters.link_text))clean.link_text=parameters.link_text;
+ if(typeof parameters.link_id==='string'&&areas.has(parameters.link_id))clean.link_id=parameters.link_id;
  try{window.gtag('event',name,{...clean,send_to:tracking.ga4MeasurementId})}catch{}
 }
 let analyticsPage='',pixelPage='';const leads=new Set<string>();
