@@ -1,7 +1,7 @@
 'use client';
 import './admin-measurement.css';
 import {AdminJourney} from './admin-journey';
-import {useState,useId} from 'react';
+import {useState,useId,useEffect} from 'react';
 import {RefreshCw,ArrowUpRight,Activity,ShieldCheck} from 'lucide-react';
 import {type Report,amount,reportValue,period} from '@/lib/crm';
 import {calendarSeries,eventCount,eventLabels,percent,channelRows} from '@/lib/analytics-display';
@@ -21,6 +21,7 @@ export function AdminAnalytics({ga,initialMeta,tracking,days,readonly,onRefresh}
  const [tab,setTab]=useState<'ga4'|'meta'|'tags'>('ga4'),[metric,setMetric]=useState<'sessions'|'users'>('sessions'),[busy,setBusy]=useState(''),[message,setMessage]=useState(''),[meta,setMeta]=useState<Report|undefined>(initialMeta),[metaDays,setMetaDays]=useState(7);
  const range=period(days),metaRange=period(metaDays),visibleMeta=[meta,initialMeta].find(r=>r?.period_start===metaRange.start&&r?.period_end===metaRange.end);
  async function refresh(source:'ga4'|'meta'){setBusy(source);setMessage('');try{const {data,error}=await cmsClient().functions.invoke(source==='ga4'?'analytics-report':'meta-report',{body:{days:source==='ga4'?days:metaDays}});if(error){let text='통계 조회에 실패했습니다. 기존 수치는 유지됩니다.';try{text=(await error.context.json()).error||text}catch{}throw Error(text)}if(!data?.report)throw Error('집계 결과가 없습니다.');if(source==='meta')setMeta(data.report);await onRefresh();setMessage(data.cached?'최근 수집된 통계입니다.':'통계를 갱신했습니다.')}catch(e){setMessage(e instanceof Error?e.message:'조회에 실패했습니다.')}finally{setBusy('')}}
+ useEffect(()=>{if(!readonly)void refresh('ga4')},[days,readonly]);
  const channels=channelRows(ga),totalChannels=channels.reduce((s,x)=>s+x.value,0);let arc=0;const ring=totalChannels?'conic-gradient('+channels.map((x,i)=>{const a=arc;arc+=x.value/totalChannels*100;return colors[i%colors.length]+' '+a+'% '+arc+'%'}).join(',')+')':'#eeedf3';
  const engagement=percent(reportValue(ga,'engagedSessions'),reportValue(ga,'sessions'));
  const campaigns=ga?.breakdowns.filter(x=>x.kind==='campaign')||[];

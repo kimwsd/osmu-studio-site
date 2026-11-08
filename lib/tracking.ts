@@ -21,8 +21,11 @@ export function initializeMeasurement(){
  }
  if(measurementAllowed('marketing')&&/^\d+$/.test(tracking.metaPixelId)&&!window.fbq){const f:TagFunction=function(...args:unknown[]){if(f.callMethod)f.callMethod(...args);else f.queue!.push(args)};f.push=f;f.loaded=true;f.version='2.0';f.queue=[];window.fbq=window._fbq=f;f('consent','grant');f('set','autoConfig',false,tracking.metaPixelId);f('init',tracking.metaPixelId);appendScript('osmu-meta-pixel','https://connect.facebook.net/en_US/fbevents.js')}
 }
-const allowedEvents=new Set(['page_view','view_service','view_solution','view_insight','select_service','contact_start','generate_lead','contact_click','consultation_click','navigation_click','interface_click']);
+const allowedEvents=new Set(['page_view','view_service','view_solution','view_insight','select_service','contact_start','generate_lead','contact_click','consultation_click','navigation_click','interface_click','scroll_depth_25','scroll_depth_50','scroll_depth_75','scroll_depth_90']);
 const areas=new Set(['header','menu','search','main','footer']);
+export function safeClickId(value:string){return /^(header|menu|search|main|footer)(?:_(?:link|button)_\d{1,4})?$/.test(value)?value:''}
+export function clickLabel(value:string,fallback:string){const short=value.replace(/\s+/g,' ').trim().slice(0,80);return safeLabel(short)||fallback}
+export function scrollMilestones(scrollTop:number,height:number,viewport:number,seen:Set<number>){if(!Number.isFinite(scrollTop+height+viewport)||height<=viewport||viewport<=0)return [];const depth=Math.min(100,Math.max(0,(scrollTop+viewport)/height*100));return [25,50,75,90].filter(n=>depth>=n&&!seen.has(n))}
 export function safeTrackedDestination(value:string){try{const u=new URL(value);if(u.origin==='https://osmu-studio.com'&&publicPage(u.pathname))return u.origin+u.pathname;if(['https://pf.kakao.com','https://www.instagram.com','https://instagram.com'].includes(u.origin))return u.origin+'/';if(value==='mailto:')return value;return ''}catch{return value==='mailto:'?value:''}}
 export function navigationEvent(href:string,path:string,area:string){
  if(!publicPage(path)||!areas.has(area))return null;
@@ -38,7 +41,7 @@ export function trackEvent(name:string,parameters:Record<string,string|number>={
  const clean:Record<string,string|number>={};for(const key of ['service','content_group','content_slug','contact_method','page_path']){const value=parameters[key];if(typeof value==='string'&&(key==='page_path'?publicPage(value):safeLabel(value)))clean[key]=value}
  if(typeof parameters.link_url==='string'){const destination=safeTrackedDestination(parameters.link_url);if(destination)clean.link_url=destination}
  if(typeof parameters.link_text==='string'&&safeLabel(parameters.link_text))clean.link_text=parameters.link_text;
- if(typeof parameters.link_id==='string'&&areas.has(parameters.link_id))clean.link_id=parameters.link_id;
+ if(typeof parameters.link_id==='string'&&safeClickId(parameters.link_id))clean.link_id=parameters.link_id;
  try{window.gtag('event',name,{...clean,send_to:tracking.ga4MeasurementId})}catch{}
 }
 let analyticsPage='',pixelPage='';const leads=new Set<string>();
