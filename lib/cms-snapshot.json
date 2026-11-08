@@ -1,6 +1,6 @@
 {
   "initialized": true,
-  "revision": "f19eac63e0584a4feee362693da7a44334dd436852b5b5cf2aaf6a434c718966",
+  "revision": "9f9a25c6a0e6e2db4b74ac1328668202300dace09cdb326026597635e8452a1a",
   "articles": [
     {
       "slug": "website-renewal-url-checklist",
@@ -1207,13 +1207,13 @@
     }
   ],
   "tracking": {
-    "mode": "off",
-    "metaPixelId": "",
+    "mode": "gtm",
+    "metaPixelId": "1951085012534198",
     "capiEndpoint": "",
-    "ga4PropertyId": "",
-    "gtmContainerId": "",
-    "analyticsEnabled": false,
-    "ga4MeasurementId": "",
-    "marketingEnabled": false
+    "ga4PropertyId": "563224469",
+    "gtmContainerId": "GTM-MSV7CNQJ",
+    "analyticsEnabled": true,
+    "ga4MeasurementId": "G-81RMZW4B6T",
+    "marketingEnabled": true
   }
 }
