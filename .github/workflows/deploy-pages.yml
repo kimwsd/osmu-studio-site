@@ -24,6 +24,8 @@ jobs:
           cache: npm
       - uses: actions/configure-pages@v5
       - run: npm ci
+      - name: Validate contact input and notification retries
+        run: node --test tests/contact-validation.test.mjs tests/contact-delivery.test.mjs
       - run: npm run build
       - run: npm run typecheck
       - name: Validate public pages, metadata, links, and media
