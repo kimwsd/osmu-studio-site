@@ -7,7 +7,7 @@ export type MeasurementConsent={analytics:boolean;marketing:boolean;attribution:
 type TagFunction=((...args:unknown[])=>void)&{queue?:unknown[][];loaded?:boolean;version?:string;push?:TagFunction;callMethod?:TagFunction};
 declare global {interface Window {dataLayer:unknown[];gtag:TagFunction;fbq:TagFunction;_fbq:TagFunction}}
 export function readMeasurementConsent():MeasurementConsent|null{try{const c=JSON.parse(localStorage.getItem(measurementConsentKey)||'null');return c&&typeof c.analytics==='boolean'&&typeof c.marketing==='boolean'&&typeof c.attribution==='boolean'&&Number.isFinite(c.updatedAt)&&Date.now()-c.updatedAt<180*86400000?c:null}catch{return null}}
-export function publicPage(path:string){return safeSitePath(path)||(['/', '/privacy/','/terms/'].includes(path)?path:'')}
+export function publicPage(path:string){return safeSitePath(path)||(/^\/(?:resources|faq|privacy|terms|insights\/category\/[a-z0-9-]+)\/?$/.test(path)?path:'')}
 export function pageGroup(path:string){return path.split('/').filter(Boolean)[0]||'home'}
 export function campaignParameters(search:string){const q=new URLSearchParams(search),result:Record<string,string>={};for(const [source,target] of [['utm_source','campaign_source'],['utm_medium','campaign_medium'],['utm_campaign','campaign_name'],['utm_content','campaign_content'],['utm_term','campaign_term']]){const value=safeLabel(q.get(source));if(value)result[target]=value}return result}
 export function measurementAllowed(kind:'analytics'|'marketing'){return typeof window!=='undefined'&&location.hostname==='osmu-studio.com'&&!!publicPage(location.pathname)&&tracking.mode!=='off'&&(kind==='analytics'?tracking.analyticsEnabled:tracking.marketingEnabled)&&readMeasurementConsent()?.[kind]===true}
@@ -32,7 +32,7 @@ export function trackPage(path:string){
  if(!publicPage(path))return;initializeMeasurement();
  if(measurementAllowed('analytics')&&window.gtag&&analyticsPage!==path){const prior=analyticsPage;analyticsPage=path;let referrer='';try{const r=new URL(document.referrer);referrer=r.origin===location.origin?location.origin+(publicPage(r.pathname)||'/'):r.origin+'/'}catch{}
   window.gtag('set',{page_location:location.origin+path,page_referrer:prior?location.origin+prior:referrer,page_title:document.title,...campaignParameters(location.search)});trackEvent('page_view',{page_path:path,content_group:pageGroup(path)});
-  const group=pageGroup(path),slug=path.split('/').filter(Boolean)[1];if(slug&&['services','solutions','insights'].includes(group))trackEvent(group==='services'?'view_service':group==='solutions'?'view_solution':'view_insight',{content_group:group,content_slug:slug});
+  const group=pageGroup(path),slug=path.split('/').filter(Boolean)[1];if(slug&&slug!=='category'&&['services','solutions','insights'].includes(group))trackEvent(group==='services'?'view_service':group==='solutions'?'view_solution':'view_insight',{content_group:group,content_slug:slug});
  }
  if(measurementAllowed('marketing')&&window.fbq&&pixelPage!==path){pixelPage=path;window.fbq('track','PageView',{}, {eventID:crypto.randomUUID()})}
 }
