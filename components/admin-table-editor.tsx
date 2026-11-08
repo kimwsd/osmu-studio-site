@@ -1,0 +1,7 @@
+import {ContentBlock} from '@/lib/cms-types';
+export function AdminTableEditor({block,onChange}:{block:ContentBlock;onChange:(patch:Partial<ContentBlock>)=>void}){
+ const rows=block.text?block.text.split('\n').map(r=>r.split('\t')):[['항목','내용'],['','']];
+ const columns=Math.max(2,...rows.map(r=>r.length));
+ const write=(next:string[][])=>onChange({text:next.map(r=>r.join('\t')).join('\n')});
+ return <div className="admin-table-editor"><label>표 제목<input value={block.caption||''} onChange={e=>onChange({caption:e.target.value})}/></label><div className="admin-table-scroll"><table><tbody>{rows.map((r,i)=><tr key={i}>{Array.from({length:columns},(_,j)=><td key={j}><input aria-label={`${i===0?'열 제목':i+'행'} ${j+1}`} value={r[j]||''} onChange={e=>write(rows.map((row,n)=>n===i?Array.from({length:columns},(_,k)=>k===j?e.target.value.replace(/[\t\n]/g,' '):row[k]||''):row))}/></td>)}<td><button disabled={i===0||rows.length<3} onClick={()=>write(rows.filter((_,n)=>n!==i))}>행 삭제</button></td></tr>)}</tbody></table></div><div className="actions"><button className="admin-btn" onClick={()=>write([...rows,Array(columns).fill('')])}>행 추가</button><button className="admin-btn" onClick={()=>write(rows.map(r=>[...Array.from({length:columns},(_,i)=>r[i]||''),'']))}>열 추가</button><button className="admin-btn" disabled={columns<=2} onClick={()=>write(rows.map(r=>r.slice(0,columns-1)))}>마지막 열 삭제</button></div><small>첫 번째 행은 열 제목입니다.</small></div>;
+}

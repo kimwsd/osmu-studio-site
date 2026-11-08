@@ -79,7 +79,11 @@ begin
  or coalesce(draft.document->>'slug','') !~ '^[a-z0-9]+(-[a-z0-9]+)*$'
  or coalesce(draft.document->>'cover','') !~ '^(https://|/images/)'
  or jsonb_typeof(draft.document->'blocks') is distinct from 'array'
- or jsonb_array_length(draft.document->'blocks')<1 then raise exception '제목, 요약, 주소, 대표 이미지와 본문을 확인해 주세요.'; end if;
+ or jsonb_array_length(draft.document->'blocks')<1
+ or length(trim(coalesce(draft.document->>'coverAlt','')))=0
+ or not exists(select 1 from jsonb_array_elements(draft.document->'blocks') b where b->>'type'='paragraph' and length(trim(coalesce(b->>'text','')))>0)
+ or exists(select 1 from jsonb_array_elements(draft.document->'blocks') b where b->>'type' not in ('paragraph','heading','quote','list','table','links','image','video') or (b->>'type'='image' and (coalesce(b->>'url','') !~ '^(https://|/images/)' or length(trim(coalesce(b->>'alt','')))=0)))
+ then raise exception '제목, 요약, 주소, 대표 이미지와 본문을 확인해 주세요.'; end if;
  select slug into previous_slug from public.cms_public_posts where id=post_id;
  if previous_slug is not null and previous_slug<>draft.document->>'slug' then raise exception '발행한 글의 주소는 유지해야 합니다.'; end if;
  insert into public.cms_public_posts(id,slug,document,updated_at)
