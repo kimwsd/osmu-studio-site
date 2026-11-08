@@ -25,7 +25,7 @@ jobs:
       - uses: actions/configure-pages@v5
       - run: npm ci
       - name: Validate contact input and notification retries
-        run: node --test tests/contact-validation.test.mjs tests/contact-delivery.test.mjs tests/cms-preservation.test.mjs tests/cms-status.test.mjs tests/admin-navigation.test.mjs tests/crm.test.mjs tests/operations.test.mjs tests/tracking.test.mjs tests/analytics-report.test.mjs tests/measurement-dashboard.test.mjs tests/meta-ads.test.mjs tests/marketing-metrics.test.mjs tests/inquiry-count.test.mjs
+        run: node --test tests/contact-validation.test.mjs tests/contact-delivery.test.mjs tests/cms-preservation.test.mjs tests/cms-status.test.mjs tests/admin-navigation.test.mjs tests/crm.test.mjs tests/operations.test.mjs tests/tracking.test.mjs tests/analytics-report.test.mjs tests/measurement-dashboard.test.mjs tests/meta-ads.test.mjs tests/marketing-metrics.test.mjs tests/inquiry-count.test.mjs tests/inquiry-crm.test.mjs
       - name: Fetch published CMS snapshot
         run: npm run cms:sync
       - run: npm run build
