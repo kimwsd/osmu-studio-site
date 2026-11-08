@@ -7,3 +7,6 @@ test('rejects missing consent, unknown service and blank identity',()=>{for(cons
 test('rejects invalid website protocols and oversized content',()=>{for(const website of ['javascript:alert(1)','data:text/html,test','ftp://example.com'])assert.throws(()=>validateInquiry({...base,website}));assert.throws(()=>validateInquiry({...base,message:'a'.repeat(4001)}))});
 test('rejects honeypot and invalid request id',()=>{assert.throws(()=>validateInquiry({...base,fax:'spam'}));assert.throws(()=>validateInquiry({...base,requestId:'bad'}))});
 test('does not accept client supplied admin state',()=>{const x=validateInquiry({...base,status:'완료',notification:'sent'});assert.equal(x.status,undefined);assert.equal(x.notification,undefined)});
+
+test('name, company and email reject empty and whitespace',()=>{for(const key of ['name','company','email'])for(const value of ['', '   '])assert.throws(()=>validateInquiry({...base,[key]:value}))});
+test('phone is optional, preserved when valid and rejects invalid content',()=>{assert.equal(validateInquiry(base).phone,'');assert.equal(validateInquiry({...base,phone:'010-0000-0000'}).phone,'010-0000-0000');for(const phone of ['abc','123','1'.repeat(16)])assert.throws(()=>validateInquiry({...base,phone}))});

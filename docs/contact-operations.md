@@ -13,7 +13,9 @@
 
 ## 문의 확인
 
-Supabase 프로젝트 osmu-studio → Table Editor → inquiries에서 원문을 확인한다. 현재 웹사이트 관리자 콘텐츠 화면과는 별개다.
+Supabase 프로젝트 osmu-studio → Table Editor → inquiries에서 원문을 확인한다.
+직접 링크: https://supabase.com/dashboard/project/polzkalenzpfmrgzwmfv/editor/17625?schema=public
+메일 템플릿도 이 문의 목록으로 직접 이동하도록 수정했다. 이미 수신한 메일의 링크는 바뀌지 않는다. 이름·회사·이메일은 필수, 전화번호·웹사이트는 선택이며 phone 열에 저장한다. 현재 웹사이트 관리자 콘텐츠 화면과는 별개다.
 
 매일 신규 문의와 inquiry_notifications의 failed / 오래된 pending·sending을 함께 확인한다. sent는 발송 서비스가 접수했다는 의미이며 실제 수신 서버 전달은 Resend Emails의 Delivered로 확인한다. 받은편지함/스팸함 분류는 수신자가 확인한다.
 
@@ -27,12 +29,12 @@ Resend 알림에 고객 이름·이메일·회사·문의 본문을 넣지 않�
 
 ## 검증 기록
 
-- 필드/동의/허니팟/재시도 단위 검증 10개 통과.
+- 필드/동의/허니팟/재시도 단위 검증 12개 통과.
 - CORS 사전 요청 204, 허용하지 않은 Origin 403, 잘못된 입력 400, 동일 번호의 다른 내용 409.
 - 실제 테스트 1건 저장 후 동일 요청 재전송: 동일 접수번호, 발송 1회 유지.
 - 익명 inquiries 조회는 빈 배열, 알림 테이블 조회는 권한 거부. anon/authenticated 직접 INSERT 및 anon RPC 권한 없음.
 - 이메일별 6번째 요청 제한을 DB 트랜잭션으로 확인하고 테스트 행은 롤백.
-- Resend Delivered 확인: 01a1ba71-109d-71b1-bde1-f888d2a85a07. 실제 받은편지함 분류는 미확인.
+- Resend Delivered 확인: 01a1ba71-109d-71b1-bde1-f888d2a85a07. 사용자가 네이버에서 실제 수신 화면을 공유해 수신도 확인.
 - 320 CSS px 모바일 동의/버튼 배치와 가로 넘침 없음 확인.
 - Next 정적 빌드, 타입 검사, 공개 페이지 48개 export 검증 통과.
 - 보안 점검: 알림 테이블 정책 없음은 서버 전용 설계에 따른 의도적 접근 차단. 기존 Auth 유출 비밀번호 보호 경고는 다음 관리자 계정 단계에서 확인.

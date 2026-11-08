@@ -7,8 +7,10 @@ export function validateInquiry(input) {
   if(input.fax)throw new Error('요청을 처리할 수 없습니다.');
   if(input.consent!==true||input.transferConsent!==true||input.consentVersion!=='2026-11-08')throw new Error('개인정보 안내와 동의를 확인해 주세요.');
   const name=text('name',80),company=text('company',120),email=text('email',254).toLowerCase(),message=text('message',4000),website=text('website',500,false);
+  const phone=input.phone===undefined?'':text('phone',30,false);
+  if(phone&&(!/^\+?[0-9 ()-]+$/.test(phone)||phone.replace(/\D/g,'').length<7||phone.replace(/\D/g,'').length>15))throw new Error('전화번호를 확인해 주세요.');
   if(!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email))throw new Error('이메일 주소를 확인해 주세요.');
   if(website){let url;try{url=new URL(website)}catch{throw new Error('웹사이트 주소를 확인해 주세요.')};if(!['https:','http:'].includes(url.protocol)||url.username||url.password)throw new Error('웹사이트 주소를 확인해 주세요.');}
   if(!Array.isArray(input.services)||!input.services.length||input.services.length>6||input.services.some(s=>typeof s!=='string'||!allowed.has(s)))throw new Error('서비스를 한 가지 이상 선택해 주세요.');
-  return {requestId,name,company,email,website,message,services:[...new Set(input.services)].sort(),consentVersion:'2026-11-08'};
+  return {requestId,name,company,email,phone,website,message,services:[...new Set(input.services)].sort(),consentVersion:'2026-11-08'};
 }

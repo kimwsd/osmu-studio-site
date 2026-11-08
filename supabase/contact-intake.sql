@@ -38,8 +38,8 @@ begin
   if (select count(*) from public.inquiries where created_at>now()-interval '1 hour' and email=p_document->>'email')>=5
      or (select count(*) from public.inquiries where created_at>now()-interval '1 hour')>=60
      then return jsonb_build_object('error','rate_limit'); end if;
-  insert into public.inquiries(name,email,company,website,services,type,message,request_id,payload_hash,consent_version,consent_at,transfer_consent_at)
-  values(p_document->>'name',p_document->>'email',p_document->>'company',nullif(p_document->>'website',''),
+  insert into public.inquiries(name,email,phone,company,website,services,type,message,request_id,payload_hash,consent_version,consent_at,transfer_consent_at)
+  values(p_document->>'name',p_document->>'email',nullif(p_document->>'phone',''),p_document->>'company',nullif(p_document->>'website',''),
     array(select jsonb_array_elements_text(p_document->'services')),
     (select string_agg(value,' · ') from jsonb_array_elements_text(p_document->'services')),
     p_document->>'message',request_uuid,p_hash,p_document->>'consentVersion',now(),now()) returning * into saved;
