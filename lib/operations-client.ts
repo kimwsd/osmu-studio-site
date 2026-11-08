@@ -1,0 +1,4 @@
+import {cmsClient} from './cms-client';
+export async function allRows<T>(table:string){const rows:T[]=[];for(let page=0;;page++){const {data,error}=await cmsClient().from(table).select('*').order('id').range(page*1000,page*1000+999);if(error)throw new Error(error.message);rows.push(...(data||[]));if((data?.length||0)<1000)return rows}}
+export async function updateRecord(table:string,row:{id:string;updated_at:string},patch:Record<string,unknown>){const {data,error}=await cmsClient().from(table).update(patch).eq('id',row.id).eq('updated_at',row.updated_at).select().maybeSingle();if(error)throw new Error(error.message);if(!data)throw new Error('다른 창에서 변경됐습니다. 새로고침 후 다시 확인해 주세요.');return data}
+export function downloadJson(name:string,value:unknown){const url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}

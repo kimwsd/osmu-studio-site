@@ -31,7 +31,7 @@ Deno.serve(async(req:Request)=>{
   try{document=validateInquiry(body)}catch(e){return reply(400,{error:e instanceof Error?e.message:'입력 내용을 확인해 주세요.'})}
   const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(document)));
   const hash=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');
-  const {data,error}=await db.rpc('submit_contact_inquiry',{p_document:document,p_hash:hash});
+  const {data,error}=await db.rpc('submit_contact_attributed',{p_document:document,p_hash:hash});
   if(error||!data)return reply(503,{error:'접수 저장에 실패했습니다. 잠시 후 같은 내용으로 다시 시도해 주세요.'});
   if(data.error==='request_conflict')return reply(409,{error:'이전 접수 요청과 내용이 다릅니다. 새로고침 후 다시 작성해 주세요.'});
   if(data.error==='rate_limit')return reply(429,{error:'요청이 많습니다. 잠시 후 다시 시도하거나 이메일로 문의해 주세요.'});

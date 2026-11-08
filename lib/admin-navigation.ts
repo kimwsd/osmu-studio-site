@@ -1,4 +1,4 @@
-export const adminViews=['crm','inquiries','dashboard','posts','media','utm','integrations','quality','editor'] as const;
+export const adminViews=['crm','tasks','performance','calendar','operations','inquiries','dashboard','posts','media','utm','integrations','quality','editor'] as const;
 export type AdminView=typeof adminViews[number];
 export function adminRoute(hash:string){
  const [candidate,postId]=hash.replace(/^#/,'').split('/');

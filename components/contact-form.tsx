@@ -3,6 +3,7 @@ import {useRef,useState} from 'react';
 import Link from 'next/link';
 import {ArrowRight,CheckCircle2} from 'lucide-react';
 import {services} from '@/lib/content';
+import {readAttribution} from '@/lib/attribution';
 import {contactConfig} from '@/lib/contact-config';
 export function ContactForm(){
  const [selected,setSelected]=useState<string[]>([]),[state,setState]=useState<'idle'|'sending'|'success'|'error'>('idle'),[message,setMessage]=useState(''),[reference,setReference]=useState('');
@@ -21,7 +22,7 @@ export function ContactForm(){
   if(first){setState('error');setMessage('필수 항목을 확인해 주세요.');(form.elements.namedItem(first) as HTMLInputElement)?.focus();return;}
   if(!selected.length){setState('error');setMessage('서비스를 한 가지 이상 선택해 주세요.');document.getElementById('service-error')?.focus();return;}
   if(!form.reportValidity())return;
-  const data={name:String(fields.get('name')||''),company:String(fields.get('company')||''),email:String(fields.get('email')||''),phone:String(fields.get('phone')||''),website:String(fields.get('website')||''),message:String(fields.get('message')||''),services:[...selected].sort(),consent:fields.get('consent')==='on',transferConsent:fields.get('transferConsent')==='on',consentVersion:contactConfig.consentVersion,fax:String(fields.get('fax')||'')};
+  const data={attribution:readAttribution(),name:String(fields.get('name')||''),company:String(fields.get('company')||''),email:String(fields.get('email')||''),phone:String(fields.get('phone')||''),website:String(fields.get('website')||''),message:String(fields.get('message')||''),services:[...selected].sort(),consent:fields.get('consent')==='on',transferConsent:fields.get('transferConsent')==='on',consentVersion:contactConfig.consentVersion,fax:String(fields.get('fax')||'')};
   const payload=JSON.stringify(data);if(request.current.payload!==payload)request.current={payload,id:crypto.randomUUID()};
   busy.current=true;setState('sending');setMessage('상담 내용을 접수하고 있습니다.');
   const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),25000);
