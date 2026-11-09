@@ -13,7 +13,7 @@ export function metaFor(path:string):Metadata{
  if(article){title=article.seoTitle||article.title;description=article.seoDescription||article.summary}
  if(parts[0]==='insights'&&parts[1]==='category'){const i=['seo','aeo-geo','website','content','performance','analytics'].indexOf(parts[2]);title=categories[i+1]+' 인사이트';description=title+'에 관한 3EO 실무 가이드.'}
  const asset=article?({'3eo':'aeo-geo',consulting:'content'} as Record<string,string>)[article.service]||article.service:'';
- const image=article?(article.ogImage||article.cover||'/images/editorial-'+asset+'.jpg'):'/og-osmu-20261107.png';
+ const image=article?(article.ogImage||article.cover||'/images/editorial-'+asset+'.jpg'):'/osmu-logo-share-20261109.png';
  const images=article?[{url:image,alt:article.coverAlt||article.title}]:[{url:image,width:1200,height:630,alt:'OSMU STUDIO 로고'}];
  const url=path==='/'?'/':path+'/';
  return {title:{absolute:title+' | 3EO'},description,alternates:{canonical:url},robots:{index:isPublic&&path!=='/admin',follow:isPublic&&path!=='/admin',...(isPublic&&path!=='/admin'?{googleBot:{index:true,follow:true,'max-image-preview':'large' as const,'max-snippet':-1,'max-video-preview':-1}}:{})},openGraph:{title,description,url,locale:'ko_KR',siteName:'3EO',...(article?{type:'article',publishedTime:new Date(article.date).toISOString(),modifiedTime:new Date(article.modified||article.date).toISOString(),authors:[article.author||'3EO Editorial']}:{type:'website'}),images},twitter:{card:'summary_large_image',title,description,images:[image]}};
@@ -22,5 +22,5 @@ export function metaFor(path:string):Metadata{
 export function pageSchema(path:string){
  const meta=metaFor(path);
  const title=typeof meta.title==='object'&&meta.title&&'absolute' in meta.title?meta.title.absolute:'3EO';
- return {'@context':'https://schema.org','@type':path==='/about'?'AboutPage':['/insights','/services','/solutions','/resources'].includes(path)||path.includes('/category/')?'CollectionPage':'WebPage','@id':baseUrl+(path==='/'?'/':path+'/')+'#webpage',url:baseUrl+(path==='/'?'/':path+'/'),name:title,description:meta.description,inLanguage:'ko-KR',...(path==='/about'?{about:{'@id':baseUrl+'/#organization'}}:{}),isPartOf:{'@type':'WebSite','@id':baseUrl+'/#website',name:'3EO',url:baseUrl+'/',publisher:{'@id':baseUrl+'/#organization'}}};
+ return {'@context':'https://schema.org','@type':path==='/about'?'AboutPage':['/insights','/services','/solutions','/resources'].includes(path)||path.includes('/category/')?'CollectionPage':'WebPage','@id':baseUrl+(path==='/'?'/':path+'/')+'#webpage',url:baseUrl+(path==='/'?'/':path+'/'),name:title,description:meta.description,...(path.startsWith('/insights/')?{}:{image:baseUrl+'/osmu-logo-square-20261109.png',primaryImageOfPage:{'@type':'ImageObject',url:baseUrl+'/osmu-logo-square-20261109.png',width:512,height:512}}),inLanguage:'ko-KR',...(path==='/about'?{about:{'@id':baseUrl+'/#organization'}}:{}),isPartOf:{'@type':'WebSite','@id':baseUrl+'/#website',name:'3EO',url:baseUrl+'/',publisher:{'@id':baseUrl+'/#organization'}}};
 }
