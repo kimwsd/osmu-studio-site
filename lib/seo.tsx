@@ -16,7 +16,7 @@ export function metaFor(path:string):Metadata{
  const image=article?(article.ogImage||article.cover||'/images/editorial-'+asset+'.jpg'):'/osmu-logo-share-20261109.png';
  const images=article?[{url:image,alt:article.coverAlt||article.title}]:[{url:image,width:1200,height:630,alt:'OSMU STUDIO 로고'}];
  const url=path==='/'?'/':path+'/';
- return {title:{absolute:path==='/'?title:title+' | 오스무 스튜디오'},description,alternates:{canonical:url},robots:{index:isPublic&&path!=='/admin',follow:isPublic&&path!=='/admin',...(isPublic&&path!=='/admin'?{googleBot:{index:true,follow:true,'max-image-preview':'large' as const,'max-snippet':-1,'max-video-preview':-1}}:{})},openGraph:{title,description,url,locale:'ko_KR',siteName:'오스무 스튜디오',...(article?{type:'article',publishedTime:new Date(article.date).toISOString(),modifiedTime:new Date(article.modified||article.date).toISOString(),authors:[article.author||'3EO Editorial']}:{type:'website'}),images},twitter:{card:'summary_large_image',title,description,images:[image]}};
+ return {title:{absolute:path==='/'||title.includes('오스무 스튜디오')?title:title+' | 오스무 스튜디오'},description,alternates:{canonical:url},robots:{index:isPublic&&path!=='/admin',follow:isPublic&&path!=='/admin',...(isPublic&&path!=='/admin'?{googleBot:{index:true,follow:true,'max-image-preview':'large' as const,'max-snippet':-1,'max-video-preview':-1}}:{})},openGraph:{title,description,url,locale:'ko_KR',siteName:'오스무 스튜디오',...(article?{type:'article',publishedTime:new Date(article.date).toISOString(),modifiedTime:new Date(article.modified||article.date).toISOString(),authors:[article.author||'3EO Editorial']}:{type:'website'}),images},twitter:{card:'summary_large_image',title,description,images:[image]}};
 }
 
 export function pageSchema(path:string){
