@@ -1,6 +1,6 @@
-# OSMU STUDIO · 3EO
+# 오스무 스튜디오 (OSMU STUDIO) · 3EO
 
-> 3EO는 SEO·AEO·GEO를 중심으로 웹사이트, 콘텐츠, 퍼포먼스 마케팅과 데이터 측정을 설계합니다.
+> 오스무 스튜디오(OSMU STUDIO)는 3EO 마케팅 서비스를 제공합니다. SEO·AEO·GEO를 중심으로 웹사이트, 콘텐츠, 퍼포먼스 마케팅과 데이터 측정을 설계합니다.
 
 ## 공식 페이지
 - [소개](https://osmu-studio.com/about/): 접근 방식과 업무 원칙
