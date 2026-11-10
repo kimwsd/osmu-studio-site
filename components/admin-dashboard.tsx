@@ -14,7 +14,7 @@ type Props={readonly:boolean;posts:DraftPost[];published:PublishedPost[];release
 export function AdminDashboard({readonly,posts,published,release,tracking,utmCount,onNavigate,onNewPost,onRefresh,onDeploy}:Props){
  const [days,setDays]=useState(30),[leads,setLeads]=useState<Lead[]>([]),[reports,setReports]=useState<Report[]>([]),[inquiryCount,setInquiryCount]=useState<number|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[loaded,setLoaded]=useState(false),[chart,setChart]=useState<'ga4'|'crm'>('ga4');
  const [section,setSection]=useState('overview'),[refreshVersion,setRefreshVersion]=useState(0);
- const dashboardTabs=[['overview','성과 요약'],['ga4','GA4'],['visitors','방문자 · 행동'],['gsc','GSC 검색'],['meta','Meta'],['campaigns','UTM 캠페인'],['crm','CRM · 운영'],['tags','태그 상태']];
+ const dashboardTabs=[['overview','성과 요약'],['ga4','GA4'],['visitors','방문자 · 행동'],['gsc','GSC 검색'],['meta','Meta'],['campaigns','플랫폼 · UTM'],['crm','CRM · 운영'],['tags','태그 상태']];
  const range=period(days);
  const loadRequest=useRef(0);
  async function load(){if(readonly)return;const request=++loadRequest.current;setBusy(true);setLoaded(false);setError('');try{
