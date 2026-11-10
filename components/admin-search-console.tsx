@@ -1,0 +1,25 @@
+"use client";
+import {useEffect,useRef,useState} from 'react';
+import {RefreshCw,ArrowUpRight,Search} from 'lucide-react';
+import {cmsClient} from '@/lib/cms-client';
+import {Trend} from './admin-analytics';
+import './admin-measurement.css';
+type Row={keys?:string[];clicks:number;impressions:number;ctr:number;position:number};
+type SearchReport={site:string;start:string;end:string;days:number;timezone:string;collected_at:string;latestDataDate:string|null;totals:Row|null;daily:Row[];queries:Row[];pages:Row[];devices:Row[];countries:Row[]};
+const number=(n:number|null|undefined,digits=0)=>n==null?'—':new Intl.NumberFormat('ko-KR',{maximumFractionDigits:digits}).format(n);
+const dimensions=[['queries','검색어'],['pages','검색된 페이지'],['devices','기기'],['countries','국가']] as const;
+export function AdminSearchConsole({readonly,days}:{readonly:boolean;days:number}){
+ const [report,setReport]=useState<SearchReport|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[dimension,setDimension]=useState<typeof dimensions[number][0]>('queries'),[metric,setMetric]=useState<'clicks'|'impressions'>('clicks');
+ const request=useRef(0);
+ async function refresh(){const id=++request.current;setBusy(true);setError('');try{const {data,error}=await cmsClient().functions.invoke('gsc-report',{body:{days}});if(error){let message='GSC 조회에 실패했습니다. 연결 권한을 확인해 주세요.';try{message=(await error.context.json()).error||message}catch{}throw Error(message)}if(!data?.report)throw Error('GSC 보고서 응답이 없습니다.');if(id===request.current)setReport(data.report)}catch(e){if(id===request.current)setError(e instanceof Error?e.message:'조회에 실패했습니다.')}finally{if(id===request.current)setBusy(false)}}
+ useEffect(()=>{setReport(null);if(!readonly)void refresh();return()=>{request.current++}},[days,readonly]);
+ const data=report?.days===days?report:null;
+ const trend=data?Array.from({length:days},(_,i)=>{const date=new Date(data.start+'T00:00:00Z');date.setUTCDate(date.getUTCDate()+i);const day=date.toISOString().slice(0,10),r=data.daily.find(x=>x.keys?.[0]===day);return {date:day,value:r?.[metric]??null}}):[];
+ return <section className="measurement-hub"><header className="measurement-header"><div><span className="workspace-eyebrow">GOOGLE SEARCH CONSOLE</span><h2>검색에서 만나는 오스무.</h2><p>어떤 검색어와 페이지가 노출되고 클릭되는지 확인하세요.</p></div><button className="admin-btn" disabled={readonly||busy} onClick={()=>void refresh()}><RefreshCw size={15} className={busy?'spin':''}/>{busy?'조회 중':'GSC 갱신'}</button></header>
+ {error&&<div className="admin-notice error" role="alert">{error}{data&&' 마지막 성공한 보고서를 표시합니다.'}</div>}
+ {!data&&<div className="measurement-panel"><Search size={24}/><h3>{busy?'Google 검색 데이터를 불러옵니다.':'검색 통계 연결 대기'}</h3><p>OSMU 속성의 조회 권한과 Search Console API 연결이 완료되면 실제 통계가 표시됩니다. 미조회 수치는 0으로 처리하지 않습니다.</p></div>}
+ <div className="measurement-kpis">{[['검색 클릭',number(data?.totals?.clicks),'회'],['검색 노출',number(data?.totals?.impressions),'회'],['클릭률',data?.totals?number(data.totals.ctr*100,2):'—','%'],['평균 게재순위',data?.totals?.impressions?number(data.totals.position,1):'—','위']].map(([label,value,unit])=><article key={label}><span>{label}</span><strong>{value}<small>{unit}</small></strong></article>)}</div>
+ {data&&<><p className="measurement-note">{data.start} — {data.end} · GSC 기준 미국 태평양 시간 · 웹 검색 · 확정 데이터만 표시 · 최신 데이터 {data.latestDataDate||'없음'}</p><div className="measurement-panel"><div className="measurement-toolbar"><h3>검색 성과 추이</h3><div className="workspace-toggle"><button aria-pressed={metric==='clicks'} onClick={()=>setMetric('clicks')}>클릭</button><button aria-pressed={metric==='impressions'} onClick={()=>setMetric('impressions')}>노출</button></div></div><Trend title={metric==='clicks'?'검색 클릭':'검색 노출'} data={trend}/><p className="measurement-note">값이 없는 날짜는 미보고 상태입니다. 확정 데이터의 최신 날짜를 확인하세요. 검색 클릭은 GA4 방문 세션과 집계 기준이 다릅니다.</p></div>
+ <div className="measurement-panel"><div className="gsc-dimensions" aria-label="검색 데이터 분류">{dimensions.map(([id,label])=><button key={id} aria-pressed={dimension===id} onClick={()=>setDimension(id)}>{label}</button>)}</div><div className="measurement-scroll"><table><thead><tr><th>{dimensions.find(x=>x[0]===dimension)?.[1]}</th><th>클릭</th><th>노출</th><th>CTR</th><th>평균 순위</th></tr></thead><tbody>{data[dimension].map((r,i)=><tr key={(r.keys||[]).join('/')+i}><td>{(r.keys||[]).join(' / ')}</td><td>{number(r.clicks)}</td><td>{number(r.impressions)}</td><td>{number(r.ctr*100,2)}%</td><td>{number(r.position,1)}</td></tr>)}</tbody></table></div>{!data[dimension].length&&<p className="measurement-empty">해당 기간에 반환된 항목이 없습니다.</p>}<p className="measurement-note">클릭 기준 상위 500개 항목입니다. 익명화된 검색어와 API 제한으로 상세 행의 합계가 전체 합계와 다를 수 있습니다.</p></div><p className="measurement-note">마지막 조회 {new Date(data.collected_at).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})} · 속성 {data.site}</p></>}
+ <footer className="measurement-links"><a href="https://search.google.com/search-console/performance/search-analytics?resource_id=https%3A%2F%2Fosmu-studio.com%2F" target="_blank" rel="noreferrer">Search Console 원본 보고서 <ArrowUpRight size={14}/></a></footer></section>
+}
