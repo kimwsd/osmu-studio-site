@@ -7,6 +7,7 @@ export const presets=[
  {id:'naver_blog',label:'네이버 블로그 · 자연 유입',source:'naver',medium:'referral',placement:'blog_post'},
  {id:'naver_search',label:'네이버 · 검색 광고',source:'naver',medium:'cpc',placement:'search'},
  {id:'google_search',label:'구글 · 검색 광고',source:'google',medium:'cpc',placement:'search'},
+ {id:'kakao_profile',label:'카카오 · 채널 프로필',source:'kakao',medium:'social',placement:'bio'},
  {id:'kakao',label:'카카오 · 채널 메시지',source:'kakao',medium:'social',placement:'channel_message'},
  {id:'newsletter',label:'이메일 · 뉴스레터',source:'newsletter',medium:'email',placement:'body_cta'},
  {id:'qr',label:'오프라인 · QR',source:'offline',medium:'qr',placement:'business_card'}
