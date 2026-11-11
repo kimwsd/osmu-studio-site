@@ -1,0 +1,16 @@
+import Link from 'next/link';
+
+const options = [
+  {name:'진단',label:'무엇부터 바꿀지 결정할 때',body:'검색 수요, 고객 질문, 기존 페이지와 측정 상태를 확인해 우선순위를 정합니다.',outputs:['근거 URL·조회 조건이 담긴 진단서','검색 의도·고객 여정별 콘텐츠 지도','영향·난이도·담당자를 정리한 실행 계획'],scope:'대상 도메인·페이지·키워드군·경쟁사·AI 질문 목록을 먼저 확정합니다. 개발과 제작은 별도입니다.',check:'발견한 문제, 확인 근거, 권장 작업과 미확인 항목을 함께 검토합니다.'},
+  {name:'구축·개선',label:'실제 페이지와 측정 기반이 필요할 때',body:'진단에서 정한 우선순위에 따라 웹사이트, 콘텐츠와 전환 측정을 구현합니다.',outputs:['승인된 사이트맵·화면·페이지 원고','배포된 페이지와 검색 기본 설정','이벤트 정의서·검수 기록·운영 안내'],scope:'페이지·템플릿·원고 수, CMS·폼·계정 연동, 수정 횟수와 출시 조건을 견적에 명시합니다.',check:'모바일 화면, 공개 HTML, URL·내부 링크, 동의와 접수 성공·실패·중복 시나리오를 확인합니다.'},
+  {name:'월간 운영',label:'발행 이후의 변화를 보고 개선할 때',body:'검색과 AI 답변, 콘텐츠별 유입과 문의를 나누어 살펴보고 다음 실행을 정합니다.',outputs:['월간 콘텐츠·개선 작업 목록','출처·기간·분모를 적은 성과 보고서','다음 달 우선순위와 실험 계획'],scope:'월별 제작량, 수정 범위, 관측 질문·엔진, 보고·미팅 주기를 합의합니다. 광고비와 유료 도구는 구분합니다.',check:'같은 조건의 전후 변화와 작업 이력을 대조합니다. 관측되지 않은 값은 0으로 대신하지 않습니다.'},
+];
+
+export function EngagementOptions(){return <section className="section soft" id="engagement-options"><div className="container"><div className="desk-section-heading"><span className="eyebrow">CHOOSE YOUR SCOPE</span><h2>진단부터 시작해도,<br/>실행까지 맡겨도 됩니다.</h2><p>OSMU STUDIO의 핵심 서비스 3EO는 SEO·AEO·GEO를 함께 다룹니다. 의뢰 방식에 따라 수행 범위와 전달 결과물을 구분합니다.</p></div><div className="engagement-grid">{options.map((o,i)=><article key={o.name}><span className="eyebrow">0{i+1} / {o.label}</span><h3>{o.name}</h3><p>{o.body}</p><h4>받는 결과물</h4><ul>{o.outputs.map(x=><li key={x}>{x}</li>)}</ul><dl><dt>범위 합의</dt><dd>{o.scope}</dd><dt>완료 확인</dt><dd>{o.check}</dd></dl><Link className="text-link" href="/contact/">{o.name} 상담하기 ↗</Link></article>)}</div><p className="note">각 단계는 독립적으로 의뢰할 수 있습니다. 일정과 비용은 자료 준비 상태와 합의한 작업량을 기준으로 안내합니다.</p></div></section>}
+
+export function WebsiteMethod(){return <section className="section container website-method"><div className="desk-section-heading"><span className="eyebrow">SEARCH-READY FROM THE START</span><h2>검색과 AI를 고려한 홈페이지,<br/>기획부터 측정까지 만듭니다.</h2><p>고객이 찾는 질문을 페이지로 만들고, 검색엔진이 읽을 수 있는 구조로 개발합니다. 공개 이후에는 어떤 콘텐츠가 방문과 문의에 연결되는지 확인할 기준을 남깁니다.</p></div><div className="website-method-grid">{[
+ ['01','기획','고객 질문을 사이트 구조로','검색량·연관 검색어·검색결과와 실제 상담 질문을 대조합니다. 탐색·비교·도입 단계에 맞춰 서비스, 업종, 사례, FAQ와 인사이트를 연결합니다.','검색 의도별 사이트맵 · URL 이관표 · 페이지별 기획서'],
+ ['02','개발','사람과 검색엔진이 읽을 수 있게','반응형 화면과 공개 HTML 본문, 고유 제목·설명, 대표 URL, 사이트맵과 내부 링크를 구현합니다. 기존 페이지는 대체 관계에 맞춰 이전하거나 종료합니다.','반응형 사이트 · 템플릿 · 기술 설정 · 배포 기록'],
+ ['03','콘텐츠','질문에 답하고 근거를 보여주게','누구를 위한 서비스인지, 포함 범위와 조건은 무엇인지 구체적으로 씁니다. 작성·검수 책임, 실제 사례와 출처를 정리하고 구조화 데이터는 화면의 내용과 맞춥니다.','서비스·솔루션 원고 · 질문별 답변 · 출처·검수 기준'],
+ ['04','측정','방문 이후의 행동을 확인하게','동의를 전제로 GA4·GTM·UTM의 역할을 정하고, 페이지 이동과 문의 성공을 구분합니다. Search Console의 검색 실적과 AI 답변 관측은 별도 기준으로 검토합니다.','이벤트 정의서 · 성공·실패·중복 검수 · 운영 안내'],
+ ].map(([n,title,subtitle,body,output])=><article key={n}><span className="method-number">{n}</span><div><span className="eyebrow">{title}</span><h3>{subtitle}</h3><p>{body}</p><strong>전달 결과물</strong><p>{output}</p></div></article>)}</div><div className="method-acceptance"><h3>출시 전에 함께 확인합니다</h3><p>주요 페이지의 정상 응답과 공개 본문, 모바일 문의, 메타·canonical·사이트맵, 동의 전후의 태그 동작, 접수 성공·실패·중복 처리. CMS·메일·CRM은 합의한 연결 범위에서 검수합니다.</p><p>검색 색인·순위·AI 인용은 구현 완료와 구분해 이후 관측합니다. 호스팅·도메인·유료 도구와 월간 운영은 견적에서 별도로 안내합니다.</p></div></section>}

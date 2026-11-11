@@ -1,0 +1,282 @@
+{
+  "source": "DataForSEO Labs · Google Keyword Overview",
+  "retrievedAt": "2026-11-11",
+  "location": "대한민국",
+  "locationCode": 2410,
+  "language": "ko",
+  "definition": "Google Ads 기반 월평균 검색량 추정치. 순방문자·실제 유입·고객 성과가 아닙니다.",
+  "items": [
+    {
+      "keyword": "b2b 마케팅",
+      "searchVolume": 390,
+      "updatedAt": "2026-10-16",
+      "months": [
+        {
+          "year": 2025,
+          "month": 10,
+          "search_volume": 390
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "search_volume": 480
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "search_volume": 320
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "search_volume": 390
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "search_volume": 320
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "search_volume": 480
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "search_volume": 390
+        },
+        {
+          "year": 2026,
+          "month": 5,
+          "search_volume": 390
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "search_volume": 320
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "search_volume": 390
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "search_volume": 390
+        },
+        {
+          "year": 2026,
+          "month": 9,
+          "search_volume": 320
+        }
+      ],
+      "intent": "commercial"
+    },
+    {
+      "keyword": "ga4",
+      "searchVolume": 9900,
+      "updatedAt": "2026-10-20",
+      "months": [
+        {
+          "year": 2025,
+          "month": 10,
+          "search_volume": 6600
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "search_volume": 8100
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "search_volume": 8100
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "search_volume": 9900
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "search_volume": 8100
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "search_volume": 9900
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "search_volume": 12100
+        },
+        {
+          "year": 2026,
+          "month": 5,
+          "search_volume": 9900
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "search_volume": 12100
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "search_volume": 12100
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "search_volume": 12100
+        },
+        {
+          "year": 2026,
+          "month": 9,
+          "search_volume": 12100
+        }
+      ],
+      "intent": "informational"
+    },
+    {
+      "keyword": "검색엔진 최적화",
+      "searchVolume": 720,
+      "updatedAt": "2026-10-18",
+      "months": [
+        {
+          "year": 2025,
+          "month": 10,
+          "search_volume": 390
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "search_volume": 720
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "search_volume": 390
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "search_volume": 480
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "search_volume": 320
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "search_volume": 720
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "search_volume": 480
+        },
+        {
+          "year": 2026,
+          "month": 5,
+          "search_volume": 1900
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "search_volume": 1300
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "search_volume": 390
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "search_volume": 320
+        },
+        {
+          "year": 2026,
+          "month": 9,
+          "search_volume": 480
+        }
+      ],
+      "intent": "commercial"
+    },
+    {
+      "keyword": "홈페이지 제작",
+      "searchVolume": 9900,
+      "updatedAt": "2026-10-18",
+      "months": [
+        {
+          "year": 2025,
+          "month": 10,
+          "search_volume": 4400
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "search_volume": 6600
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "search_volume": 5400
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "search_volume": 5400
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "search_volume": 40500
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "search_volume": 22200
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "search_volume": 5400
+        },
+        {
+          "year": 2026,
+          "month": 5,
+          "search_volume": 4400
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "search_volume": 4400
+        },
+        {
+          "year": 2026,
+          "month": 7,
+          "search_volume": 4400
+        },
+        {
+          "year": 2026,
+          "month": 8,
+          "search_volume": 4400
+        },
+        {
+          "year": 2026,
+          "month": 9,
+          "search_volume": 4400
+        }
+      ],
+      "intent": "commercial"
+    }
+  ]
+}
