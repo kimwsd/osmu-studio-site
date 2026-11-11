@@ -35,7 +35,7 @@ export function navigationEvent(href:string,path:string,area:string){
  return {name,parameters:{page_path:path,link_url:destination,link_text:label,link_id:area,...(method?{contact_method:method}:{})}};
  }catch{return null}
 }
-export function trackInterface(action:string,area:string){if(!/^(menu_(about|services|solutions|insights|resources|desk)|service_tab_(3eo|consulting|website|content|performance|analytics)|search_open|mobile_menu|insight_more|share_link|journey_industry_[0-2]|journey_stage_[0-4]|demand_keyword_[0-3])$/.test(action)||!areas.has(area))return;trackEvent('interface_click',{page_path:location.pathname,link_text:action,link_id:area})}
+export function trackInterface(action:string,area:string){if(!/^(menu_(about|services|solutions|insights|resources|desk)|service_tab_(3eo|consulting|website|content|performance|analytics)|search_open|mobile_menu|insight_more|share_link|journey_industry_[0-2]|journey_stage_[0-4]|demand_keyword_[0-3]|research_view_[0-2]|research_topic_[0-5])$/.test(action)||!areas.has(area))return;trackEvent('interface_click',{page_path:location.pathname,link_text:action,link_id:area})}
 export function trackEvent(name:string,parameters:Record<string,string|number>={}){
  if(!allowedEvents.has(name)||!measurementAllowed('analytics')||!window.gtag)return;
  const clean:Record<string,string|number>={};for(const key of ['service','content_group','content_slug','contact_method','page_path']){const value=parameters[key];if(typeof value==='string'&&(key==='page_path'?publicPage(value):safeLabel(value)))clean[key]=value}

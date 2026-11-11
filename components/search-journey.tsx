@@ -21,13 +21,13 @@ const actions=[
 export function SearchJourney({compact=false}:{compact?:boolean}){
  const [industry,setIndustry]=useState(0),[stage,setStage]=useState(0),id=useId();
  const j=journeys[industry],a=actions[stage];
- return <section className="section container search-journey" id="search-journey"><div className="desk-section-heading"><span className="eyebrow">FROM SEARCH INTENT TO ACTION</span><h2>검색어를 모으는 데서,<br/>고객의 다음 선택을 설계하는 데로.</h2><p>OSMU STUDIO는 검색 시장의 검색 수요·연관 키워드·검색결과 데이터와 실제 고객 질문을 함께 분석합니다. 주제와 검토 단계로 정리한 뒤, 어떤 페이지를 만들고 무엇을 개선할지 결정합니다.</p></div>
+ return <section className="section container search-journey" id="search-journey"><div className="desk-section-heading"><span className="eyebrow">FROM SEARCH INTENT TO ACTION</span><h2>검색어를 모으는 데서,<br/>고객의 다음 선택을 설계하는 데로.</h2><p>OSMU STUDIO는 검색 수요·연관 키워드·검색결과 데이터와 실제 고객 질문을 함께 분석합니다. 주제와 검토 단계로 정리한 뒤, 어떤 페이지를 만들고 무엇을 개선할지 결정합니다.</p></div>
  <div className="journey-board"><div className="journey-toolbar"><div><span className="eyebrow">OSMU / SEARCH JOURNEY</span><h3>검색 의도에서 콘텐츠까지</h3></div><span className="example-badge">업무 설명용 예시</span></div>
  <div className="journey-industries" role="group" aria-label="업종 예시 선택">{journeys.map((x,i)=><button key={x.name} data-analytics-action={"journey_industry_"+i} aria-pressed={industry===i} onClick={()=>{setIndustry(i);setStage(0)}}>{x.name}</button>)}</div>
  <div className="journey-stages" role="group" aria-label="검색 검토 단계 선택">{stages.map((x,i)=><button key={x} data-analytics-action={"journey_stage_"+i} aria-pressed={stage===i} aria-controls={id+'-detail'} onClick={()=>setStage(i)}><span className="stage-index">0{i+1}</span><strong>{x}</strong><span className="topic-cluster">{j.topics[i].map(t=><span key={t}>{t}</span>)}</span><small>{j.pages[i]}</small></button>)}</div>
  <p className="journey-legend">단계·색상은 검색 의도의 분류입니다. 실제 이용자의 이동 순서·인원·전환율을 뜻하지 않으며, 고객은 여러 단계를 오갈 수 있습니다.</p>
  <div className="journey-detail" id={id+'-detail'} aria-live="polite"><div><span className="eyebrow">{stages[stage]} / 고객의 질문</span><h3>“{j.questions[stage]}”</h3><p>{a.work}</p><span className="journey-output">제작·개선할 접점 <strong>{j.pages[stage]}</strong></span></div><dl><dt>SEO</dt><dd>{a.seo}</dd><dt>AEO</dt><dd>{a.aeo}</dd><dt>GEO</dt><dd>{a.geo}</dd><dt>확인 지표</dt><dd>{a.metric}</dd></dl></div></div>
- {!compact&&<><div className="journey-evidence-grid">{[
+ {compact&&<Link className="text-link" href="/process/#research-atlas">질문 지도·탐색 경로·콘텐츠 설계 예시 보기 →</Link>}{!compact&&<><div className="journey-evidence-grid">{[
  ['01 / 수집','분석 조건부터 고정합니다.','국가·언어·검색엔진·기기·조회일과 대상 키워드를 정합니다. 검색량의 기간, 누락 값, 유사 키워드 중복을 확인해 비교할 기준선을 만듭니다.','키워드 원자료 · 출처·조건 기록'],
  ['02 / 해석','고객 질문과 검토 단계를 연결합니다.','연관 검색어, 검색결과의 페이지 유형, 실제 상담 내용을 대조해 주제군을 만듭니다. AI로 제안한 분류와 질문은 사람이 서비스 맥락에 맞게 검토합니다.','주제군 지도 · 고객 질문 목록 · 여정 가설'],
  ['03 / 제작','분석을 제작할 페이지로 바꿉니다.','주제마다 대표 페이지, 답해야 할 질문, 필요한 근거, 내부 링크와 문의 동선을 정합니다. 경쟁사에만 있는 정보와 우리만 제공할 수 있는 정보를 구분합니다.','페이지별 기획서 · 콘텐츠 캘린더 · 개선 순서'],
