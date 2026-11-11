@@ -4,20 +4,9 @@
     "/editor/": "/admin/",
     "/services/seo/": "/services/3eo/",
     "/services/aeo-geo/": "/services/3eo/",
-    "/home.html": "/",
     "/studio/": "/about/",
-    "/about.html": "/about/",
-    "/contact.html": "/contact/",
-    "/services.html": "/services/",
-    "/process.html": "/process/",
-    "/privacy.html": "/privacy/",
-    "/terms.html": "/terms/",
     "/work/": "/cases/",
-    "/work.html": "/cases/",
-    "/studio.html": "/about/",
-    "/service.html": "/services/",
-    "/services/web-digital/": "/services/website/",
-    "/service-web-digital.html": "/services/website/"
+    "/services/web-digital/": "/services/website/"
   },
   "retired": [
     "/project-bakery-onhwa.html",
@@ -77,6 +66,17 @@
     "/work/salon-de-asan/",
     "/work/space-experience/",
     "/work/teahouse-dam/",
-    "/work/zest-club/"
+    "/work/zest-club/",
+    "/home.html",
+    "/about.html",
+    "/contact.html",
+    "/services.html",
+    "/process.html",
+    "/privacy.html",
+    "/terms.html",
+    "/work.html",
+    "/studio.html",
+    "/service.html",
+    "/service-web-digital.html"
   ]
 }

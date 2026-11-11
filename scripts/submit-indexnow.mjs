@@ -1,10 +1,13 @@
+import {readFile} from 'node:fs/promises';
 const host = 'osmu-studio.com';
 const key = 'osmu-a1e343ced69d4ac3b2c1a413ff09aa28';
 const origin = `https://${host}`;
 const sitemap = await fetch(`${origin}/sitemap.xml`, { signal: AbortSignal.timeout(20000) });
 if (!sitemap.ok) throw new Error(`Sitemap request failed: ${sitemap.status}`);
 const xml = await sitemap.text();
-const urlList = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(([, url]) => url);
+const sitemapUrls = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(([, url]) => url);
+const {retired}=JSON.parse(await readFile(new URL('../lib/legacy-routes.json',import.meta.url),'utf8'));
+const urlList = [...new Set([...sitemapUrls,...retired.map(route=>origin+route)])];
 if (!urlList.length) throw new Error('No URLs found in sitemap');
 const response = await fetch('https://api.indexnow.org/indexnow', {
   method: 'POST',
@@ -13,4 +16,4 @@ const response = await fetch('https://api.indexnow.org/indexnow', {
   signal: AbortSignal.timeout(20000),
 });
 if (!response.ok) throw new Error(`IndexNow submission failed: ${response.status} ${await response.text()}`);
-console.log(`IndexNow accepted ${urlList.length} sitemap URLs.`);
+console.log(`IndexNow accepted ${urlList.length} current and retired URLs.`);
