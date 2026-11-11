@@ -4,8 +4,6 @@
     "/editor/": "/admin/",
     "/services/seo/": "/services/3eo/",
     "/services/aeo-geo/": "/services/3eo/",
-    "/studio/": "/about/",
-    "/work/": "/cases/",
     "/services/web-digital/": "/services/website/"
   },
   "retired": [
@@ -77,6 +75,8 @@
     "/work.html",
     "/studio.html",
     "/service.html",
-    "/service-web-digital.html"
+    "/service-web-digital.html",
+    "/studio/",
+    "/work/"
   ]
 }

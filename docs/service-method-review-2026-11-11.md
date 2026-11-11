@@ -6,7 +6,7 @@
 - Website service: planning, development, content, measurement, deliverables and acceptance checks.
 - Engagements: diagnosis, build/improve, monthly operation; scopes are independent and agreed before work.
 - Process and selected service pages: interactive industry/stage example connecting questions, content and SEO/AEO/GEO actions.
-- Process and project-record page: a real DataForSEO research sample, explicitly distinct from a customer outcome or live dashboard.
+- Process and project-record page: a real external search-data provider research sample, explicitly distinct from a customer outcome or live dashboard.
 - Chart interactions use consent-gated interface_click with allowlisted labels. Internal links do not receive UTMs.
 
 ## Reference coverage
@@ -21,15 +21,12 @@ Key distinction: ListeningMind's public path-finder guide describes collecting s
 
 ## Data sample provenance
 
-- Endpoint: /v3/dataforseo_labs/google/keyword_overview/live
 - Retrieval: 2026-11-11, country code 2410 (South Korea), language ko, Google.
-- Successful response: task status 20000. Request cost USD 0.01272.
 - Six terms requested; four unambiguous terms selected for display. Broad acronyms SEO/GEO were omitted to avoid conflating unrelated search intent.
 - Public sample: public/resources/search-demand-sample-2026-11-11.json.
 - API monthly-average values and individual monthly values retained separately, without recalculating one from the other.
 - Historical range displayed: 2025-10 through 2026-09. Data updated October 2026; retrieval date is not the data month.
-- Search counts are approximate Google Ads-derived demand, not people, visits, leads, revenue or customer results. DataForSEO is not presented as automatically providing every ListeningMind feature or Naver dataset.
-- Documentation: https://docs.dataforseo.com/v3/dataforseo_labs/google/keyword_overview/live/
+- Search counts are approximate Google Ads-derived demand, not people, visits, leads, revenue or customer results. external search-data provider is not presented as automatically providing every ListeningMind feature or Naver dataset.
 
 ## Production detail-page tracking check
 
