@@ -14,7 +14,7 @@ test("object ownership rejects IDs from a different advertising account",()=>{
 });
 test("new campaigns, ad sets and ads are always paused",()=>{
  const p=newAdPlan({...valid,status:"ACTIVE"},origin,"KRW");
- assert.equal(p.campaign.status,"PAUSED");assert.equal(p.adset.status,"PAUSED");assert.equal(p.ad.status,"PAUSED");
+ assert.equal(p.campaign.status,"PAUSED");assert.equal(p.campaign.is_adset_budget_sharing_enabled,false);assert.equal(p.adset.status,"PAUSED");assert.equal(p.ad.status,"PAUSED");
  assert.equal(p.adset.daily_budget,10000);assert.equal(p.campaign.objective,"OUTCOME_TRAFFIC");
 });
 test("invalid or ambiguous budgets cannot reach Meta",()=>{

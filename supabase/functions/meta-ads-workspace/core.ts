@@ -60,7 +60,7 @@ export function creative(form:Record<string,unknown>,origin:string) {
 export function newAdPlan(form:Record<string,unknown>,origin:string,currency:string,now=Date.now()) {
  if(currency!=="KRW")throw Error("현재 운영 화면은 원화 광고 계정을 지원합니다.");
  return {
-  campaign:{name:text(form.name),objective:"OUTCOME_TRAFFIC",special_ad_categories:[],status:"PAUSED"},
+  campaign:{name:text(form.name),objective:"OUTCOME_TRAFFIC",special_ad_categories:[],is_adset_budget_sharing_enabled:false,status:"PAUSED"},
   adset:{name:text(form.name)+" · 타깃",daily_budget:budget(form.dailyBudget),billing_event:"IMPRESSIONS",optimization_goal:"LINK_CLICKS",bid_strategy:"LOWEST_COST_WITHOUT_CAP",targeting:target(form),end_time:endTime(form.endTime,now),status:"PAUSED"},
   creative:creative(form,origin),ad:{name:text(form.name),status:"PAUSED"}
  };
