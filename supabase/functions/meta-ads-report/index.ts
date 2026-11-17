@@ -8,6 +8,8 @@ Deno.serve(async req=>{
  if(origin&&!origins.has(origin))return reply(403,{error:'Origin denied'});if(req.method==='OPTIONS')return new Response(null,{status:204,headers});if(req.method!=='POST')return reply(405,{error:'POST required'});
  const db=createClient(Deno.env.get('SUPABASE_URL')!,Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,{auth:{persistSession:false}}),auth=req.headers.get('authorization')||'';
  const {data,error}=await db.auth.getUser(auth.replace(/^Bearer /,''));if(error||!data.user)return reply(401,{error:'관리자 로그인이 필요합니다.'});if(!['admin','owner'].includes(data.user.app_metadata.role))return reply(403,{error:'관리자 전용 기능입니다.'});
+  const osmuMembership = await db.from('mt_members').select('role').eq('tenant_id', 'e481e164-b873-47f6-9f86-71144464e1ad').eq('user_id', data.user.id).maybeSingle();
+  if (osmuMembership.error || !['owner', 'editor'].includes(osmuMembership.data?.role || '')) return reply(403, { error: 'OSMU 관리자 권한이 없습니다.' });
  let days:number;try{const raw=await req.text();if(raw.length>100)throw Error();days=JSON.parse(raw).days;if(![7,30,90].includes(days))throw Error()}catch{return reply(400,{error:'조회 기간을 확인해 주세요.'})}
  const access=Deno.env.get('META_REPORT_ACCESS_TOKEN');if(!access)return reply(503,{error:'메타 조회 키 연결이 필요합니다.'});
  try{
@@ -23,3 +25,4 @@ Deno.serve(async req=>{
   const {error:save}=await db.from('cms_report_snapshots').upsert(report,{onConflict:'source,period_start,period_end'});if(save)throw Error('광고 보고서 저장에 실패했습니다.');return reply(200,{report,cached:false});
  }catch(e){return reply(502,{error:e instanceof Error?e.message:'광고 통계를 확인하지 못했습니다.'})}
 });
+

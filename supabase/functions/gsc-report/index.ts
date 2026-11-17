@@ -23,6 +23,8 @@ Deno.serve(async req=>{
  const {data,error}=await db.auth.getUser(auth.slice(7));
  if(error||!data.user)return reply(401,{error:'로그인을 확인해 주세요.'});
  if(!['admin','owner'].includes(data.user.app_metadata.role))return reply(403,{error:'관리자 전용 기능입니다.'});
+  const osmuMembership = await db.from('mt_members').select('role').eq('tenant_id', 'e481e164-b873-47f6-9f86-71144464e1ad').eq('user_id', data.user.id).maybeSingle();
+  if (osmuMembership.error || !['owner', 'editor'].includes(osmuMembership.data?.role || '')) return reply(403, { error: 'OSMU 관리자 권한이 없습니다.' });
  let days:number;
  try{const raw=await req.text();if(raw.length>100)throw Error();days=JSON.parse(raw).days;if(![7,30,90].includes(days))throw Error()}catch{return reply(400,{error:'조회 기간을 확인해 주세요.'})}
  const end=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());

@@ -8,6 +8,8 @@ Deno.serve(async req=>{
  if(origin&&!origins.has(origin))return reply(403,{error:'Origin denied'});if(req.method==='OPTIONS')return new Response(null,{status:204,headers});if(req.method!=='POST')return reply(405,{error:'POST required'});
  const db=createClient(Deno.env.get('SUPABASE_URL')!,Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,{auth:{persistSession:false}}),auth=req.headers.get('authorization')||'';
  if(!auth.startsWith('Bearer '))return reply(401,{error:'로그인이 필요합니다.'});const {data,error}=await db.auth.getUser(auth.slice(7));if(error||!data.user)return reply(401,{error:'로그인을 확인해 주세요.'});if(!['admin','owner'].includes(data.user.app_metadata.role))return reply(403,{error:'관리자 전용 기능입니다.'});
+  const osmuMembership = await db.from('mt_members').select('role').eq('tenant_id', 'e481e164-b873-47f6-9f86-71144464e1ad').eq('user_id', data.user.id).maybeSingle();
+  if (osmuMembership.error || !['owner', 'editor'].includes(osmuMembership.data?.role || '')) return reply(403, { error: 'OSMU 관리자 권한이 없습니다.' });
  let days:number;try{const raw=await req.text();if(raw.length>100)throw Error();days=JSON.parse(raw).days;if(![7,28].includes(days))throw Error()}catch{return reply(400,{error:'Meta는 최근 7일 또는 28일을 조회할 수 있습니다.'})}
  const end=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()),startDate=new Date(end+'T00:00:00Z');startDate.setUTCDate(startDate.getUTCDate()-(days-1));const start=startDate.toISOString().slice(0,10);
  const {data:cached,error:cacheError}=await db.from('cms_report_snapshots').select('*').eq('source','meta_pixel').eq('period_start',start).eq('period_end',end).maybeSingle();if(cacheError)return reply(503,{error:'보고서 저장공간을 확인해 주세요.'});if(cached&&Date.now()-Date.parse(cached.collected_at)<300000)return reply(200,{report:cached,cached:true});
@@ -23,3 +25,4 @@ Deno.serve(async req=>{
   const report=normalizeMeta(rows,start,end);const {error:saveError}=await db.from('cms_report_snapshots').upsert(report,{onConflict:'source,period_start,period_end'});if(saveError)throw Error('통계를 저장하지 못했습니다.');return reply(200,{report,cached:false});
  }catch(e){return reply(502,{error:e instanceof Error?e.message:'Meta 통계 조회에 실패했습니다.'})}
 });
+

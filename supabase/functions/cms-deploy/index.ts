@@ -21,6 +21,8 @@ Deno.serve(async req=>{
   const authorization=req.headers.get('authorization')||'';if(!authorization.startsWith('Bearer '))return respond(401,{error:'Sign in required'});
   const {data,error}=await db.auth.getUser(authorization.slice(7));if(error||!data.user)return respond(401,{error:'Invalid session'});
   if(!['admin','owner'].includes(data.user.app_metadata.role))return respond(403,{error:'Administrator required'});
+  const osmuMembership = await db.from('mt_members').select('role').eq('tenant_id', 'e481e164-b873-47f6-9f86-71144464e1ad').eq('user_id', data.user.id).maybeSingle();
+  if (osmuMembership.error || !['owner', 'editor'].includes(osmuMembership.data?.role || '')) return respond(403, { error: 'OSMU 관리자 권한이 없습니다.' });
   if(body.action==='retry-notification'){
    if(!uuid.test(body.inquiryId||''))return respond(400,{error:'Invalid inquiry'});
    const {data:notice}=await db.from('inquiry_notifications').select('*').eq('inquiry_id',body.inquiryId).single();
@@ -49,3 +51,4 @@ Deno.serve(async req=>{
   await finish('accepted',null);return respond(202,{accepted:true});
  }catch{await finish('failed','배포 서비스 응답 지연');return respond(502,{error:'Deployment service unavailable. Retry from the dashboard.'})}
 });
+

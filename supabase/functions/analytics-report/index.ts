@@ -22,6 +22,8 @@ Deno.serve(async req=>{
  const auth=req.headers.get('authorization')||'';if(!auth.startsWith('Bearer '))return respond(401,{error:'로그인이 필요합니다.'});
  const {data:user,error:authError}=await db.auth.getUser(auth.slice(7));if(authError||!user.user)return respond(401,{error:'로그인을 확인해 주세요.'});
  if(!['admin','owner'].includes(user.user.app_metadata.role))return respond(403,{error:'관리자 전용 기능입니다.'});
+  const osmuMembership = await db.from('mt_members').select('role').eq('tenant_id', 'e481e164-b873-47f6-9f86-71144464e1ad').eq('user_id', user.user.id).maybeSingle();
+  if (osmuMembership.error || !['owner', 'editor'].includes(osmuMembership.data?.role || '')) return respond(403, { error: 'OSMU 관리자 권한이 없습니다.' });
  let days:number;try{const raw=await req.text();if(raw.length>100)return respond(400,{error:'잘못된 요청입니다.'});days=JSON.parse(raw).days;if(![7,30,90].includes(days))throw Error()}catch{return respond(400,{error:'조회 기간을 확인해 주세요.'})}
  const end=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());const startDate=new Date(end+'T00:00:00Z');startDate.setUTCDate(startDate.getUTCDate()-(days-1));const start=startDate.toISOString().slice(0,10);
  const {data:cached,error:cacheError}=await db.from('cms_report_snapshots').select('*').eq('source','ga4').eq('period_start',start).eq('period_end',end).maybeSingle();
