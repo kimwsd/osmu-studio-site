@@ -12,6 +12,7 @@ import {AdminDashboard} from './admin-dashboard';
 import {AdminCRM} from './admin-crm';
 import {AdminTasks} from './admin-tasks';
 import {AdminPerformance} from './admin-performance';
+import {MetaAdsWorkspace} from './meta-ads-workspace';
 import {AdminOperations} from './admin-operations';
 import {PostPlanning,ContentCalendar} from './admin-content-planning';
 import {AdminInquiries} from './admin-inquiries';
@@ -23,7 +24,7 @@ type Metric={day:string;source:string;metrics:Record<string,number|null>;collect
 type Utm={id?:string;name:string;destination:string;source:string;medium:string;campaign:string;content:string;term:string};
 type Media={name:string;url:string;video:boolean;size:number;created:string};
 type Release={revision:string;builtAt:string;posts:{id:string;slug:string;updatedAt:string}[]};
-const menus=[['dashboard','대시보드',LayoutDashboard],['crm','고객 · CRM',Users],['tasks','연락 · 할 일',Clock],['performance','유입 · 계약 성과',BarChart3],['inquiries','문의함',Newspaper],['posts','인사이트',Newspaper],['calendar','발행 일정',Clock],['media','미디어 라이브러리',Images],['utm','유입 · UTM',Link2],['integrations','연결 설정',Plug],['quality','검색 품질',ScanSearch],['operations','운영 · 백업',ShieldCheck]] as const;
+const menus=[['dashboard','대시보드',LayoutDashboard],['crm','고객 · CRM',Users],['tasks','연락 · 할 일',Clock],['performance','유입 · 계약 성과',BarChart3],['ads','메타 광고 운영',MousePointer2],['inquiries','문의함',Newspaper],['posts','인사이트',Newspaper],['calendar','발행 일정',Clock],['media','미디어 라이브러리',Images],['utm','유입 · UTM',Link2],['integrations','연결 설정',Plug],['quality','검색 품질',ScanSearch],['operations','운영 · 백업',ShieldCheck]] as const;
 const blockTools=[['paragraph','문단',Type],['heading','제목',Heading2],['image','이미지',ImageIcon],['video','영상',Video],['quote','인용',Quote],['list','목록',List],['table','표',List],['links','참고 링크',Link2]] as const;
 const dateLabel=(s?:string)=>s?new Date(s).toLocaleDateString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit'}):'—';
 function newDocument():PostDocument{return {title:'',slug:'insight-'+Date.now().toString(36),summary:'',category:'SEO',service:'3eo',author:'3EO Editorial',cover:'',coverAlt:'',seoTitle:'',seoDescription:'',ogImage:'',blocks:[{id:crypto.randomUUID(),type:'paragraph',text:''}],sources:[]}}
@@ -94,6 +95,7 @@ export function Admin(){
   {view==='dashboard'&&<AdminDashboard readonly={readonly} posts={posts} published={published} release={release} tracking={tracking} utmCount={utmLinks.length} utmLinks={utmLinks} onNavigate={(next,id)=>{if(next==='crm')setCrmId(id);changeView(next)}} onNewPost={()=>openPost()} onRefresh={refresh} onDeploy={()=>void run('사이트 반영 요청 중',requestDeployment)}/>}
   {view==='tasks'&&<AdminTasks readonly={readonly}/>}
   {view==='performance'&&<AdminPerformance readonly={readonly}/>}
+  {view==='ads'&&<MetaAdsWorkspace site="osmu" readonly={readonly} call={body=>cmsClient().functions.invoke('meta-ads-workspace',{body})}/>}
   {view==='calendar'&&<ContentCalendar readonly={readonly} posts={posts} onOpen={openPost}/>}
   {view==='operations'&&<AdminOperations readonly={readonly} pendingPosts={release?published.filter(p=>!release.posts.some(r=>r.id===p.id&&r.updatedAt===p.updated_at)).length:null} onDeploy={requestDeployment}/>}
   {view==='crm'&&<AdminCRM readonly={readonly} initialId={crmId} onDirty={setCrmDirty} registerSave={fn=>{crmSave.current=fn}}/>}
